@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bioethics Flashcards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #ff0033; --dark: #0a0a0a; --glass: rgba(255, 255, 255, 0.05); --text: #ffffff; }
+        body { margin: 0; font-family: 'Cairo', sans-serif; background-color: var(--dark); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 50%, #2a0000 0%, #000000 100%); overflow: hidden; }
+        .progress-container { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.1); }
+        .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s ease; box-shadow: 0 0 10px var(--primary); }
+        .header { position: absolute; top: 20px; width: 90%; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+        .counter { background: rgba(255,0,51,0.2); padding: 5px 15px; border-radius: 20px; border: 1px solid var(--primary); font-weight: bold; }
+        .scene { width: 90%; max-width: 500px; height: 400px; perspective: 1000px; margin-top: 20px; }
+        .card { width: 100%; height: 100%; position: relative; transition: transform 0.6s; transform-style: preserve-3d; cursor: pointer; }
+        .card.is-flipped { transform: rotateY(180deg); }
+        .card__face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 24px; padding: 30px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card__face--front { border-bottom: 4px solid var(--primary); }
+        .card__face--back { background: linear-gradient(135deg, #33000a, #000); transform: rotateY(180deg); border-top: 4px solid var(--primary); overflow-y: auto; }
+        .category-badge { background: rgba(255, 255, 255, 0.1); padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; color: #aaa; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        h2 { font-size: 1.8rem; margin: 0; line-height: 1.4; }
+        p { font-size: 1.2rem; line-height: 1.6; color: #ddd; }
+        .hint { margin-top: 20px; font-size: 0.9rem; color: var(--primary); opacity: 0.7; animation: pulse 2s infinite; }
+        .controls { margin-top: 40px; display: flex; gap: 20px; z-index: 10; }
+        .btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white; width: 60px; height: 60px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+        .btn:hover { background: var(--primary); border-color: var(--primary); transform: scale(1.1); box-shadow: 0 0 20px var(--primary); }
+        .btn:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+        .back-link { position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; opacity: 0.7; z-index: 20; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+    </style>
+</head>
+<body>
+
+    <a href="flashcards-menu.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Menu</a>
+    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+
+    <div class="header" style="justify-content: flex-end;">
+        <div class="counter" id="counter">1 / 23</div>
+    </div>
+
+    <div class="scene">
+        <div class="card" id="card" onclick="flipCard()">
+            <div class="card__face card__face--front">
+                <div class="category-badge" id="category">Category</div>
+                <i class="fa-solid fa-question-circle" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
+                <h2 id="question">Question Here?</h2>
+                <div class="hint"><i class="fa-solid fa-hand-pointer"></i> Tap to Flip</div>
+            </div>
+            <div class="card__face card__face--back">
+                <i class="fa-solid fa-lightbulb" style="font-size: 2rem; color: #ffd700; margin-bottom: 15px;"></i>
+                <p id="answer">Answer Here</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="prevCard()" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="btn" style="border-color: var(--primary); color: var(--primary)" onclick="resetDeck()"><i class="fa-solid fa-rotate-right"></i></button>
+        <button class="btn" onclick="nextCard()" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <script>
+        // FULL DATASET
+        const flashcards = [
+            { category: "History", question: "Who coined the term 'Bioethics'?", answer: "Fritz Jahr (1927) coined it. Van Rensselaer Potter (1970) popularized it." },
+            { category: "Definition", question: "Etymology of 'Bioethics'?", answer: "Greek: 'Bios' (Life) + 'Ethos' (Moral nature/behavior)." },
+            { category: "Context", question: "What 4 factors led to the rise of Bioethics in the 1960s?", answer: "1. Technical progress.\n2. Environmental agenda.\n3. Civil rights movements.\n4. Institutional changes." },
+            { category: "Morality", question: "What is the 'Golden Rule'?", answer: "Treat others as you would like to be treated (Positive) / Do not treat others as you wouldn't like to be treated (Negative)." },
+            { category: "Approaches", question: "What is Deontology?", answer: "Ethics of Duty (Kant). Focuses on rules and respecting individual rights regardless of consequences." },
+            { category: "Approaches", question: "What is Utilitarianism?", answer: "Consequentialism (Bentham/Mill). Focuses on the best outcome for the greatest number of people." },
+            { category: "Approaches", question: "What is Virtue Ethics?", answer: "Focuses on the Agent's Character (Aristotle). Good judgment comes from being a virtuous person." },
+            { category: "Approaches", question: "What is Casuistry?", answer: "A case-based method. Solving moral problems by analyzing specific individual cases." },
+            { category: "Principlism", question: "The 4 Principles of Bioethics?", answer: "1. Autonomy\n2. Beneficence\n3. Nonmaleficence\n4. Justice" },
+            { category: "Autonomy", question: "Kant's view on Autonomy?", answer: "Autonomy is being Rational and following universal moral laws (Categorical Imperative)." },
+            { category: "Autonomy", question: "Mill's view on Autonomy?", answer: "Individuality. Diversity in lifestyles ('experiments in living') is key." },
+            { category: "Autonomy", question: "Isaiah Berlin's Negative Liberty?", answer: "Freedom FROM interference or coercion by others." },
+            { category: "Autonomy", question: "Bioethical Definition of Autonomy?", answer: "Self-rule free from controlling interference and limitations that prevent meaningful choice." },
+            { category: "Paternalism", question: "What is Paternalism?", answer: "Limiting a person's autonomy to help or protect the person (acting like a parent)." },
+            { category: "Paternalism", question: "Weak vs. Strong Paternalism?", answer: "Weak: Intervening if patient is NOT competent.\nStrong: Overriding the choices of a fully competent patient." },
+            { category: "Consent", question: "5 Elements of Informed Consent?", answer: "1. Disclosure\n2. Risks/Benefits\n3. Alternatives\n4. Assessment of Understanding\n5. Voluntary Decision" },
+            { category: "Models", question: "Hippocratic Model?", answer: "Paternalistic. Devoted to patient ('Make no harm'), but the doctor decides what is best." },
+            { category: "Models", question: "Bioethical Model?", answer: "Social Institution. Focuses on patient rights, environmental concerns, and shared decision-making." },
+            { category: "Privilege", question: "What is Physician-Patient Privilege (PPP)?", answer: "A legal right protecting confidential communications between doctor and patient from disclosure in court." },
+            { category: "Health", question: "Definition of Public Health?", answer: "What society does collectively to assure conditions for people to be healthy." },
+            { category: "Malady", question: "What is a Malady?", answer: "Umbrella term for disease, illness, sickness, disability, and disorder." },
+            { category: "Malady", question: "Disease vs. Illness?", answer: "Disease: Objective biological process.\nIllness: Subjective experience of suffering." },
+            { category: "Health", question: "What are the 4 levels of Health?", answer: "Individual, Group, Regional, and Social/Public Health." }
+        ];
+
+        let currentIndex = 0;
+        const cardElement = document.getElementById('card');
+        const qEl = document.getElementById('question');
+        const aEl = document.getElementById('answer');
+        const cEl = document.getElementById('category');
+        const countEl = document.getElementById('counter');
+        const barEl = document.getElementById('progressBar');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        function updateCard() {
+            cardElement.classList.remove('is-flipped');
+            setTimeout(() => {
+                const item = flashcards[currentIndex];
+                qEl.innerText = item.question;
+                aEl.innerText = item.answer;
+                cEl.innerText = item.category;
+                countEl.innerText = `${currentIndex + 1} / ${flashcards.length}`;
+                barEl.style.width = `${((currentIndex + 1) / flashcards.length) * 100}%`;
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === flashcards.length - 1;
+            }, 200);
+        }
+
+        function flipCard() { cardElement.classList.toggle('is-flipped'); }
+        function nextCard() { if (currentIndex < flashcards.length - 1) { currentIndex++; updateCard(); } }
+        function prevCard() { if (currentIndex > 0) { currentIndex--; updateCard(); } }
+        function resetDeck() { currentIndex = 0; updateCard(); }
+
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowRight') nextCard();
+            if(e.key === 'ArrowLeft') prevCard();
+            if(e.key === ' ' || e.key === 'Enter') flipCard();
+        });
+
+        updateCard();
+    </script>
+</body>
+</html>
