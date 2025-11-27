@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bioethics Final Exam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#ff0033', dark: '#0a0a0a', glass: 'rgba(255, 255, 255, 0.05)' },
+                    fontFamily: { cairo: ['Cairo', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            background-color: #0a0a0a; color: white; font-family: 'Cairo', sans-serif;
+            background: radial-gradient(circle at 50% 50%, #2a0000 0%, #0a0a0a 100%);
+            min-height: 100vh; overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(20, 20, 20, 0.75); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        .option-card { transition: 0.2s; }
+        .option-card:hover { border-color: #ff0033; background: rgba(255, 0, 51, 0.1); }
+        .option-selected { border-color: #ff0033 !important; background: rgba(255, 0, 51, 0.2) !important; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .custom-input {
+            background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1);
+            color: white; transition: 0.3s;
+        }
+        .custom-input:focus {
+            border-color: #ff0033; outline: none; box-shadow: 0 0 15px rgba(255, 0, 51, 0.2);
+            background: rgba(0,0,0,0.6);
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+
+    <header class="glass-panel h-16 flex items-center justify-between px-6 z-20 border-b border-white/10">
+        <h1 class="text-lg md:text-xl font-bold flex items-center gap-2">
+            <i class="fa-solid fa-flask text-primary"></i> <span class="hidden md:inline">Bioethics Final Exam</span>
+        </h1>
+        <a href="quizzes-menu.html" class="text-sm text-gray-400 hover:text-white transition"><i class="fa-solid fa-xmark"></i> Exit</a>
+    </header>
+
+    <main class="flex-1 flex items-center justify-center p-4 relative">
+        <div id="start-screen" class="glass-panel max-w-md w-full p-8 rounded-2xl text-center fade-in border-t-4 border-primary">
+            <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-primary/30 shadow-[0_0_20px_rgba(255,0,51,0.1)]">
+                <i class="fa-solid fa-dna text-4xl text-primary"></i>
+            </div>
+            <h2 class="text-3xl font-bold mb-2">Bioethics Quiz</h2>
+            <p class="text-gray-400 mb-8 text-sm">Enter your name to join the Leaderboard.</p>
+            <div class="text-left mb-6">
+                <label class="text-xs text-primary font-bold uppercase tracking-wider ml-1 mb-2 block">Student Name</label>
+                <input type="text" id="student-name-input" placeholder="e.g. Ahmed Ali" class="custom-input w-full rounded-xl p-4 text-lg placeholder-gray-600">
+            </div>
+            <div class="flex justify-between text-xs text-gray-500 mb-6 px-2">
+                <span><i class="fa-solid fa-list-ol mr-1"></i> 32 Questions</span>
+                <span><i class="fa-regular fa-clock mr-1"></i> 45 Minutes</span>
+            </div>
+            <button onclick="startQuiz()" class="w-full bg-primary hover:bg-red-700 text-white font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(255,0,51,0.4)] transition transform hover:scale-[1.02]">
+                Start Quiz 🚀
+            </button>
+        </div>
+
+        <div id="quiz-screen" class="hidden flex-col w-full max-w-4xl h-full md:h-auto fade-in">
+            <div class="flex justify-between items-center mb-4 px-2">
+                <span class="text-sm text-gray-400">Question <span id="q-number" class="text-white font-bold">1</span> / <span id="q-total">32</span></span>
+                <div class="bg-primary/10 text-primary px-4 py-1 rounded-full font-mono font-bold border border-primary/30 flex items-center gap-2">
+                    <i class="fa-regular fa-clock"></i> <span id="timer-display">45:00</span>
+                </div>
+            </div>
+            <div class="glass-panel flex-1 md:flex-none rounded-2xl p-6 md:p-10 relative overflow-y-auto">
+                <h2 id="q-text" class="text-xl md:text-2xl font-bold mb-8 leading-relaxed">Loading...</h2>
+                <div id="options-container" class="space-y-4 pb-20 md:pb-0"></div>
+            </div>
+            <div class="flex justify-between mt-6">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-6 py-3 rounded-lg border border-gray-600 hover:bg-white/10 text-gray-300 disabled:opacity-30 transition">Previous</button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-8 py-3 rounded-lg bg-primary hover:bg-red-700 text-white font-bold shadow-lg transition">Next</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden glass-panel max-w-md w-full p-8 rounded-2xl text-center border border-primary/30 fade-in relative z-50">
+            <div class="w-24 h-24 rounded-full border-4 border-primary mx-auto flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(255,0,51,0.3)] bg-black">
+                <span id="final-score" class="text-4xl font-bold text-white">0</span>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Exam Completed</h2>
+            <p id="student-name-display" class="text-primary font-bold text-lg mb-1"></p>
+            <p id="feedback-text" class="text-gray-400 mb-8 text-sm">Great effort!</p>
+            <button onclick="saveScore()" id="save-btn" class="w-full bg-white text-dark hover:bg-gray-200 font-bold py-3 rounded-lg transition mb-4 shadow-lg">
+                Save to Leaderboard <i class="fa-solid fa-cloud-arrow-up ml-2"></i>
+            </button>
+            <div class="flex gap-3">
+                <button onclick="location.reload()" class="flex-1 py-2 border border-gray-600 rounded-lg text-gray-400 hover:text-white text-sm">Retake</button>
+                <a href="ranking.html" class="flex-1 py-2 bg-primary/10 border border-primary/30 rounded-lg text-primary hover:bg-primary hover:text-white text-sm flex items-center justify-center transition">View Rank</a>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyASq2nOBpRMJtKqWWvTDD4hyGmEOp5cOnI",
+            authDomain: "spbu-med-platform.firebaseapp.com",
+            projectId: "spbu-med-platform",
+            storageBucket: "spbu-med-platform.firebasestorage.app",
+            messagingSenderId: "227576463828",
+            appId: "1:227576463828:web:1114162c17881bf5da9641"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- 32 FULL QUESTIONS ---
+        const questions = [
+            { id: 1, q: "Who is credited with coining the term 'Bioethics' in 1927?", options: ["Van Rensselaer Potter", "André Hellegers", "Fritz Jahr", "Stephen Toulmin"], a: 2 },
+            { id: 2, q: "Which perspective asks: 'What do I owe to the common good?'", options: ["Ethics of Virtue", "Social Relationships", "Cosmopolitan", "Deontology"], a: 2 },
+            { id: 3, q: "Which was NOT a core factor for Bioethics emergence in 1960s?", options: ["Technical progress", "Environmental agenda", "Collapse of religion", "Shift to chronic diseases"], a: 2 },
+            { id: 4, q: "Metaethics is primarily concerned with:", options: ["Consequences", "Meaning of moral terms", "Character", "Universalizability"], a: 1 },
+            { id: 5, q: "What is 'Casuistry'?", options: ["Principlism", "Case-based reasoning", "Communitarianism", "Reflective Equilibrium"], a: 1 },
+            { id: 6, q: "Bruno Latour's questioning of 'Interrelations of humans and non-humans' raises:", options: ["Human autonomy", "Conquering death", "Are non-humans moral agents?", "Natural law"], a: 2 },
+            { id: 7, q: "'Wide Reflective Equilibrium' is a technique of:", options: ["Deontology", "Utilitarianism", "Applied Ethics", "Virtue Ethics"], a: 2 },
+            { id: 8, q: "Isaiah Berlin described 'negative liberty' as:", options: ["Self-mastery", "Absence of coercion", "Consciousness of rules", "Ruling oneself"], a: 1 },
+            { id: 9, q: "Who stated: 'I am autonomous if I rule me, and no one else rules I'?", options: ["Kant", "Joel Feinberg", "Scanlon", "Beauchamp"], a: 1 },
+            { id: 10, q: "Kant's concept of Autonomy requires principles to meet:", options: ["Happiness", "Universality", "Utility", "Practical reason"], a: 1 },
+            { id: 11, q: "What makes autonomy 'morally powerful'?", options: ["Social stability", "Moral individuality", "Efficiency", "Dogma"], a: 1 },
+            { id: 12, q: "Weak vs Strong Paternalism is based on:", options: ["Legality", "Competence", "Harm severity", "Force"], a: 1 },
+            { id: 13, q: "The Ottoman document from 1539 is an example of:", options: ["Organ transplant", "Surgery waiver", "Confidentiality", "Experimentation"], a: 1 },
+            { id: 14, q: "In Walter Reed's Yellow Fever experiments, death compensation was:", options: ["Pension", "$500", "$100", "$200"], a: 2 },
+            { id: 15, q: "Which is NOT a Paternalism/Autonomy dilemma listed?", options: ["Overriding Refusals", "Partial Disclosures", "Excessive Risk", "Mandatory Vaccinations"], a: 3 },
+            { id: 16, q: "Model emphasizing 'Love is the true medicine':", options: ["Hippocratic", "Paracelsus", "Deontological", "Social"], a: 1 },
+            { id: 17, q: "Deontological Model (Nikolay Petrov) is characterized by:", options: ["Utility", "Strict duty", "Virtue", "Autonomy"], a: 1 },
+            { id: 18, q: "Physician-Patient Privilege (PPP) is:", options: ["Refusal right", "Legal protection in court", "Records right", "Nonmaleficence"], a: 1 },
+            { id: 19, q: "Public Health definition (1988 report):", options: ["No disease", "Well-being", "Collective action", "Free care"], a: 2 },
+            { id: 20, q: "Malady distinction: Disease vs Illness is:", options: ["Objective vs Subjective", "Mental vs Physical", "Infectious vs Non", "Acute vs Chronic"], a: 0 },
+            { id: 21, q: "Principle addressing balancing benefit/harm for population:", options: ["Veracity", "Fidelity", "Utility", "Solidarity"], a: 2 },
+            { id: 22, q: "In Russia, consent for 'Immature minors' (6-15) requires:", options: ["Own consent", "Unassisted", "Legal rep", "No consent"], a: 2 },
+            { id: 23, q: "Golden Rule 'What you wish upon others...' is:", options: ["Directive", "Negative", "Empathetic", "Categorical"], a: 2 },
+            { id: 24, q: "Ethics of Virtue: Good judgement = Virtue + ...?", options: ["Divine command", "Utility calc", "Practical reason", "Maxims"], a: 2 },
+            { id: 25, q: "Autonomy as 'sovereignty in deciding what to believe' defined by:", options: ["Scanlon", "Feinberg", "Kant", "Kohlberg"], a: 0 },
+            { id: 26, q: "Communitarianism is characterized by:", options: ["Rules", "Social context", "Consequences", "Professionalism"], a: 1 },
+            { id: 27, q: "5th element of Informed Consent:", options: ["Status", "Recommendation", "Voluntariness", "Guardian"], a: 2 },
+            { id: 28, q: "Hippocratic Model contrasts with Bioethics in:", options: ["Euthanasia", "Secrecy", "Paternalism", "Nonmaleficence"], a: 2 },
+            { id: 29, q: "3rd cornerstone of Bioethics Interdisciplinarity:", options: ["Duties", "Common good", "Virtue", "Death"], a: 1 },
+            { id: 30, q: "Autonomy according to Kohlberg involves:", options: ["Consciousness of rules", "Free choice", "Adults only", "No coercion"], a: 0 },
+            { id: 31, q: "Overriding Refusals is a conflict between:", options: ["Justice/Beneficence", "Nonmaleficence/Utility", "Autonomy/Beneficence", "Veracity/Justice"], a: 2 },
+            { id: 32, q: "Privacy and PPP are mandatory for:", options: ["Rationality", "Voluntarism", "Autonomous being", "Agency"], a: 2 }
+        ];
+
+        let currentIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let score = 0;
+        let timerInterval;
+        let timeLeft = 45 * 60;
+        let studentName = "";
+
+        window.startQuiz = function() {
+            const input = document.getElementById('student-name-input');
+            const name = input.value.trim();
+            if (!name) {
+                input.classList.add('border-red-500', 'animate-pulse');
+                setTimeout(() => input.classList.remove('border-red-500', 'animate-pulse'), 1000);
+                return;
+            }
+            studentName = name;
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            document.getElementById('quiz-screen').classList.add('flex');
+            renderQuestion(0);
+            startTimer();
+        };
+
+        window.renderQuestion = function(index) {
+            const q = questions[index];
+            document.getElementById('q-number').innerText = index + 1;
+            document.getElementById('q-total').innerText = questions.length;
+            document.getElementById('q-text').innerText = q.q;
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                const div = document.createElement('div');
+                const isSelected = userAnswers[index] === optIndex;
+                div.className = `option-card cursor-pointer p-4 rounded-xl border border-gray-700 flex items-center ${isSelected ? 'option-selected' : 'bg-white/5'}`;
+                div.onclick = () => selectOption(index, optIndex);
+                div.innerHTML = `<div class="w-6 h-6 rounded-full border-2 border-gray-500 mr-4 flex items-center justify-center ${isSelected ? 'border-primary' : ''}">${isSelected ? '<div class="w-3 h-3 rounded-full bg-primary"></div>' : ''}</div><span class="text-gray-300 font-medium ${isSelected ? 'text-white' : ''}">${opt}</span>`;
+                container.appendChild(div);
+            });
+            document.getElementById('prev-btn').disabled = index === 0;
+            const nextBtn = document.getElementById('next-btn');
+            if (index === questions.length - 1) {
+                nextBtn.innerText = "Finish Exam";
+                nextBtn.onclick = finishExam;
+                nextBtn.classList.replace('bg-primary', 'bg-green-600');
+            } else {
+                nextBtn.innerText = "Next";
+                nextBtn.onclick = () => { currentIndex++; renderQuestion(currentIndex); };
+                nextBtn.classList.replace('bg-green-600', 'bg-primary');
+            }
+        };
+
+        window.selectOption = function(qIndex, optIndex) { userAnswers[qIndex] = optIndex; renderQuestion(qIndex); };
+        window.prevQuestion = function() { if(currentIndex > 0) { currentIndex--; renderQuestion(currentIndex); } };
+
+        window.finishExam = function() {
+            clearInterval(timerInterval);
+            score = 0;
+            userAnswers.forEach((ans, idx) => { if (ans === questions[idx].a) score++; });
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('student-name-display').innerText = studentName;
+            const percent = (score / questions.length) * 100;
+            let feedback = percent >= 90 ? "Outstanding!" : percent >= 70 ? "Good Job!" : "Keep Practicing!";
+            document.getElementById('feedback-text').innerText = feedback;
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+        };
+
+        window.saveScore = async function() {
+            const saveBtn = document.getElementById('save-btn');
+            saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+            saveBtn.disabled = true;
+            try {
+                await addDoc(collection(db, "leaderboard"), {
+                    name: studentName,
+                    score: score,
+                    total: questions.length,
+                    subject: "Bioethics",
+                    timestamp: serverTimestamp()
+                });
+                window.location.href = "ranking.html";
+            } catch (e) {
+                alert("Error saving. Check internet connection.");
+                saveBtn.disabled = false;
+                saveBtn.innerText = "Try Again";
+            }
+        };
+
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => { timeLeft--; updateTimerDisplay(); if (timeLeft <= 0) finishExam(); }, 1000);
+        }
+        function updateTimerDisplay() {
+            const m = Math.floor(timeLeft / 60); const s = timeLeft % 60;
+            document.getElementById('timer-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+    </script>
+</body>
+</html>
