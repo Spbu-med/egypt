@@ -1,68 +1,87 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flashcards Menu</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <title>Flashcards Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #ff0033; --dark: #0a0a0a; --glass: rgba(255, 255, 255, 0.05); --border: rgba(255, 255, 255, 0.1); }
         body { margin: 0; font-family: 'Cairo', sans-serif; background: radial-gradient(circle at 50% 50%, #2a0000 0%, #000 100%); color: white; min-height: 100vh; }
         
-        /* زر العودة */
-        .back-btn { position: fixed; top: 20px; left: 20px; background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 30px; text-decoration: none; color: white; backdrop-filter: blur(10px); border: 1px solid var(--border); transition: 0.3s; z-index: 100; }
+        /* Back Button */
+        .back-btn { 
+            position: fixed; top: 20px; left: 20px; 
+            background: rgba(255,255,255,0.1); padding: 10px 20px; 
+            border-radius: 30px; text-decoration: none; color: white; 
+            backdrop-filter: blur(10px); border: 1px solid var(--border); 
+            transition: 0.3s; z-index: 100; font-weight: 600; font-size: 0.9rem;
+        }
         .back-btn:hover { background: var(--primary); border-color: var(--primary); }
 
-        .header { text-align: center; padding: 80px 20px 40px; }
-        .header h1 { font-size: 2.5rem; margin: 0; }
+        .header { text-align: center; padding: 100px 20px 40px; }
+        .header h1 { font-size: 2.5rem; margin: 10px 0; font-weight: 900; letter-spacing: 1px; }
         
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px 5%; max-width: 1000px; margin: 0 auto; }
         
         .subject-card {
-            background: var(--glass); border: 1px solid var(--border); border-radius: 20px; padding: 25px;
+            background: var(--glass); border: 1px solid var(--border); border-radius: 24px; padding: 30px;
             text-align: center; text-decoration: none; color: white; transition: 0.3s; display: block;
+            position: relative; overflow: hidden;
         }
-        .subject-card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(255, 0, 51, 0.05); }
+        .subject-card:hover { transform: translateY(-7px); border-color: var(--primary); background: rgba(255, 0, 51, 0.05); }
         
-        .icon { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
-        .title { font-size: 1.4rem; font-weight: bold; margin: 0; }
-        .count { font-size: 0.9rem; color: #888; margin-top: 5px; }
+        .icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 15px; }
+        .title { font-size: 1.5rem; font-weight: bold; margin: 0; letter-spacing: 0.5px; }
+        .count { font-size: 0.85rem; color: #888; margin-top: 8px; font-weight: 500; }
+        
+        /* Tag for status */
+        .tag {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; 
+            font-size: 0.7rem; font-weight: bold; margin-top: 15px;
+            background: rgba(255,255,255,0.1); color: #aaa;
+        }
+        .subject-card:hover .tag { background: var(--primary); color: white; }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-right"></i> الرئيسية</a>
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Home</a>
 
     <div class="header">
-        <i class="fa-solid fa-clone" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
-        <h1>مكتبة الفلاش كارد</h1>
-        <p style="color: #aaa;">اختر المادة لبدء المراجعة</p>
+        <i class="fa-solid fa-layer-group" style="font-size: 3.5rem; color: var(--primary); filter: drop-shadow(0 0 15px rgba(255,0,51,0.4));"></i>
+        <h1>Flashcards Library</h1>
+        <p style="color: #aaa; font-size: 1.1rem;">Select a subject to start reviewing</p>
     </div>
 
     <div class="grid">
         <a href="cards.html" class="subject-card">
             <div class="icon"><i class="fa-solid fa-scale-balanced"></i></div>
             <div class="title">Bioethics</div>
-            <div class="count">20 Cards • جاهز الآن</div>
+            <div class="count">23 Cards</div>
+            <div class="tag">AVAILABLE NOW</div>
         </a>
 
         <div class="subject-card" style="opacity: 0.5; cursor: not-allowed;">
             <div class="icon"><i class="fa-solid fa-bone"></i></div>
             <div class="title">Anatomy</div>
-            <div class="count">Coming Soon</div>
+            <div class="count">-- Cards</div>
+            <div class="tag">COMING SOON</div>
         </div>
 
         <div class="subject-card" style="opacity: 0.5; cursor: not-allowed;">
             <div class="icon"><i class="fa-solid fa-microscope"></i></div>
             <div class="title">Histology</div>
-            <div class="count">Coming Soon</div>
+            <div class="count">-- Cards</div>
+            <div class="tag">COMING SOON</div>
         </div>
         
         <div class="subject-card" style="opacity: 0.5; cursor: not-allowed;">
             <div class="icon"><i class="fa-solid fa-dna"></i></div>
             <div class="title">Biology</div>
-            <div class="count">Coming Soon</div>
+            <div class="count">-- Cards</div>
+            <div class="tag">COMING SOON</div>
         </div>
     </div>
 
