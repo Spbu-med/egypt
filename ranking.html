@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - SPbU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #ff0033; --dark: #0a0a0a; --gold: #ffd700; }
+        body {
+            background-color: var(--dark);
+            color: white;
+            font-family: 'Cairo', sans-serif;
+            background: radial-gradient(circle at top, #2a0000 0%, #000 80%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 800px;
+            margin: 40px auto;
+        }
+        .rank-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+        .rank-item:hover { transform: translateX(-5px); border-color: var(--primary); }
+        
+        .rank-number {
+            font-size: 1.5rem;
+            font-weight: 900;
+            width: 50px;
+            color: #666;
+        }
+        .rank-1 .rank-number { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
+        .rank-2 .rank-number { color: #c0c0c0; }
+        .rank-3 .rank-number { color: #cd7f32; }
+
+        .rank-score {
+            margin-right: auto; /* Push to left in RTL */
+            font-weight: bold;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <div style="text-align: center; margin-bottom: 20px;">
+        <i class="fa-solid fa-crown" style="font-size: 3rem; color: var(--gold); margin-bottom: 10px;"></i>
+        <h1 style="font-size: 2.5rem; margin: 0;">لوحة الشرف</h1>
+        <p style="color: #888;">Top Students - Bioethics</p>
+    </div>
+
+    <div class="glass-card">
+        <div id="loading" style="text-align: center; padding: 20px;">
+            <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+            <p>جاري تحميل النتائج...</p>
+        </div>
+        <div id="ranking-list"></div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="quiz.html" style="color: white; text-decoration: none; padding: 10px 20px; border: 1px solid #333; border-radius: 30px;">
+            <i class="fa-solid fa-arrow-right"></i> العودة للكويز
+        </a>
+        <a href="index.html" style="color: white; text-decoration: none; padding: 10px 20px; border: 1px solid #333; border-radius: 30px; margin-right: 10px;">
+            الرئيسية <i class="fa-solid fa-home"></i>
+        </a>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyASq2nOBpRMJtKqWWvTDD4hyGmEOp5cOnI",
+            authDomain: "spbu-med-platform.firebaseapp.com",
+            projectId: "spbu-med-platform",
+            storageBucket: "spbu-med-platform.firebasestorage.app",
+            messagingSenderId: "227576463828",
+            appId: "1:227576463828:web:1114162c17881bf5da9641"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function loadRankings() {
+            const list = document.getElementById('ranking-list');
+            const loading = document.getElementById('loading');
+            
+            try {
+                // Get top 20 scores ordered by score descending
+                const q = query(collection(db, "leaderboard"), orderBy("score", "desc"), limit(20));
+                const querySnapshot = await getDocs(q);
+                
+                loading.style.display = 'none';
+                
+                let rank = 1;
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const item = document.createElement('div');
+                    item.className = `rank-item rank-${rank}`;
+                    item.innerHTML = `
+                        <div class="rank-number">#${rank}</div>
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: bold; font-size: 1.1rem;">${data.name}</span>
+                            <span style="font-size: 0.8rem; color: #888;">${data.timestamp ? new Date(data.timestamp.toDate()).toLocaleDateString() : ''}</span>
+                        </div>
+                        <div class="rank-score">${data.score} / ${data.total || 32}</div>
+                    `;
+                    list.appendChild(item);
+                    rank++;
+                });
+
+                if(querySnapshot.empty) {
+                    list.innerHTML = '<p style="text-align:center; color:#666;">لا توجد نتائج مسجلة حتى الآن.</p>';
+                }
+
+            } catch (error) {
+                console.error("Error:", error);
+                loading.innerHTML = '<p style="color:red">حدث خطأ في تحميل البيانات.</p>';
+            }
+        }
+
+        loadRankings();
+    </script>
+</body>
+</html>
