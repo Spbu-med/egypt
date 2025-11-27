@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizzes Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #ff0033; --dark: #0a0a0a; --glass: rgba(255, 255, 255, 0.05); --border: rgba(255, 255, 255, 0.1); }
+        body { margin: 0; font-family: 'Cairo', sans-serif; background: radial-gradient(circle at 50% 50%, #2a0000 0%, #000 100%); color: white; min-height: 100vh; }
+        
+        .back-btn { position: fixed; top: 20px; left: 20px; background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 30px; text-decoration: none; color: white; backdrop-filter: blur(10px); border: 1px solid var(--border); transition: 0.3s; z-index: 100; }
+        .back-btn:hover { background: var(--primary); border-color: var(--primary); }
+
+        .header { text-align: center; padding: 80px 20px 40px; }
+        .header h1 { font-size: 2.5rem; margin: 0; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px 5%; max-width: 1000px; margin: 0 auto; }
+        
+        .quiz-card {
+            background: var(--glass); border: 1px solid var(--border); border-radius: 20px; padding: 25px;
+            text-align: center; text-decoration: none; color: white; transition: 0.3s; display: block; position: relative; overflow: hidden;
+        }
+        .quiz-card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(255, 0, 51, 0.05); }
+        
+        .tag { position: absolute; top: 15px; left: 15px; background: var(--primary); padding: 3px 10px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; }
+        .icon { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
+        .title { font-size: 1.4rem; font-weight: bold; margin: 0; }
+        .details { font-size: 0.85rem; color: #888; margin-top: 8px; }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-right"></i> الرئيسية</a>
+
+    <div class="header">
+        <i class="fa-solid fa-flask" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
+        <h1>بنك الأسئلة</h1>
+        <p style="color: #aaa;">اختبر نفسك قبل الامتحان</p>
+    </div>
+
+    <div class="grid">
+        <a href="quiz.html" class="quiz-card">
+            <div class="tag">EXAM</div>
+            <div class="icon"><i class="fa-solid fa-scale-balanced"></i></div>
+            <div class="title">Bioethics</div>
+            <div class="details">32 سؤال • 45 دقيقة</div>
+        </a>
+
+        <div class="quiz-card" style="opacity: 0.5; cursor: not-allowed;">
+            <div class="icon"><i class="fa-solid fa-bone"></i></div>
+            <div class="title">Anatomy</div>
+            <div class="details">Coming Soon</div>
+        </div>
+
+        <div class="quiz-card" style="opacity: 0.5; cursor: not-allowed;">
+            <div class="icon"><i class="fa-solid fa-microscope"></i></div>
+            <div class="title">Histology</div>
+            <div class="details">Coming Soon</div>
+        </div>
+    </div>
+
+</body>
+</html>
