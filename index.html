@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPbU Egypt - Year 1</title>
+    <title>SPbU Egypt - Year 1 Online Platform</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +29,6 @@
             color: var(--text);
             overflow-x: hidden;
             min-height: 100vh;
-            /* خلفية متحركة */
             background: radial-gradient(circle at 50% 50%, #2a0000 0%, #000000 100%);
             position: relative;
         }
@@ -57,7 +56,7 @@
         header {
             padding: 15px 5%;
             background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(20px); /* تأثير الزغولة */
+            backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             display: flex;
@@ -91,29 +90,32 @@
 
         .hero h1 {
             font-size: 3.5rem;
-            margin: 0;
+            margin: 10px 0;
             line-height: 1.2;
-            background: linear-gradient(to right, #fff, #ccc);
+            font-weight: 900;
+            background: linear-gradient(to right, #fff, #eee);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 0, 51, 0.3);
         }
 
         .hero .subtitle {
-            font-size: 1.2rem;
-            color: #aaa;
+            font-size: 1.3rem;
+            color: #ccc;
             margin-top: 15px;
-            font-weight: 300;
+            font-weight: 500;
         }
 
         .badge-year {
             background: linear-gradient(45deg, var(--primary), #990000);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 1rem;
             font-weight: bold;
-            box-shadow: 0 0 20px rgba(255, 0, 51, 0.4);
+            box-shadow: 0 0 25px rgba(255, 0, 51, 0.5);
             display: inline-block;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
         }
 
         /* Grid System */
@@ -185,30 +187,36 @@
             border-color: var(--primary);
         }
 
-        .card h3 { margin: 10px 0; font-size: 1.5rem; }
-        .card p { color: #888; font-size: 0.95rem; line-height: 1.6; }
+        .card h3 { margin: 10px 0; font-size: 1.5rem; font-weight: 700; }
+        .card p { color: #aaa; font-size: 1rem; line-height: 1.6; font-weight: 300; }
 
         /* Coming Soon Badge */
         .status {
             display: inline-block;
             margin-top: 20px;
-            padding: 6px 16px;
+            padding: 8px 18px;
             border-radius: 50px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #aaa;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            font-weight: 500;
         }
 
         .card:hover .status {
             color: #fff;
             border-color: var(--primary);
+            background: rgba(255, 0, 51, 0.1);
         }
 
         /* Gold Card for Ranking */
         .card.gold:hover {
             border-color: rgba(255, 215, 0, 0.5);
+        }
+        .card.gold:hover .status {
+             border-color: var(--gold);
+             background: rgba(255, 215, 0, 0.1);
         }
         .card.gold:hover .icon-container {
             background: var(--gold);
@@ -220,13 +228,14 @@
             text-align: center;
             padding: 30px;
             border-top: 1px solid var(--border);
-            color: #666;
+            color: #777;
             font-size: 0.9rem;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.3);
         }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
+            .hero h1 { font-size: 2.8rem; }
+            .hero { padding-top: 80px; }
         }
     </style>
 </head>
@@ -237,13 +246,13 @@
             <i class="fa-solid fa-heart-pulse"></i>
             <span>SPbU MED</span>
         </div>
-        <div style="font-size: 0.9rem; color: #888;">EGYPT BRANCH</div>
+        <div style="font-size: 0.9rem; color: #888; font-weight: 500;">EGYPT BRANCH</div>
     </header>
 
     <section class="hero">
-        <div class="badge-year">First Batch 2024</div>
-        <h1>مجتمع الدفعة الأولى</h1>
-        <div class="subtitle">بوابتك للتميز في جامعة سانت بطرسبرغ</div>
+        <div class="badge-year" dir="ltr">2025 - 2026</div>
+        <h1>طلاب السنة الأولى</h1>
+        <div class="subtitle">منصتكم الشاملة للتميز في طب سانت بطرسبرغ</div>
     </section>
 
     <section class="grid-container">
@@ -287,7 +296,7 @@
             <div class="icon-container"><i class="fa-brands fa-telegram"></i></div>
             <h3>Community</h3>
             <p>تواصل مع زملائك وجروبات الدفعة.</p>
-            <div class="status">JOIN NOW</div>
+            <div class="status">COMING SOON</div>
         </div>
 
     </section>
