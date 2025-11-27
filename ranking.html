@@ -4,78 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard - SPbU</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#ff0033', dark: '#0a0a0a', gold: '#ffd700', silver: '#c0c0c0', bronze: '#cd7f32' },
+                    fontFamily: { cairo: ['Cairo', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
     <style>
-        :root { --primary: #ff0033; --dark: #0a0a0a; --gold: #ffd700; }
         body {
-            background-color: var(--dark);
-            color: white;
-            font-family: 'Cairo', sans-serif;
-            background: radial-gradient(circle at top, #2a0000 0%, #000 80%);
+            background-color: #0a0a0a; color: white; font-family: 'Cairo', sans-serif;
+            background: radial-gradient(circle at 50% 0%, #1a0000 0%, #0a0a0a 100%);
             min-height: 100vh;
-            padding: 20px;
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 800px;
-            margin: 40px auto;
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .rank-item {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            margin-bottom: 10px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 12px;
-            border: 1px solid transparent;
-            transition: 0.3s;
-        }
-        .rank-item:hover { transform: translateX(-5px); border-color: var(--primary); }
         
-        .rank-number {
-            font-size: 1.5rem;
-            font-weight: 900;
-            width: 50px;
-            color: #666;
-        }
-        .rank-1 .rank-number { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
-        .rank-2 .rank-number { color: #c0c0c0; }
-        .rank-3 .rank-number { color: #cd7f32; }
+        /* Rank Styles */
+        .rank-card { transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.05); }
+        .rank-card:hover { transform: translateY(-3px) scale(1.01); background: rgba(255,255,255,0.05); }
 
-        .rank-score {
-            margin-right: auto; /* Push to left in RTL */
-            font-weight: bold;
-            color: var(--primary);
+        /* Top 3 Glows */
+        .rank-1 { 
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%);
+            border-color: rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
         }
+        .rank-2 { 
+            background: linear-gradient(90deg, rgba(192, 192, 192, 0.1) 0%, transparent 100%);
+            border-color: rgba(192, 192, 192, 0.4);
+        }
+        .rank-3 { 
+            background: linear-gradient(90deg, rgba(205, 127, 50, 0.1) 0%, transparent 100%);
+            border-color: rgba(205, 127, 50, 0.4);
+        }
+
+        /* Crown Animation */
+        .floating-crown { animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* List Animation */
+        .fade-in-up { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body>
+<body class="flex flex-col min-h-screen">
 
-    <div style="text-align: center; margin-bottom: 20px;">
-        <i class="fa-solid fa-crown" style="font-size: 3rem; color: var(--gold); margin-bottom: 10px;"></i>
-        <h1 style="font-size: 2.5rem; margin: 0;">لوحة الشرف</h1>
-        <p style="color: #888;">Top Students - Bioethics</p>
-    </div>
-
-    <div class="glass-card">
-        <div id="loading" style="text-align: center; padding: 20px;">
-            <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
-            <p>جاري تحميل النتائج...</p>
+    <div class="text-center pt-10 pb-6 px-4 relative z-10">
+        <div class="w-24 h-24 mx-auto bg-gradient-to-b from-primary/20 to-transparent rounded-full flex items-center justify-center mb-4 border border-primary/30 shadow-[0_0_30px_rgba(255,0,51,0.2)]">
+            <i class="fa-solid fa-crown text-5xl text-gold floating-crown filter drop-shadow-lg"></i>
         </div>
-        <div id="ranking-list"></div>
+        <h1 class="text-3xl md:text-4xl font-black mb-2 tracking-wide">لوحة الشرف</h1>
+        <p class="text-gray-400 text-sm md:text-base bg-white/5 inline-block px-4 py-1 rounded-full border border-white/5">
+            <span class="text-primary font-bold">TOP 75</span> Students - Bioethics
+        </p>
     </div>
 
-    <div style="text-align: center; margin-top: 30px;">
-        <a href="quiz.html" style="color: white; text-decoration: none; padding: 10px 20px; border: 1px solid #333; border-radius: 30px;">
-            <i class="fa-solid fa-arrow-right"></i> العودة للكويز
+    <div class="flex-1 w-full max-w-3xl mx-auto px-4 pb-20">
+        <div class="glass-panel rounded-3xl p-1 md:p-6 min-h-[400px] relative">
+            
+            <div id="loading" class="absolute inset-0 flex flex-col items-center justify-center z-20">
+                <i class="fa-solid fa-circle-notch fa-spin text-4xl text-primary mb-4"></i>
+                <p class="text-gray-400 animate-pulse">جاري تحميل الأبطال...</p>
+            </div>
+
+            <div id="ranking-list" class="space-y-3 hidden">
+                </div>
+        
+        </div>
+    </div>
+
+    <div class="fixed bottom-0 w-full glass-panel border-t border-white/10 p-4 flex justify-center gap-4 z-50 backdrop-blur-xl bg-black/80">
+        <a href="quiz.html" class="px-6 py-3 rounded-xl border border-white/10 text-gray-300 hover:text-white hover:bg-white/5 text-sm transition flex items-center gap-2">
+            <i class="fa-solid fa-rotate-right"></i> الامتحان
         </a>
-        <a href="index.html" style="color: white; text-decoration: none; padding: 10px 20px; border: 1px solid #333; border-radius: 30px; margin-right: 10px;">
-            الرئيسية <i class="fa-solid fa-home"></i>
+        <a href="index.html" class="px-6 py-3 rounded-xl bg-primary text-white hover:bg-red-700 text-sm font-bold shadow-lg transition flex items-center gap-2">
+            الرئيسية <i class="fa-solid fa-house"></i>
         </a>
     </div>
 
@@ -100,36 +113,80 @@
             const loading = document.getElementById('loading');
             
             try {
-                // Get top 20 scores ordered by score descending
-                const q = query(collection(db, "leaderboard"), orderBy("score", "desc"), limit(20));
+                // Fetch Top 75
+                const q = query(collection(db, "leaderboard"), orderBy("score", "desc"), limit(75));
                 const querySnapshot = await getDocs(q);
                 
+                // Hide Loading
                 loading.style.display = 'none';
+                list.classList.remove('hidden');
                 
                 let rank = 1;
+                
+                if(querySnapshot.empty) {
+                    list.innerHTML = `
+                        <div class="text-center py-20 text-gray-500">
+                            <i class="fa-solid fa-trophy text-4xl mb-4 opacity-20"></i>
+                            <p>لا توجد نتائج حتى الآن.<br>كن أول من يسجل اسمه!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
+                    
+                    // Determine Rank Styling
+                    let rankBadge = `<span class="text-gray-500 font-bold font-mono text-lg">#${rank}</span>`;
+                    let rowClass = "rank-card bg-white/5";
+                    let iconColor = "text-gray-400";
+
+                    if(rank === 1) {
+                        rankBadge = `<div class="w-10 h-10 rounded-full bg-gold text-black flex items-center justify-center font-bold shadow-lg shadow-gold/30"><i class="fa-solid fa-trophy"></i></div>`;
+                        rowClass = "rank-card rank-1";
+                        iconColor = "text-gold";
+                    } else if(rank === 2) {
+                        rankBadge = `<div class="w-9 h-9 rounded-full bg-silver text-black flex items-center justify-center font-bold shadow-lg shadow-silver/30">2</div>`;
+                        rowClass = "rank-card rank-2";
+                        iconColor = "text-silver";
+                    } else if(rank === 3) {
+                        rankBadge = `<div class="w-8 h-8 rounded-full bg-bronze text-white flex items-center justify-center font-bold shadow-lg shadow-bronze/30">3</div>`;
+                        rowClass = "rank-card rank-3";
+                        iconColor = "text-bronze";
+                    }
+
+                    // Format Date
+                    let dateStr = "";
+                    if(data.timestamp) {
+                        const date = data.timestamp.toDate();
+                        dateStr = date.toLocaleDateString('en-GB');
+                    }
+
+                    // Create Item
                     const item = document.createElement('div');
-                    item.className = `rank-item rank-${rank}`;
+                    item.className = `flex items-center justify-between p-4 rounded-2xl ${rowClass} fade-in-up`;
+                    item.style.animationDelay = `${rank * 0.05}s`; // Cascading delay
+
                     item.innerHTML = `
-                        <div class="rank-number">#${rank}</div>
-                        <div style="display: flex; flex-direction: column;">
-                            <span style="font-weight: bold; font-size: 1.1rem;">${data.name}</span>
-                            <span style="font-size: 0.8rem; color: #888;">${data.timestamp ? new Date(data.timestamp.toDate()).toLocaleDateString() : ''}</span>
+                        <div class="flex items-center gap-4">
+                            <div class="shrink-0 w-10 text-center">${rankBadge}</div>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-lg md:text-xl text-white tracking-wide">${data.name}</span>
+                                <span class="text-xs text-gray-500 flex items-center gap-1"><i class="fa-regular fa-clock"></i> ${dateStr}</span>
+                            </div>
                         </div>
-                        <div class="rank-score">${data.score} / ${data.total || 32}</div>
+                        <div class="text-right">
+                            <div class="font-black text-xl md:text-2xl text-primary font-mono">${data.score}</div>
+                            <div class="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Score</div>
+                        </div>
                     `;
                     list.appendChild(item);
                     rank++;
                 });
 
-                if(querySnapshot.empty) {
-                    list.innerHTML = '<p style="text-align:center; color:#666;">لا توجد نتائج مسجلة حتى الآن.</p>';
-                }
-
             } catch (error) {
                 console.error("Error:", error);
-                loading.innerHTML = '<p style="color:red">حدث خطأ في تحميل البيانات.</p>';
+                loading.innerHTML = '<p class="text-red-500 font-bold">فشل التحميل. تأكد من الإنترنت.</p>';
             }
         }
 
