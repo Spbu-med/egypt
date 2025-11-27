@@ -12,8 +12,9 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { primary: '#ff0033', dark: '#0a0a0a', gold: '#ffd700', silver: '#c0c0c0', bronze: '#cd7f32' },
-                    fontFamily: { cairo: ['Cairo', 'sans-serif'] }
+                    colors: { primary: '#ff0033', dark: '#0a0a0a', gold: '#FFD700', silver: '#E0E0E0', bronze: '#CD7F32' },
+                    fontFamily: { cairo: ['Cairo', 'sans-serif'] },
+                    animation: { 'float': 'float 3s ease-in-out infinite' }
                 }
             }
         }
@@ -21,60 +22,64 @@
     <style>
         body {
             background-color: #0a0a0a; color: white; font-family: 'Cairo', sans-serif;
-            background: radial-gradient(circle at 50% 0%, #1a0000 0%, #0a0a0a 100%);
-            min-height: 100vh;
-        }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: radial-gradient(circle at 50% -20%, #2a0000 0%, #000000 100%);
+            min-height: 100vh; overflow-x: hidden;
         }
         
-        /* Rank Styles */
-        .rank-card { transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.05); }
-        .rank-card:hover { transform: translateY(-3px) scale(1.01); background: rgba(255,255,255,0.05); }
+        /* Glass Effect */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
 
-        /* Top 3 Glows */
+        /* Rank Cards */
+        .rank-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(255,255,255,0.03); }
+        .rank-card:hover { transform: scale(1.02) translateY(-2px); background: rgba(255,255,255,0.08); }
+
+        /* Top 3 Styling */
         .rank-1 { 
-            background: linear-gradient(90deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%);
-            border-color: rgba(255, 215, 0, 0.4);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(0,0,0,0) 100%);
+            border-color: rgba(255, 215, 0, 0.5); box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
         }
         .rank-2 { 
-            background: linear-gradient(90deg, rgba(192, 192, 192, 0.1) 0%, transparent 100%);
-            border-color: rgba(192, 192, 192, 0.4);
+            background: linear-gradient(135deg, rgba(224, 224, 224, 0.1) 0%, rgba(0,0,0,0) 100%);
+            border-color: rgba(224, 224, 224, 0.4);
         }
         .rank-3 { 
-            background: linear-gradient(90deg, rgba(205, 127, 50, 0.1) 0%, transparent 100%);
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.1) 0%, rgba(0,0,0,0) 100%);
             border-color: rgba(205, 127, 50, 0.4);
         }
 
-        /* Crown Animation */
-        .floating-crown { animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        /* Avatar Generator Colors */
+        .avatar-gradient { background: linear-gradient(135deg, #ff0033, #500010); }
 
-        /* List Animation */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .fade-in-up { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; transform: translateY(20px); }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen pb-24">
 
-    <div class="text-center pt-10 pb-6 px-4 relative z-10">
-        <div class="w-24 h-24 mx-auto bg-gradient-to-b from-primary/20 to-transparent rounded-full flex items-center justify-center mb-4 border border-primary/30 shadow-[0_0_30px_rgba(255,0,51,0.2)]">
-            <i class="fa-solid fa-crown text-5xl text-gold floating-crown filter drop-shadow-lg"></i>
+    <div class="relative pt-12 pb-8 text-center z-10">
+        <div class="animate-float mb-4 relative inline-block">
+            <div class="absolute inset-0 bg-gold blur-[40px] opacity-20 rounded-full"></div>
+            <i class="fa-solid fa-crown text-6xl text-gold drop-shadow-2xl"></i>
         </div>
-        <h1 class="text-3xl md:text-4xl font-black mb-2 tracking-wide">لوحة الشرف</h1>
-        <p class="text-gray-400 text-sm md:text-base bg-white/5 inline-block px-4 py-1 rounded-full border border-white/5">
-            <span class="text-primary font-bold">TOP 75</span> Students - Bioethics
+        
+        <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-2 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500">
+            لوحة الأبطال
+        </h1>
+        <p class="text-gray-400 font-medium bg-white/5 inline-block px-5 py-1.5 rounded-full border border-white/5 text-sm">
+            Top 75 • Bioethics
         </p>
     </div>
 
-    <div class="flex-1 w-full max-w-3xl mx-auto px-4 pb-20">
-        <div class="glass-panel rounded-3xl p-1 md:p-6 min-h-[400px] relative">
+    <div class="flex-1 w-full max-w-2xl mx-auto px-4">
+        <div class="glass-panel rounded-3xl p-4 md:p-6 min-h-[300px] relative overflow-hidden">
             
             <div id="loading" class="absolute inset-0 flex flex-col items-center justify-center z-20">
-                <i class="fa-solid fa-circle-notch fa-spin text-4xl text-primary mb-4"></i>
-                <p class="text-gray-400 animate-pulse">جاري تحميل الأبطال...</p>
+                <div class="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p class="text-gray-400 animate-pulse font-medium">جاري جلب النتائج...</p>
             </div>
 
             <div id="ranking-list" class="space-y-3 hidden">
@@ -83,12 +88,13 @@
         </div>
     </div>
 
-    <div class="fixed bottom-0 w-full glass-panel border-t border-white/10 p-4 flex justify-center gap-4 z-50 backdrop-blur-xl bg-black/80">
-        <a href="quiz.html" class="px-6 py-3 rounded-xl border border-white/10 text-gray-300 hover:text-white hover:bg-white/5 text-sm transition flex items-center gap-2">
-            <i class="fa-solid fa-rotate-right"></i> الامتحان
+    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 glass-panel rounded-full p-2 flex items-center gap-2 shadow-2xl z-50 border border-white/10">
+        <a href="index.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition" title="Home">
+            <i class="fa-solid fa-house text-lg"></i>
         </a>
-        <a href="index.html" class="px-6 py-3 rounded-xl bg-primary text-white hover:bg-red-700 text-sm font-bold shadow-lg transition flex items-center gap-2">
-            الرئيسية <i class="fa-solid fa-house"></i>
+        <div class="h-6 w-[1px] bg-white/10"></div>
+        <a href="quiz.html" class="px-6 py-2.5 rounded-full bg-primary hover:bg-red-600 text-white font-bold text-sm transition shadow-lg shadow-primary/30 flex items-center gap-2">
+            <i class="fa-solid fa-play"></i> ابدأ امتحان
         </a>
     </div>
 
@@ -113,71 +119,68 @@
             const loading = document.getElementById('loading');
             
             try {
-                // Fetch Top 75
                 const q = query(collection(db, "leaderboard"), orderBy("score", "desc"), limit(75));
                 const querySnapshot = await getDocs(q);
                 
-                // Hide Loading
                 loading.style.display = 'none';
                 list.classList.remove('hidden');
                 
-                let rank = 1;
-                
                 if(querySnapshot.empty) {
                     list.innerHTML = `
-                        <div class="text-center py-20 text-gray-500">
-                            <i class="fa-solid fa-trophy text-4xl mb-4 opacity-20"></i>
-                            <p>لا توجد نتائج حتى الآن.<br>كن أول من يسجل اسمه!</p>
+                        <div class="text-center py-20 text-gray-600">
+                            <i class="fa-solid fa-ghost text-4xl mb-4 opacity-50"></i>
+                            <p>القائمة فارغة.. كن أول بطل!</p>
                         </div>
                     `;
                     return;
                 }
 
+                let rank = 1;
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
+                    const initial = data.name.charAt(0).toUpperCase();
                     
-                    // Determine Rank Styling
-                    let rankBadge = `<span class="text-gray-500 font-bold font-mono text-lg">#${rank}</span>`;
-                    let rowClass = "rank-card bg-white/5";
-                    let iconColor = "text-gray-400";
-
+                    // Rank Logic & Styling
+                    let rankBadge, rowClass, medalIcon;
+                    
                     if(rank === 1) {
-                        rankBadge = `<div class="w-10 h-10 rounded-full bg-gold text-black flex items-center justify-center font-bold shadow-lg shadow-gold/30"><i class="fa-solid fa-trophy"></i></div>`;
-                        rowClass = "rank-card rank-1";
-                        iconColor = "text-gold";
+                        rowClass = "rank-1";
+                        rankBadge = `<div class="text-gold text-2xl drop-shadow-md"><i class="fa-solid fa-trophy"></i></div>`;
                     } else if(rank === 2) {
-                        rankBadge = `<div class="w-9 h-9 rounded-full bg-silver text-black flex items-center justify-center font-bold shadow-lg shadow-silver/30">2</div>`;
-                        rowClass = "rank-card rank-2";
-                        iconColor = "text-silver";
+                        rowClass = "rank-2";
+                        rankBadge = `<div class="text-silver text-xl drop-shadow-md"><i class="fa-solid fa-medal"></i></div>`;
                     } else if(rank === 3) {
-                        rankBadge = `<div class="w-8 h-8 rounded-full bg-bronze text-white flex items-center justify-center font-bold shadow-lg shadow-bronze/30">3</div>`;
-                        rowClass = "rank-card rank-3";
-                        iconColor = "text-bronze";
+                        rowClass = "rank-3";
+                        rankBadge = `<div class="text-bronze text-xl drop-shadow-md"><i class="fa-solid fa-medal"></i></div>`;
+                    } else {
+                        rowClass = "bg-white/5";
+                        rankBadge = `<div class="text-gray-500 font-bold font-mono text-lg w-8 text-center">#${rank}</div>`;
                     }
 
-                    // Format Date
-                    let dateStr = "";
-                    if(data.timestamp) {
-                        const date = data.timestamp.toDate();
-                        dateStr = date.toLocaleDateString('en-GB');
-                    }
+                    // Score Percentage Color
+                    const scoreColor = data.score >= 30 ? "text-green-400" : (data.score >= 20 ? "text-yellow-400" : "text-gray-400");
 
-                    // Create Item
                     const item = document.createElement('div');
-                    item.className = `flex items-center justify-between p-4 rounded-2xl ${rowClass} fade-in-up`;
-                    item.style.animationDelay = `${rank * 0.05}s`; // Cascading delay
+                    item.className = `flex items-center justify-between p-4 rounded-2xl rank-card ${rowClass} fade-in-up`;
+                    item.style.animationDelay = `${rank * 0.05}s`;
 
                     item.innerHTML = `
                         <div class="flex items-center gap-4">
-                            <div class="shrink-0 w-10 text-center">${rankBadge}</div>
-                            <div class="flex flex-col">
-                                <span class="font-bold text-lg md:text-xl text-white tracking-wide">${data.name}</span>
-                                <span class="text-xs text-gray-500 flex items-center gap-1"><i class="fa-regular fa-clock"></i> ${dateStr}</span>
+                            <div class="shrink-0 w-10 flex justify-center">${rankBadge}</div>
+                            
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full avatar-gradient flex items-center justify-center text-white font-bold shadow-lg border border-white/10 text-sm">
+                                    ${initial}
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-white tracking-wide text-sm md:text-base">${data.name}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <div class="font-black text-xl md:text-2xl text-primary font-mono">${data.score}</div>
-                            <div class="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Score</div>
+
+                        <div class="flex flex-col items-end">
+                            <div class="font-black text-xl ${scoreColor} font-mono">${data.score}</div>
+                            <div class="text-[10px] text-gray-500 font-bold uppercase">Points</div>
                         </div>
                     `;
                     list.appendChild(item);
@@ -186,7 +189,7 @@
 
             } catch (error) {
                 console.error("Error:", error);
-                loading.innerHTML = '<p class="text-red-500 font-bold">فشل التحميل. تأكد من الإنترنت.</p>';
+                loading.innerHTML = '<p class="text-red-500 font-bold">خطأ في الاتصال!</p>';
             }
         }
 
