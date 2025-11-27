@@ -41,12 +41,33 @@
         .option-card:hover { border-color: rgba(255, 0, 51, 0.6); background: rgba(255, 0, 51, 0.05); transform: translateX(5px); }
         .option-selected { border-color: #ff0033 !important; background: linear-gradient(90deg, rgba(255,0,51,0.2) 0%, transparent 100%) !important; box-shadow: -4px 0 0 #ff0033 inset; }
         
-        .correct-answer { border-color: #22c55e !important; background: rgba(34, 197, 94, 0.1) !important; color: #4ade80 !important; }
-        .wrong-answer { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.1) !important; color: #f87171 !important; }
-
+        /* New Review Styling (Premium Design) */
+        .review-card-correct {
+            background: linear-gradient(90deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%) !important;
+            border: 1px solid #22c55e !important;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.15);
+            transform: scale(1.01);
+        }
+        .review-card-wrong {
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%) !important;
+            border: 1px solid #ef4444 !important;
+            opacity: 0.9;
+        }
+        .review-card-neutral {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            opacity: 0.6;
+        }
+        
         .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .progress-bar-glow { box-shadow: 0 0 10px #ff0033; }
+        
+        /* Explanation Box */
+        .explanation-box {
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border-left: 4px solid #3b82f6;
+        }
     </style>
 </head>
 <body class="flex flex-col h-screen">
@@ -125,17 +146,14 @@
             <div id="save-status" class="mb-8 text-xs font-mono py-2 px-4 rounded-full bg-white/5 inline-flex items-center gap-2 border border-white/5">
                 <i class="fa-solid fa-spinner fa-spin text-primary"></i> <span class="text-gray-400">Syncing with leaderboard...</span>
             </div>
-            
             <div class="space-y-3 relative z-10">
-                <button onclick="showReview()" class="w-full py-3 bg-gradient-to-r from-gray-800 to-gray-900 border border-white/10 hover:border-primary/50 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 group">
+                <button onclick="showReview()" class="w-full py-3.5 bg-gradient-to-r from-gray-800 to-gray-900 border border-white/10 hover:border-primary/50 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 group">
                     <i class="fa-solid fa-eye text-primary group-hover:scale-110 transition-transform"></i> Review Answers
                 </button>
-                
                 <div class="flex gap-3">
                     <button onclick="location.reload()" class="flex-1 py-3 border border-white/10 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 text-sm transition font-medium">Retake</button>
                     <a href="ranking.html" class="flex-1 py-3 bg-primary text-white rounded-xl hover:bg-red-700 text-sm flex items-center justify-center transition font-bold shadow-lg">Rank <i class="fa-solid fa-trophy ml-2"></i></a>
                 </div>
-
                 <a href="index.html" class="block w-full py-3 mt-2 border border-white/5 rounded-xl text-gray-500 hover:text-white hover:bg-white/5 text-sm transition flex items-center justify-center gap-2">
                     <i class="fa-solid fa-house"></i> Back to Home
                 </a>
@@ -144,10 +162,10 @@
 
         <div id="review-screen" class="hidden absolute inset-0 bg-[#0a0a0a] z-[60] flex flex-col fade-in">
             <div class="glass-panel p-4 flex justify-between items-center border-b border-white/10 shrink-0 sticky top-0 z-50">
-                <h2 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-list-check text-primary"></i> Model Answer</h2>
+                <h2 class="font-bold text-lg flex items-center gap-2 text-white"><i class="fa-solid fa-list-check text-primary"></i> Model Answer</h2>
                 <button onclick="closeReview()" class="bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 px-4 py-2 rounded-lg transition text-sm">Close <i class="fa-solid fa-xmark ml-1"></i></button>
             </div>
-            <div id="review-container" class="flex-1 overflow-y-auto p-4 md:p-8 space-y-4 max-w-4xl mx-auto w-full pb-20 custom-scrollbar"></div>
+            <div id="review-container" class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 max-w-4xl mx-auto w-full pb-20 custom-scrollbar"></div>
         </div>
 
     </main>
@@ -168,200 +186,40 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- QUESTIONS & EXPLANATIONS ---
+        // --- FULL QUESTIONS (32 Qs with Explanations) ---
         const questions = [
-            { 
-                id: 1, q: "Who is credited with coining the term 'Bioethics' in 1927?", 
-                options: ["Van Rensselaer Potter", "André Hellegers", "Fritz Jahr", "Stephen Toulmin"], 
-                a: 2,
-                explanation: "Fritz Jahr, a German pastor, coined the term 'Bio-Ethik' in 1927 in an article titled 'Bio-Ethics: Reviewing the Ethical Relations of Humans towards Animals and Plants'." 
-            },
-            { 
-                id: 2, q: "Which perspective asks: 'What do I owe to the common good?'", 
-                options: ["Ethics of Virtue", "Social Relationships", "Cosmopolitan", "Deontology"], 
-                a: 2,
-                explanation: "The Cosmopolitan perspective (unlike the personal 'Virtue' approach) focuses on the bigger picture: our duties to society, public interest, and the common good."
-            },
-            { 
-                id: 3, q: "Which was NOT a core factor for Bioethics emergence in 1960s?", 
-                options: ["Technical progress", "Environmental agenda", "Collapse of religion", "Shift to chronic diseases"], 
-                a: 2,
-                explanation: "Bioethics emerged due to tech progress, civil rights, and environmental concerns. It was NOT caused by a 'collapse of religion', but rather changes in how institutions functioned."
-            },
-            { 
-                id: 4, q: "Metaethics is primarily concerned with:", 
-                options: ["Consequences", "Meaning of moral terms", "Character", "Universalizability"], 
-                a: 1,
-                explanation: "Metaethics doesn't ask 'what is right?', but rather 'what does *right* mean?'. It deals with the nature of moral language and concepts (e.g., G.E. Moore's Naturalistic Fallacy)."
-            },
-            { 
-                id: 5, q: "What is 'Casuistry'?", 
-                options: ["Principlism", "Case-based reasoning", "Communitarianism", "Reflective Equilibrium"], 
-                a: 1,
-                explanation: "Casuistry is the method of solving moral problems by analyzing specific individual cases (paradigms) rather than just applying abstract rules."
-            },
-            { 
-                id: 6, q: "Bruno Latour's questioning of 'Interrelations of humans and non-humans' raises:", 
-                options: ["Human autonomy", "Conquering death", "Are non-humans moral agents?", "Natural law"], 
-                a: 2,
-                explanation: "Latour explores the sociology of science, questioning if non-human entities (like technology or animals) can be considered 'moral agents' in the network."
-            },
-            { 
-                id: 7, q: "'Wide Reflective Equilibrium' is a technique of:", 
-                options: ["Deontology", "Utilitarianism", "Applied Ethics", "Virtue Ethics"], 
-                a: 2,
-                explanation: "Wide Reflective Equilibrium (Rawls) is a key method in Applied Ethics to check if our specific judgments match our general principles."
-            },
-            { 
-                id: 8, q: "Isaiah Berlin described 'negative liberty' as:", 
-                options: ["Self-mastery", "Absence of coercion", "Consciousness of rules", "Ruling oneself"], 
-                a: 1,
-                explanation: "Negative Liberty is 'freedom FROM' external interference. Positive Liberty is 'freedom TO' (self-mastery)."
-            },
-            { 
-                id: 9, q: "Who stated: 'I am autonomous if I rule me, and no one else rules I'?", 
-                options: ["Kant", "Joel Feinberg", "Scanlon", "Beauchamp"], 
-                a: 1,
-                explanation: "This is a quote by Joel Feinberg, emphasizing self-rule and independence from external control."
-            },
-            { 
-                id: 10, q: "Kant's concept of Autonomy requires principles to meet:", 
-                options: ["Happiness", "Universality", "Utility", "Practical reason"], 
-                a: 1,
-                explanation: "For Kant, true autonomy isn't just doing what you want; it's acting according to laws that could be Universal (The Categorical Imperative)."
-            },
-            { 
-                id: 11, q: "What makes autonomy 'morally powerful'?", 
-                options: ["Social stability", "Moral individuality", "Efficiency", "Dogma"], 
-                a: 1,
-                explanation: "Autonomy is powerful because it represents 'Moral Individuality' and 'Voluntarism'—the capacity to make one's own moral choices."
-            },
-            { 
-                id: 12, q: "Weak vs Strong Paternalism is based on:", 
-                options: ["Legality", "Competence", "Harm severity", "Force"], 
-                a: 1,
-                explanation: "Weak Paternalism intervenes only if the person is NOT competent (e.g., a child). Strong Paternalism overrides the choices of a competent adult."
-            },
-            { 
-                id: 13, q: "The Ottoman document from 1539 is an example of:", 
-                options: ["Organ transplant", "Surgery waiver", "Confidentiality", "Experimentation"], 
-                a: 1,
-                explanation: "This historical document was a waiver where a patient agreed not to prosecute the surgeon if the surgery failed, an early form of consent."
-            },
-            { 
-                id: 14, q: "In Walter Reed's Yellow Fever experiments, death compensation was:", 
-                options: ["Pension", "$500", "$100", "$200"], 
-                a: 2,
-                explanation: "Volunteers were paid $100 in gold. If they died, an additional $100 was given. It was one of the first contracts for human experimentation."
-            },
-            { 
-                id: 15, q: "Which is NOT a Paternalism/Autonomy dilemma listed?", 
-                options: ["Overriding Refusals", "Partial Disclosures", "Excessive Risk", "Mandatory Vaccinations"], 
-                a: 3,
-                explanation: "While vaccinations can be paternalistic, the lecture specifically listed: Overriding Refusals, Partial Disclosures, and Preventing Excessive Risk as key clinical dilemmas."
-            },
-            { 
-                id: 16, q: "Model emphasizing 'Love is the true medicine':", 
-                options: ["Hippocratic", "Paracelsus", "Deontological", "Social"], 
-                a: 1,
-                explanation: "Paracelsus' model focuses on the emotional and spiritual connection: 'The highest ground of medicine is love'."
-            },
-            { 
-                id: 17, q: "Deontological Model (Nikolay Petrov) is characterized by:", 
-                options: ["Utility", "Strict duty", "Virtue", "Autonomy"], 
-                a: 1,
-                explanation: "Deontology is the 'Ethics of Duty'. Petrov emphasized strict adherence to professional duties and rules."
-            },
-            { 
-                id: 18, q: "Physician-Patient Privilege (PPP) is:", 
-                options: ["Refusal right", "Legal protection in court", "Records right", "Nonmaleficence"], 
-                a: 1,
-                explanation: "PPP is a legal concept protecting the confidentiality of communication between doctor and patient, preventing it from being disclosed in court."
-            },
-            { 
-                id: 19, q: "Public Health definition (1988 report):", 
-                options: ["No disease", "Well-being", "Collective action", "Free care"], 
-                a: 2,
-                explanation: "The IOM 1988 report defined Public Health as 'What we as a society do collectively to assure the conditions in which people can be healthy'."
-            },
-            { 
-                id: 20, q: "Malady distinction: Disease vs Illness is:", 
-                options: ["Objective vs Subjective", "Mental vs Physical", "Infectious vs Non", "Acute vs Chronic"], 
-                a: 0,
-                explanation: "Disease is the objective biological pathology. Illness is the subjective experience of suffering by the patient."
-            },
-            { 
-                id: 21, q: "Principle addressing balancing benefit/harm for population:", 
-                options: ["Veracity", "Fidelity", "Utility", "Solidarity"], 
-                a: 2,
-                explanation: "The Principle of Utility (in Public Health) focuses on maximizing the net benefit over harm for the largest number of people."
-            },
-            { 
-                id: 22, q: "In Russia, consent for 'Immature minors' (6-15) requires:", 
-                options: ["Own consent", "Unassisted", "Legal rep", "No consent"], 
-                a: 2,
-                explanation: "For minors between 6 and 15 (immature), the consent of a legal representative (parents) is required for medical intervention."
-            },
-            { 
-                id: 23, q: "Golden Rule 'What you wish upon others...' is:", 
-                options: ["Directive", "Negative", "Empathetic", "Categorical"], 
-                a: 2,
-                explanation: "The phrasing 'What you wish upon others, you wish upon yourself' reflects the Empathetic or Responsive form of the Golden Rule."
-            },
-            { 
-                id: 24, q: "Ethics of Virtue: Good judgement = Virtue + ...?", 
-                options: ["Divine command", "Utility calc", "Practical reason", "Maxims"], 
-                a: 2,
-                explanation: "In Virtue Ethics, good moral judgment requires a Virtuous Character combined with Seasoned Practical Reason (Phronesis)."
-            },
-            { 
-                id: 25, q: "Autonomy as 'sovereignty in deciding what to believe' defined by:", 
-                options: ["Scanlon", "Feinberg", "Kant", "Kohlberg"], 
-                a: 0,
-                explanation: "Thomas Scanlon defined autonomy as the 'sovereignty in deciding what to believe and how to act' based on one's own reasons."
-            },
-            { 
-                id: 26, q: "Communitarianism is characterized by:", 
-                options: ["Rules", "Social context", "Consequences", "Professionalism"], 
-                a: 1,
-                explanation: "Communitarianism rejects the isolated individual. It focuses on the social context, community values, and the common good."
-            },
-            { 
-                id: 27, q: "5th element of Informed Consent:", 
-                options: ["Status", "Recommendation", "Voluntariness", "Guardian"], 
-                a: 2,
-                explanation: "The 5 elements are: Disclosure, Understanding, Voluntariness, Competence, and Consent (Decision). Voluntariness ensures no coercion."
-            },
-            { 
-                id: 28, q: "Hippocratic Model contrasts with Bioethics in:", 
-                options: ["Euthanasia", "Secrecy", "Paternalism", "Nonmaleficence"], 
-                a: 2,
-                explanation: "The Hippocratic model is Paternalistic (Doctor knows best). Modern Bioethics emphasizes Patient Autonomy and shared decision-making."
-            },
-            { 
-                id: 29, q: "3rd cornerstone of Bioethics Interdisciplinarity:", 
-                options: ["Duties", "Common good", "Virtue", "Death"], 
-                a: 1,
-                explanation: "The 3 cornerstones are: 1. Duties to self/others, 2. Rights/Justice, 3. The Common Good (Public Interest)."
-            },
-            { 
-                id: 30, q: "Autonomy according to Kohlberg involves:", 
-                options: ["Consciousness of rules", "Free choice", "Adults only", "No coercion"], 
-                a: 0,
-                explanation: "Lawrence Kohlberg viewed autonomy as a high stage of moral development involving 'Deliberate consciousness about obedience to rules'."
-            },
-            { 
-                id: 31, q: "Overriding Refusals is a conflict between:", 
-                options: ["Justice/Beneficence", "Nonmaleficence/Utility", "Autonomy/Beneficence", "Veracity/Justice"], 
-                a: 2,
-                explanation: "Overriding a refusal means going against the patient's Autonomy to provide a medical benefit (Beneficence) - a classic paternalistic conflict."
-            },
-            { 
-                id: 32, q: "Privacy and PPP are mandatory for:", 
-                options: ["Rationality", "Voluntarism", "Autonomous being", "Agency"], 
-                a: 2,
-                explanation: "Respecting privacy and privilege is essential to treat the patient as an 'Autonomous being' who controls their own life and information."
-            }
+            { id: 1, q: "Who is credited with coining the term 'Bioethics' in 1927?", options: ["Van Rensselaer Potter", "André Hellegers", "Fritz Jahr", "Stephen Toulmin"], a: 2, explanation: "Fritz Jahr, a German pastor, coined the term 'Bio-Ethik' in 1927 in an article titled 'Bio-Ethics: Reviewing the Ethical Relations of Humans towards Animals and Plants'." },
+            { id: 2, q: "Which perspective asks: 'What do I owe to the common good?'", options: ["Ethics of Virtue", "Social Relationships", "Cosmopolitan", "Deontology"], a: 2, explanation: "The Cosmopolitan perspective (unlike the personal 'Virtue' approach) focuses on the bigger picture: our duties to society, public interest, and the common good." },
+            { id: 3, q: "Which was NOT a core factor for Bioethics emergence in 1960s?", options: ["Technical progress", "Environmental agenda", "Collapse of religion", "Shift to chronic diseases"], a: 2, explanation: "Bioethics emerged due to tech progress, civil rights, and environmental concerns. It was NOT caused by a 'collapse of religion', but rather changes in how institutions functioned." },
+            { id: 4, q: "Metaethics is primarily concerned with:", options: ["Consequences", "Meaning of moral terms", "Character", "Universalizability"], a: 1, explanation: "Metaethics doesn't ask 'what is right?', but rather 'what does *right* mean?'. It deals with the nature of moral language and concepts (e.g., G.E. Moore's Naturalistic Fallacy)." },
+            { id: 5, q: "What is 'Casuistry'?", options: ["Principlism", "Case-based reasoning", "Communitarianism", "Reflective Equilibrium"], a: 1, explanation: "Casuistry is the method of solving moral problems by analyzing specific individual cases (paradigms) rather than just applying abstract rules." },
+            { id: 6, q: "Bruno Latour's questioning of 'Interrelations of humans and non-humans' raises:", options: ["Human autonomy", "Conquering death", "Are non-humans moral agents?", "Natural law"], a: 2, explanation: "Latour explores the sociology of science, questioning if non-human entities (like technology or animals) can be considered 'moral agents' in the network." },
+            { id: 7, q: "'Wide Reflective Equilibrium' is a technique of:", options: ["Deontology", "Utilitarianism", "Applied Ethics", "Virtue Ethics"], a: 2, explanation: "Wide Reflective Equilibrium (Rawls) is a key method in Applied Ethics to check if our specific judgments match our general principles." },
+            { id: 8, q: "Isaiah Berlin described 'negative liberty' as:", options: ["Self-mastery", "Absence of coercion", "Consciousness of rules", "Ruling oneself"], a: 1, explanation: "Negative Liberty is 'freedom FROM' external interference. Positive Liberty is 'freedom TO' (self-mastery)." },
+            { id: 9, q: "Who stated: 'I am autonomous if I rule me, and no one else rules I'?", options: ["Kant", "Joel Feinberg", "Scanlon", "Beauchamp"], a: 1, explanation: "This is a quote by Joel Feinberg, emphasizing self-rule and independence from external control." },
+            { id: 10, q: "Kant's concept of Autonomy requires principles to meet:", options: ["Happiness", "Universality", "Utility", "Practical reason"], a: 1, explanation: "For Kant, true autonomy isn't just doing what you want; it's acting according to laws that could be Universal (The Categorical Imperative)." },
+            { id: 11, q: "What makes autonomy 'morally powerful'?", options: ["Social stability", "Moral individuality", "Efficiency", "Dogma"], a: 1, explanation: "Autonomy is powerful because it represents 'Moral Individuality' and 'Voluntarism'—the capacity to make one's own moral choices." },
+            { id: 12, q: "Weak vs Strong Paternalism is based on:", options: ["Legality", "Competence", "Harm severity", "Force"], a: 1, explanation: "Weak Paternalism intervenes only if the person is NOT competent (e.g., a child). Strong Paternalism overrides the choices of a competent adult." },
+            { id: 13, q: "The Ottoman document from 1539 is an example of:", options: ["Organ transplant", "Surgery waiver", "Confidentiality", "Experimentation"], a: 1, explanation: "This historical document was a waiver where a patient agreed not to prosecute the surgeon if the surgery failed, an early form of consent." },
+            { id: 14, q: "In Walter Reed's Yellow Fever experiments, death compensation was:", options: ["Pension", "$500", "$100", "$200"], a: 2, explanation: "Volunteers were paid $100 in gold. If they died, an additional $100 was given. It was one of the first contracts for human experimentation." },
+            { id: 15, q: "Which is NOT a Paternalism/Autonomy dilemma listed?", options: ["Overriding Refusals", "Partial Disclosures", "Excessive Risk", "Mandatory Vaccinations"], a: 3, explanation: "While vaccinations can be paternalistic, the lecture specifically listed: Overriding Refusals, Partial Disclosures, and Preventing Excessive Risk as key clinical dilemmas." },
+            { id: 16, q: "Model emphasizing 'Love is the true medicine':", options: ["Hippocratic", "Paracelsus", "Deontological", "Social"], a: 1, explanation: "Paracelsus' model focuses on the emotional and spiritual connection: 'The highest ground of medicine is love'." },
+            { id: 17, q: "Deontological Model (Nikolay Petrov) is characterized by:", options: ["Utility", "Strict duty", "Virtue", "Autonomy"], a: 1, explanation: "Deontology is the 'Ethics of Duty'. Petrov emphasized strict adherence to professional duties and rules." },
+            { id: 18, q: "Physician-Patient Privilege (PPP) is:", options: ["Refusal right", "Legal protection in court", "Records right", "Nonmaleficence"], a: 1, explanation: "PPP is a legal concept protecting the confidentiality of communication between doctor and patient, preventing it from being disclosed in court." },
+            { id: 19, q: "Public Health definition (1988 report):", options: ["No disease", "Well-being", "Collective action", "Free care"], a: 2, explanation: "The IOM 1988 report defined Public Health as 'What we as a society do collectively to assure the conditions in which people can be healthy'." },
+            { id: 20, q: "Malady distinction: Disease vs Illness is:", options: ["Objective vs Subjective", "Mental vs Physical", "Infectious vs Non", "Acute vs Chronic"], a: 0, explanation: "Disease is the objective biological pathology. Illness is the subjective experience of suffering by the patient." },
+            { id: 21, q: "Principle addressing balancing benefit/harm for population:", options: ["Veracity", "Fidelity", "Utility", "Solidarity"], a: 2, explanation: "The Principle of Utility (in Public Health) focuses on maximizing the net benefit over harm for the largest number of people." },
+            { id: 22, q: "In Russia, consent for 'Immature minors' (6-15) requires:", options: ["Own consent", "Unassisted", "Legal rep", "No consent"], a: 2, explanation: "For minors between 6 and 15 (immature), the consent of a legal representative (parents) is required for medical intervention." },
+            { id: 23, q: "Golden Rule 'What you wish upon others...' is:", options: ["Directive", "Negative", "Empathetic", "Categorical"], a: 2, explanation: "The phrasing 'What you wish upon others, you wish upon yourself' reflects the Empathetic or Responsive form of the Golden Rule." },
+            { id: 24, q: "Ethics of Virtue: Good judgement = Virtue + ...?", options: ["Divine command", "Utility calc", "Practical reason", "Maxims"], a: 2, explanation: "In Virtue Ethics, good moral judgment requires a Virtuous Character combined with Seasoned Practical Reason (Phronesis)." },
+            { id: 25, q: "Autonomy as 'sovereignty in deciding what to believe' defined by:", options: ["Scanlon", "Feinberg", "Kant", "Kohlberg"], a: 0, explanation: "Thomas Scanlon defined autonomy as the 'sovereignty in deciding what to believe and how to act' based on one's own reasons." },
+            { id: 26, q: "Communitarianism is characterized by:", options: ["Rules", "Social context", "Consequences", "Professionalism"], a: 1, explanation: "Communitarianism rejects the isolated individual. It focuses on the social context, community values, and the common good." },
+            { id: 27, q: "5th element of Informed Consent:", options: ["Status", "Recommendation", "Voluntariness", "Guardian"], a: 2, explanation: "The 5 elements are: Disclosure, Understanding, Voluntariness, Competence, and Consent (Decision). Voluntariness ensures no coercion." },
+            { id: 28, q: "Hippocratic Model contrasts with Bioethics in:", options: ["Euthanasia", "Secrecy", "Paternalism", "Nonmaleficence"], a: 2, explanation: "The Hippocratic model is Paternalistic (Doctor knows best). Modern Bioethics emphasizes Patient Autonomy and shared decision-making." },
+            { id: 29, q: "3rd cornerstone of Bioethics Interdisciplinarity:", options: ["Duties", "Common good", "Virtue", "Death"], a: 1, explanation: "The 3 cornerstones are: 1. Duties to self/others, 2. Rights/Justice, 3. The Common Good (Public Interest)." },
+            { id: 30, q: "Autonomy according to Kohlberg involves:", options: ["Consciousness of rules", "Free choice", "Adults only", "No coercion"], a: 0, explanation: "Lawrence Kohlberg viewed autonomy as a high stage of moral development involving 'Deliberate consciousness about obedience to rules'." },
+            { id: 31, q: "Overriding Refusals is a conflict between:", options: ["Justice/Beneficence", "Nonmaleficence/Utility", "Autonomy/Beneficence", "Veracity/Justice"], a: 2, explanation: "Overriding a refusal means going against the patient's Autonomy to provide a medical benefit (Beneficence) - a classic paternalistic conflict." },
+            { id: 32, q: "Privacy and PPP are mandatory for:", options: ["Rationality", "Voluntarism", "Autonomous being", "Agency"], a: 2, explanation: "Respecting privacy and privilege is essential to treat the patient as an 'Autonomous being' who controls their own life and information." }
         ];
 
         let currentIndex = 0;
@@ -381,11 +239,14 @@
                 return;
             }
             studentName = name;
+            
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('quiz-screen').classList.remove('hidden');
             document.getElementById('quiz-screen').classList.add('flex');
+            
             document.getElementById('exit-btn').classList.add('hidden');
             document.getElementById('progress-container').classList.remove('hidden');
+
             renderQuestion(0);
             startTimer();
         };
@@ -414,6 +275,7 @@
             
             document.getElementById('prev-btn').disabled = index === 0;
             document.getElementById('prev-btn').classList.toggle('opacity-50', index === 0);
+            
             const nextBtn = document.getElementById('next-btn');
             if (index === questions.length - 1) {
                 nextBtn.innerHTML = 'Finish <i class="fa-solid fa-flag-checkered ml-2"></i>';
@@ -436,6 +298,7 @@
             
             document.getElementById('final-score').innerText = score;
             document.getElementById('student-name-display').innerText = studentName;
+            
             document.getElementById('quiz-screen').classList.add('hidden');
             document.getElementById('progress-container').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
@@ -462,28 +325,49 @@
                 const isCorrect = userChoice === correctChoice;
                 let optionsHTML = '';
                 q.options.forEach((opt, optIdx) => {
-                    let optClass = "p-3 rounded-lg border border-white/5 bg-white/5 text-gray-400 mb-2 text-sm";
+                    let optClass = "review-card-neutral p-4 rounded-xl mb-3 text-sm text-gray-400 flex justify-between items-center transition-all";
                     let icon = "";
-                    if (optIdx === correctChoice) { optClass = "correct-answer font-bold text-sm"; icon = '<i class="fa-solid fa-check float-right mt-1"></i>'; } 
-                    if (optIdx === userChoice && !isCorrect) { optClass = "wrong-answer font-bold text-sm"; icon = '<i class="fa-solid fa-xmark float-right mt-1"></i>'; }
-                    optionsHTML += `<div class="${optClass}">${opt} ${icon}</div>`;
+                    let label = "";
+
+                    if (optIdx === correctChoice) { 
+                        optClass = "review-card-correct p-4 rounded-xl mb-3 text-sm font-bold text-green-400 flex justify-between items-center"; 
+                        icon = '<i class="fa-solid fa-check-circle text-lg"></i>'; 
+                        label = '<span class="text-[10px] uppercase tracking-wider border border-green-500/30 px-2 py-1 rounded bg-green-500/10 mr-2">Correct Answer</span>';
+                    } 
+                    
+                    if (optIdx === userChoice) {
+                         if (!isCorrect) {
+                            optClass = "review-card-wrong p-4 rounded-xl mb-3 text-sm font-bold text-red-400 flex justify-between items-center"; 
+                            icon = '<i class="fa-solid fa-circle-xmark text-lg"></i>';
+                            label = '<span class="text-[10px] uppercase tracking-wider border border-red-500/30 px-2 py-1 rounded bg-red-500/10 mr-2">Your Answer</span>';
+                         } else {
+                            label = '<span class="text-[10px] uppercase tracking-wider border border-green-500/30 px-2 py-1 rounded bg-green-500/10 mr-2">Your Answer</span>';
+                         }
+                    }
+
+                    optionsHTML += `<div class="${optClass}">
+                                        <span>${opt}</span>
+                                        <div class="flex items-center gap-2">${label} ${icon}</div>
+                                    </div>`;
                 });
                 
                 const qBlock = document.createElement('div');
-                qBlock.className = "bg-white/5 border border-white/10 rounded-xl p-5 shadow-sm";
+                qBlock.className = "bg-white/5 border border-white/10 rounded-2xl p-6 shadow-lg mb-6 relative overflow-hidden";
                 qBlock.innerHTML = `
-                    <div class="flex gap-3 mb-3">
-                        <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${isCorrect ? 'bg-green-500 text-black' : 'bg-red-500 text-white'}">${idx+1}</span>
-                        <h3 class="font-bold text-md leading-relaxed text-gray-200">${q.q}</h3>
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-bl-full -mr-4 -mt-4 pointer-events-none"></div>
+                    <div class="flex gap-4 mb-6">
+                        <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 shadow-lg ${isCorrect ? 'bg-green-500 text-black' : 'bg-red-500 text-white'}">${idx+1}</span>
+                        <h3 class="font-bold text-lg leading-relaxed text-gray-100">${q.q}</h3>
                     </div>
-                    <div class="pl-9 mb-4">${optionsHTML}</div>
-                    <div class="pl-9 mt-4 border-t border-white/10 pt-3">
-                        <div class="flex items-center gap-2 text-blue-400 text-xs font-bold uppercase tracking-wider mb-1">
-                            <i class="fa-solid fa-lightbulb"></i> Explanation
+                    <div class="pl-0 md:pl-12 mb-6">${optionsHTML}</div>
+                    
+                    <div class="pl-0 md:pl-12">
+                        <div class="explanation-box p-5 rounded-xl relative overflow-hidden">
+                            <div class="flex items-center gap-2 text-blue-400 text-xs font-bold uppercase tracking-widest mb-2">
+                                <i class="fa-solid fa-lightbulb"></i> Explanation
+                            </div>
+                            <p class="text-gray-300 text-sm leading-relaxed">${q.explanation}</p>
                         </div>
-                        <p class="text-gray-400 text-sm leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
-                            ${q.explanation}
-                        </p>
                     </div>
                 `;
                 container.appendChild(qBlock);
