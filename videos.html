@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPbU Egypt - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff0033;
+            --dark: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #ffffff;
+            --gold: #ffd700;
+        }
+        body {
+            margin: 0; font-family: 'Cairo', sans-serif; background-color: var(--dark); color: var(--text);
+            min-height: 100vh; overflow-x: hidden;
+            background: radial-gradient(circle at 50% 50%, #2a0000 0%, #000000 100%);
+        }
+        /* Background Pulse */
+        body::before {
+            content: ''; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255, 0, 51, 0.15) 0%, transparent 60%);
+            animation: pulseBackground 10s infinite alternate; z-index: -1; pointer-events: none;
+        }
+        @keyframes pulseBackground { 0% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.2); } }
+
+        /* Glass Header */
+        header {
+            padding: 15px 5%; background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); display: flex; justify-content: space-between;
+            align-items: center; position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-size: 1.5rem; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+        .logo i { color: var(--primary); }
+
+        /* Hero */
+        .hero { text-align: center; padding: 80px 20px 50px; }
+        .hero h1 {
+            font-size: 3rem; margin: 10px 0; font-weight: 900;
+            background: linear-gradient(to right, #fff, #ddd); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 0, 51, 0.3);
+        }
+        .badge-year {
+            background: linear-gradient(45deg, var(--primary), #990000); padding: 5px 15px; border-radius: 30px;
+            font-size: 0.9rem; font-weight: bold; display: inline-block; box-shadow: 0 0 20px rgba(255, 0, 51, 0.4);
+        }
+
+        /* Grid & Cards */
+        .grid-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;
+            padding: 20px 5% 80px; max-width: 1200px; margin: 0 auto;
+        }
+        .card {
+            background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--border);
+            border-radius: 24px; padding: 30px; text-align: center; position: relative; overflow: hidden;
+            text-decoration: none; color: white; display: block; transition: 0.4s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px); background: var(--glass-hover); border-color: rgba(255, 0, 51, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+        .icon-container {
+            width: 70px; height: 70px; background: rgba(255, 255, 255, 0.05); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
+            font-size: 1.8rem; color: var(--primary); transition: 0.4s; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .card:hover .icon-container { background: var(--primary); color: white; box-shadow: 0 0 25px var(--primary); }
+        
+        .status {
+            display: inline-block; margin-top: 20px; padding: 6px 15px; border-radius: 50px;
+            font-size: 0.8rem; border: 1px solid rgba(255, 255, 255, 0.1); color: #aaa; letter-spacing: 1px;
+        }
+        .card:hover .status { border-color: var(--primary); color: white; background: rgba(255, 0, 51, 0.1); }
+
+        /* Gold Card Override */
+        .card.gold:hover { border-color: var(--gold); }
+        .card.gold:hover .icon-container { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 25px var(--gold); }
+        .card.gold:hover .status { border-color: var(--gold); color: var(--gold); background: rgba(255, 215, 0, 0.1); }
+
+        footer { text-align: center; padding: 30px; color: #666; font-size: 0.9rem; border-top: 1px solid var(--border); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"> <i class="fa-solid fa-heart-pulse"></i> <span>SPbU MED</span> </div>
+        <div style="font-size: 0.8rem; color: #888;">EGYPT BRANCH</div>
+    </header>
+
+    <section class="hero">
+        <div class="badge-year" dir="ltr">2025 - 2026</div>
+        <h1>طلاب السنة الأولى</h1>
+        <p style="color:#bbb; margin-top:10px;">اختر القسم للمتابعة</p>
+    </section>
+
+    <section class="grid-container">
+        
+        <a href="flashcards-menu.html" class="card">
+            <div class="icon-container"><i class="fa-solid fa-clone"></i></div>
+            <h3>Flash Cards</h3>
+            <p>ذاكر بذكاء: اختر المادة وابدأ المراجعة.</p>
+            <div class="status">OPEN MENU</div>
+        </a>
+
+        <a href="quizzes-menu.html" class="card">
+            <div class="icon-container"><i class="fa-solid fa-flask"></i></div>
+            <h3>Quiz Bank</h3>
+            <p>اختبارات تفاعلية لكل المواد.</p>
+            <div class="status">OPEN MENU</div>
+        </a>
+
+        <a href="videos.html" class="card">
+            <div class="icon-container"><i class="fa-solid fa-play"></i></div>
+            <h3>Video Lectures</h3>
+            <p>مكتبة فيديوهات الكيمياء والغازات.</p>
+            <div class="status" style="border-color: var(--primary); background: var(--primary); color: white; box-shadow: 0 0 15px var(--primary);">OPEN NOW</div>
+        </a>
+
+        <a href="ranking.html" class="card gold">
+            <div class="icon-container"><i class="fa-solid fa-crown"></i></div>
+            <h3>Top Ranking</h3>
+            <p>شاهد ترتيب الدفعة والأوائل.</p>
+            <div class="status">VIEW NOW</div>
+        </a>
+
+        <div class="card">
+            <div class="icon-container"><i class="fa-solid fa-file-medical"></i></div>
+            <h3>Summaries</h3>
+            <p>ملخصات ومذكرات للتحميل.</p>
+            <div class="status">COMING SOON</div>
+        </div>
+
+    </section>
+
+    <footer><p>© Created for SPbU Medical Students</p></footer>
+</body>
+</html>
