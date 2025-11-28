@@ -130,16 +130,17 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Database Subject Mapping
+        // Database Subject Mapping (Must match quiz.html logic)
+        // If quiz.html saved 'bioethics' as 'Bioethics', we look for 'Bioethics' here.
         const subjectsMap = {
-            'bio': 'Bioethics', // OR 'Bioethics Final Exam' depending on what saved in DB
+            'bio': 'Bioethics',
             'lec1': 'Lec 01: Basics & Gases',
             'lec2': 'Lec 02: Solutions',
             'lec3': 'Lec 03: Kinetics',
             'lec4': 'Lec 04: Equilibrium'
         };
 
-        // Filter Setup (NO 'ALL' BUTTON)
+        // Filter Setup
         const filtersContainer = document.getElementById('filters-container');
         const filters = [
             { id: 'bio', label: 'Bioethics', icon: 'fa-heart-pulse' },
@@ -149,16 +150,25 @@
             { id: 'lec4', label: 'Lec 04', icon: 'fa-scale-balanced' }
         ];
 
-        let activeFilter = 'bio'; // Default Start
+        // --- NEW LOGIC: READ FILTER FROM URL ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlFilter = urlParams.get('filter');
+        // If urlFilter exists and is valid, use it. Otherwise default to 'bio'
+        let activeFilter = (urlFilter && subjectsMap[urlFilter]) ? urlFilter : 'bio'; 
 
         // Render Buttons
         filters.forEach(f => {
             const btn = document.createElement('button');
             btn.className = `filter-btn ${f.id === activeFilter ? 'active' : ''}`;
+            btn.id = `btn-${f.id}`; // Add ID for easy selection
             btn.innerHTML = `<i class="fa-solid ${f.icon}"></i> ${f.label}`;
             btn.onclick = () => changeFilter(f.id, btn, f.label);
             filtersContainer.appendChild(btn);
         });
+
+        // Set initial title based on active filter
+        const initialLabel = filters.find(f => f.id === activeFilter).label;
+        document.getElementById('page-title').innerText = initialLabel + " Ranking";
 
         function changeFilter(filterId, btnElement, label) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -173,8 +183,6 @@
                 titleEl.style.opacity = '1';
             }, 200);
 
-            // Note: Use 'Bioethics' if that's what we saved, or 'Bioethics Final Exam'
-            // Check your quiz.html save logic. I used 'Bioethics' in the last code sent.
             loadRankings(subjectsMap[filterId]);
         }
 
@@ -188,17 +196,9 @@
 
             try {
                 // Query: Subject + Score Order
-                // If subject saved as "Bioethics Final Exam", mapping must match.
-                // In previous quiz.html code, we saved it as just "Bioethics" in one place and "Bioethics Final Exam" in map.
-                // Let's assume the latest quiz.html saved it as just "Bioethics".
-                
-                // Correction for Bioethics specifically to match save logic:
-                let searchKey = subjectFilter;
-                if(subjectFilter === 'Bioethics Final Exam') searchKey = 'Bioethics'; 
-
                 const q = query(
                     collection(db, "leaderboard"), 
-                    where("subject", "==", searchKey), 
+                    where("subject", "==", subjectFilter), 
                     orderBy("score", "desc"), 
                     limit(50)
                 );
@@ -292,9 +292,8 @@
             }
         }
 
-        // Initial Load (Defaults to Bioethics)
-        // Make sure this matches what you saved in quiz.html (Likely "Bioethics")
-        loadRankings('Bioethics'); 
+        // Initial Load based on logic calculated above
+        loadRankings(subjectsMap[activeFilter]); 
     </script>
 </body>
 </html>
