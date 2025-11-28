@@ -25,16 +25,35 @@
             background: radial-gradient(circle at 50% -20%, #2a0000 0%, #000000 100%);
             min-height: 100vh; overflow-x: hidden;
         }
+        
         .glass-panel {
             background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
+
         .rank-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(255,255,255,0.03); }
         .rank-card:hover { transform: scale(1.02) translateY(-2px); background: rgba(255,255,255,0.08); }
+
         .rank-1 { background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(0,0,0,0) 100%); border-color: rgba(255, 215, 0, 0.5); }
         .rank-2 { background: linear-gradient(135deg, rgba(224, 224, 224, 0.1) 0%, rgba(0,0,0,0) 100%); border-color: rgba(224, 224, 224, 0.4); }
         .rank-3 { background: linear-gradient(135deg, rgba(205, 127, 50, 0.1) 0%, rgba(0,0,0,0) 100%); border-color: rgba(205, 127, 50, 0.4); }
+
         .avatar-gradient { background: linear-gradient(135deg, #ff0033, #500010); }
+
+        /* Filter Tabs Styling */
+        .filter-btn {
+            white-space: nowrap; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #888;
+            transition: 0.3s; cursor: pointer;
+        }
+        .filter-btn.active {
+            background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 15px rgba(255,0,51,0.4);
+        }
+        .filter-btn:hover:not(.active) { background: rgba(255,255,255,0.1); color: white; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .fade-in-up { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; transform: translateY(20px); }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
@@ -42,43 +61,40 @@
 </head>
 <body class="flex flex-col min-h-screen pb-24">
 
-    <div class="relative pt-12 pb-8 text-center z-10">
-        <div class="animate-float mb-4 relative inline-block">
-            <div class="absolute inset-0 bg-gold blur-[40px] opacity-20 rounded-full"></div>
-            <i class="fa-solid fa-crown text-6xl text-gold drop-shadow-2xl"></i>
+    <div class="relative pt-8 pb-4 text-center z-10">
+        <div class="animate-float mb-2 relative inline-block">
+            <div class="absolute inset-0 bg-gold blur-[30px] opacity-20 rounded-full"></div>
+            <i class="fa-solid fa-crown text-5xl text-gold drop-shadow-2xl"></i>
         </div>
         
-        <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-2 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500">
+        <h1 id="page-title" class="text-3xl md:text-4xl font-black tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500">
             لوحة الأبطال
         </h1>
-        <p class="text-gray-400 font-medium bg-white/5 inline-block px-5 py-1.5 rounded-full border border-white/5 text-sm">
-            Top Rankings
-        </p>
+        
+        <div class="w-full max-w-2xl mx-auto px-4">
+            <div class="flex overflow-x-auto gap-3 py-2 no-scrollbar justify-start md:justify-center" id="filters-container"></div>
+        </div>
     </div>
 
-    <div class="flex-1 w-full max-w-2xl mx-auto px-4">
-        <div class="glass-panel rounded-3xl p-4 md:p-6 min-h-[300px] relative overflow-hidden">
+    <div class="flex-1 w-full max-w-2xl mx-auto px-4 mt-2">
+        <div class="glass-panel rounded-3xl p-4 md:p-6 min-h-[400px] relative overflow-hidden">
             <div id="loading" class="absolute inset-0 flex flex-col items-center justify-center z-20">
                 <div class="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-                <p class="text-gray-400 animate-pulse font-medium">جاري جلب النتائج...</p>
+                <p class="text-gray-400 animate-pulse font-medium">جاري التحديث...</p>
             </div>
             <div id="ranking-list" class="space-y-3 hidden"></div>
         </div>
     </div>
 
     <div class="fixed bottom-6 left-1/2 -translate-x-1/2 glass-panel rounded-full p-2 flex items-center gap-2 shadow-2xl z-50 border border-white/10">
-        <a href="index.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition">
-            <i class="fa-solid fa-house text-lg"></i>
-        </a>
+        <a href="index.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition"><i class="fa-solid fa-house text-lg"></i></a>
         <div class="h-6 w-[1px] bg-white/10"></div>
-        <a href="quizzes-menu.html" class="px-6 py-2.5 rounded-full bg-primary hover:bg-red-600 text-white font-bold text-sm transition shadow-lg shadow-primary/30 flex items-center gap-2">
-            <i class="fa-solid fa-play"></i> الامتحانات
-        </a>
+        <a href="quizzes-menu.html" class="px-6 py-2.5 rounded-full bg-primary hover:bg-red-600 text-white font-bold text-sm transition shadow-lg shadow-primary/30 flex items-center gap-2"><i class="fa-solid fa-play"></i> الامتحانات</a>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, query, orderBy, limit, getDocs, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyASq2nOBpRMJtKqWWvTDD4hyGmEOp5cOnI",
@@ -92,19 +108,70 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        async function loadRankings() {
+        const subjectsMap = {
+            'all': 'All',
+            'bio': 'Bioethics Final Exam',
+            'lec1': 'Lec 01: Basics & Gases',
+            'lec2': 'Lec 02: Solutions',
+            'lec3': 'Lec 03: Kinetics',
+            'lec4': 'Lec 04: Equilibrium'
+        };
+
+        const filtersContainer = document.getElementById('filters-container');
+        const filters = [
+            { id: 'all', label: 'الكل' },
+            { id: 'bio', label: 'Bioethics' },
+            { id: 'lec1', label: 'Lec 01' },
+            { id: 'lec2', label: 'Lec 02' },
+            { id: 'lec3', label: 'Lec 03' },
+            { id: 'lec4', label: 'Lec 04' }
+        ];
+
+        let activeFilter = 'all';
+
+        filters.forEach(f => {
+            const btn = document.createElement('button');
+            btn.className = `filter-btn ${f.id === 'all' ? 'active' : ''}`;
+            btn.innerText = f.label;
+            btn.onclick = () => changeFilter(f.id, btn, f.label);
+            filtersContainer.appendChild(btn);
+        });
+
+        function changeFilter(filterId, btnElement, label) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+            activeFilter = filterId;
+            
+            // UPDATE TITLE DYNAMICALLY
+            const titleEl = document.getElementById('page-title');
+            if (filterId === 'all') titleEl.innerText = "لوحة الأبطال";
+            else titleEl.innerText = label + " Ranking";
+
+            loadRankings(subjectsMap[filterId]);
+        }
+
+        async function loadRankings(subjectFilter) {
             const list = document.getElementById('ranking-list');
             const loading = document.getElementById('loading');
             
+            list.classList.add('hidden');
+            loading.style.display = 'flex';
+            list.innerHTML = '';
+
             try {
-                const q = query(collection(db, "leaderboard"), orderBy("score", "desc"), limit(75));
+                let q;
+                if (subjectFilter === 'All') {
+                    q = query(collection(db, "leaderboard"), orderBy("score", "desc"), limit(50));
+                } else {
+                    q = query(collection(db, "leaderboard"), where("subject", "==", subjectFilter), orderBy("score", "desc"), limit(50));
+                }
+
                 const querySnapshot = await getDocs(q);
-                
                 loading.style.display = 'none';
                 list.classList.remove('hidden');
                 
                 if(querySnapshot.empty) {
-                    list.innerHTML = `<div class="text-center py-20 text-gray-600"><i class="fa-solid fa-ghost text-4xl mb-4 opacity-50"></i><p>القائمة فارغة.. كن أول بطل!</p></div>`;
+                    list.innerHTML = `<div class="text-center py-20 text-gray-600 fade-in-up"><i class="fa-solid fa-ghost text-4xl mb-4 opacity-50"></i><p>مفيش حد امتحن المادة دي لسه.. كن الأول!</p></div>`;
                     return;
                 }
 
@@ -112,7 +179,6 @@
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
                     const initial = data.name.charAt(0).toUpperCase();
-                    const subject = data.subject || "Bioethics"; 
                     const maxScore = data.total || 20;
                     
                     let rankBadge, rowClass;
@@ -135,7 +201,7 @@
                                 <div class="w-10 h-10 rounded-full avatar-gradient flex items-center justify-center text-white font-bold shadow-lg border border-white/10 text-sm">${initial}</div>
                                 <div class="flex flex-col">
                                     <span class="font-bold text-white tracking-wide text-sm md:text-base">${data.name}</span>
-                                    <span class="text-[10px] text-gray-400 uppercase tracking-wider font-mono bg-white/5 px-2 py-0.5 rounded w-fit mt-1">${subject}</span>
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-wider font-mono bg-white/5 px-2 py-0.5 rounded w-fit mt-1 border border-white/5">${data.subject}</span>
                                 </div>
                             </div>
                         </div>
@@ -147,9 +213,13 @@
                     list.appendChild(item);
                     rank++;
                 });
-            } catch (error) { console.error("Error:", error); loading.innerHTML = '<p class="text-red-500 font-bold">خطأ في الاتصال!</p>'; }
+            } catch (error) {
+                console.error("Error:", error);
+                if (error.message.includes("requires an index")) { loading.innerHTML = '<p class="text-yellow-500 text-sm text-center px-4">مطلوب تفعيل Index في Firebase Console.<br>افتح الـ Console (F12) واضغط على الرابط.</p>'; } 
+                else { loading.innerHTML = '<p class="text-red-500 font-bold">خطأ في الاتصال!</p>'; }
+            }
         }
-        loadRankings();
+        loadRankings('all');
     </script>
 </body>
 </html>
