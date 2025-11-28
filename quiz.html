@@ -107,41 +107,40 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- QUESTION BANK ---
         const questionBank = {
             "bioethics": [
-                { id: 1, q: "Who is credited with coining the term 'Bioethics' in 1927?", options: ["Van Rensselaer Potter", "André Hellegers", "Fritz Jahr", "Stephen Toulmin"], a: 2, explanation: "Fritz Jahr coined 'Bio-Ethik' in 1927. Potter popularized it later in 1970." },
-                { id: 2, q: "Which ethical model emphasizes 'Love is the true medicine'?", options: ["Hippocratic", "Paracelsus", "Deontological", "Utilitarian"], a: 1, explanation: "Paracelsus emphasized the spiritual/emotional connection, stating the highest ground of medicine is love." },
-                { id: 3, q: "Which was NOT a core factor for Bioethics emergence in 1960s?", options: ["Technical progress", "Environmental agenda", "Collapse of religion", "Shift to chronic diseases"], a: 2, explanation: "Bioethics emerged due to tech progress, civil rights, and environmental concerns. It was NOT caused by a 'collapse of religion', but rather changes in how institutions functioned." },
-                { id: 4, q: "Metaethics is primarily concerned with:", options: ["Consequences", "Meaning of moral terms", "Character", "Universalizability"], a: 1, explanation: "Metaethics doesn't ask 'what is right?', but rather 'what does *right* mean?'. It deals with the nature of moral language and concepts." },
-                { id: 5, q: "What is 'Casuistry'?", options: ["Principlism", "Case-based reasoning", "Communitarianism", "Reflective Equilibrium"], a: 1, explanation: "Casuistry is the method of solving moral problems by analyzing specific individual cases (paradigms)." },
-                { id: 6, q: "Bruno Latour's questioning of 'Interrelations of humans and non-humans' raises:", options: ["Human autonomy", "Conquering death", "Are non-humans moral agents?", "Natural law"], a: 2, explanation: "Latour explores the sociology of science, questioning if non-human entities (like technology) can be considered 'moral agents'." },
-                { id: 7, q: "'Wide Reflective Equilibrium' is a technique of:", options: ["Deontology", "Utilitarianism", "Applied Ethics", "Virtue Ethics"], a: 2, explanation: "Wide Reflective Equilibrium (Rawls) is a method to check if our specific judgments match our general principles." },
+                { id: 1, q: "Who is credited with coining the term 'Bioethics' in 1927?", options: ["Van Rensselaer Potter", "André Hellegers", "Fritz Jahr", "Stephen Toulmin"], a: 2, explanation: "Fritz Jahr, a German pastor, coined the term 'Bio-Ethik' in 1927 in an article titled 'Bio-Ethics: Reviewing the Ethical Relations of Humans towards Animals and Plants'." },
+                { id: 2, q: "Which perspective asks: 'What do I owe to the common good?'", options: ["Ethics of Virtue", "Social Relationships", "Cosmopolitan", "Deontology"], a: 2, explanation: "The Cosmopolitan perspective focuses on duties to society, public interest, and the common good, unlike Virtue Ethics which focuses on character." },
+                { id: 3, q: "Which was NOT a core factor for Bioethics emergence in 1960s?", options: ["Technical progress", "Environmental agenda", "Collapse of religion", "Shift to chronic diseases"], a: 2, explanation: "Bioethics emerged due to tech progress, civil rights, and environmental concerns. It was NOT caused by a 'collapse of religion'." },
+                { id: 4, q: "Metaethics is primarily concerned with:", options: ["Consequences", "Meaning of moral terms", "Character", "Universalizability"], a: 1, explanation: "Metaethics asks 'what does *right* mean?' rather than 'what is right?'. It deals with the nature of moral language." },
+                { id: 5, q: "What is 'Casuistry'?", options: ["Principlism", "Case-based reasoning", "Communitarianism", "Reflective Equilibrium"], a: 1, explanation: "Casuistry is the method of solving moral problems by analyzing specific individual cases (paradigms) rather than just applying abstract rules." },
+                { id: 6, q: "Bruno Latour's questioning of 'Interrelations of humans and non-humans' raises:", options: ["Human autonomy", "Conquering death", "Are non-humans moral agents?", "Natural law"], a: 2, explanation: "Latour explores the sociology of science, questioning if non-human entities (like technology or animals) can be considered 'moral agents' in the network." },
+                { id: 7, q: "'Wide Reflective Equilibrium' is a technique of:", options: ["Deontology", "Utilitarianism", "Applied Ethics", "Virtue Ethics"], a: 2, explanation: "Wide Reflective Equilibrium (Rawls) is a key method in Applied Ethics to check if our specific judgments match our general principles." },
                 { id: 8, q: "Isaiah Berlin described 'negative liberty' as:", options: ["Self-mastery", "Absence of coercion", "Consciousness of rules", "Ruling oneself"], a: 1, explanation: "Negative Liberty is 'freedom FROM' external interference. Positive Liberty is 'freedom TO' (self-mastery)." },
-                { id: 9, q: "Who stated: 'I am autonomous if I rule me, and no one else rules I'?", options: ["Kant", "Joel Feinberg", "Scanlon", "Beauchamp"], a: 1, explanation: "This is a quote by Joel Feinberg emphasizing self-rule." },
+                { id: 9, q: "Who stated: 'I am autonomous if I rule me, and no one else rules I'?", options: ["Kant", "Joel Feinberg", "Scanlon", "Beauchamp"], a: 1, explanation: "This is a quote by Joel Feinberg emphasizing self-rule and independence from external control." },
                 { id: 10, q: "Kant's concept of Autonomy requires principles to meet:", options: ["Happiness", "Universality", "Utility", "Practical reason"], a: 1, explanation: "For Kant, true autonomy is acting according to laws that could be Universal (The Categorical Imperative)." },
-                { id: 11, q: "What makes autonomy 'morally powerful'?", options: ["Social stability", "Moral individuality", "Efficiency", "Dogma"], a: 1, explanation: "Autonomy is powerful because it represents 'Moral Individuality' and 'Voluntarism'." },
-                { id: 12, q: "Weak vs Strong Paternalism is based on:", options: ["Legality", "Competence", "Harm severity", "Force"], a: 1, explanation: "Weak Paternalism intervenes if the person is NOT competent. Strong Paternalism overrides a competent adult." },
-                { id: 13, q: "The Ottoman document from 1539 is an example of:", options: ["Organ transplant", "Surgery waiver", "Confidentiality", "Experimentation"], a: 1, explanation: "It was a legal waiver protecting the surgeon if the surgery failed, an early form of consent." },
-                { id: 14, q: "In Walter Reed's Yellow Fever experiments, death compensation was:", options: ["Pension", "$500", "$100", "$200"], a: 2, explanation: "Volunteers were paid $100 in gold, plus $100 if they died." },
-                { id: 15, q: "Which is NOT a Paternalism/Autonomy dilemma listed?", options: ["Overriding Refusals", "Partial Disclosures", "Excessive Risk", "Mandatory Vaccinations"], a: 3, explanation: "Lectures typically list: Overriding Refusals, Partial Disclosures, and Preventing Excessive Risk." },
-                { id: 16, q: "Model emphasizing 'Love is the true medicine':", options: ["Hippocratic", "Paracelsus", "Deontological", "Social"], a: 1, explanation: "Paracelsus' model focuses on the emotional/spiritual connection." },
-                { id: 17, q: "Deontological Model (Nikolay Petrov) is characterized by:", options: ["Utility", "Strict duty", "Virtue", "Autonomy"], a: 1, explanation: "Deontology is the 'Ethics of Duty'." },
-                { id: 18, q: "Physician-Patient Privilege (PPP) is:", options: ["Refusal right", "Legal protection in court", "Records right", "Nonmaleficence"], a: 1, explanation: "PPP protects confidentiality in legal proceedings." },
-                { id: 19, q: "Public Health definition (1988 report):", options: ["No disease", "Well-being", "Collective action", "Free care"], a: 2, explanation: "What we as a society do collectively to assure the conditions in which people can be healthy." },
-                { id: 20, q: "Malady distinction: Disease vs Illness is:", options: ["Objective vs Subjective", "Mental vs Physical", "Infectious vs Non", "Acute vs Chronic"], a: 0, explanation: "Disease is objective (biological); Illness is subjective (suffering)." },
-                { id: 21, q: "Principle addressing balancing benefit/harm for population:", options: ["Veracity", "Fidelity", "Utility", "Solidarity"], a: 2, explanation: "The Principle of Utility focuses on maximizing net benefit for the largest number." },
-                { id: 22, q: "In Russia, consent for 'Immature minors' (6-15) requires:", options: ["Own consent", "Unassisted", "Legal rep", "No consent"], a: 2, explanation: "Consent of a legal representative is required." },
-                { id: 23, q: "Golden Rule 'What you wish upon others...' is:", options: ["Directive", "Negative", "Empathetic", "Categorical"], a: 2, explanation: "Empathetic or Responsive form." },
-                { id: 24, q: "Ethics of Virtue: Good judgement = Virtue + ...?", options: ["Divine command", "Utility calc", "Practical reason", "Maxims"], a: 2, explanation: "Virtuous Character + Seasoned Practical Reason (Phronesis)." },
-                { id: 25, q: "Autonomy as 'sovereignty in deciding what to believe' defined by:", options: ["Scanlon", "Feinberg", "Kant", "Kohlberg"], a: 0, explanation: "Thomas Scanlon." },
-                { id: 26, q: "Communitarianism is characterized by:", options: ["Rules", "Social context", "Consequences", "Professionalism"], a: 1, explanation: "Focuses on social context, community values, and common good." },
-                { id: 27, q: "5th element of Informed Consent:", options: ["Status", "Recommendation", "Voluntariness", "Guardian"], a: 2, explanation: "Disclosure, Understanding, Voluntariness, Competence, Consent." },
-                { id: 28, q: "Hippocratic Model contrasts with Bioethics in:", options: ["Euthanasia", "Secrecy", "Paternalism", "Nonmaleficence"], a: 2, explanation: "Hippocratic is Paternalistic; Bioethics emphasizes Autonomy." },
-                { id: 29, q: "3rd cornerstone of Bioethics Interdisciplinarity:", options: ["Duties", "Common good", "Virtue", "Death"], a: 1, explanation: "1. Duties, 2. Rights/Justice, 3. The Common Good." },
-                { id: 30, q: "Autonomy according to Kohlberg involves:", options: ["Consciousness of rules", "Free choice", "Adults only", "No coercion"], a: 0, explanation: "Deliberate consciousness about obedience to rules." },
-                { id: 31, q: "Overriding Refusals is a conflict between:", options: ["Justice/Beneficence", "Nonmaleficence/Utility", "Autonomy/Beneficence", "Veracity/Justice"], a: 2, explanation: "Autonomy vs Beneficence." },
-                { id: 32, q: "Privacy and PPP are mandatory for:", options: ["Rationality", "Voluntarism", "Autonomous being", "Agency"], a: 2, explanation: "Essential to treat patient as an Autonomous being." }
+                { id: 11, q: "What makes autonomy 'morally powerful'?", options: ["Social stability", "Moral individuality", "Efficiency", "Dogma"], a: 1, explanation: "Autonomy is powerful because it represents 'Moral Individuality' and 'Voluntarism'—the capacity to make one's own moral choices." },
+                { id: 12, q: "Weak vs Strong Paternalism is based on:", options: ["Legality", "Competence", "Harm severity", "Force"], a: 1, explanation: "Weak Paternalism intervenes only if the person is NOT competent (e.g., a child). Strong Paternalism overrides the choices of a competent adult." },
+                { id: 13, q: "The Ottoman document from 1539 is an example of:", options: ["Organ transplant", "Surgery waiver", "Confidentiality", "Experimentation"], a: 1, explanation: "This historical document was a waiver where a patient agreed not to prosecute the surgeon if the surgery failed, an early form of consent." },
+                { id: 14, q: "In Walter Reed's Yellow Fever experiments, death compensation was:", options: ["Pension", "$500", "$100", "$200"], a: 2, explanation: "Volunteers were paid $100 in gold. If they died, an additional $100 was given. It was one of the first contracts for human experimentation." },
+                { id: 15, q: "Which is NOT a Paternalism/Autonomy dilemma listed?", options: ["Overriding Refusals", "Partial Disclosures", "Excessive Risk", "Mandatory Vaccinations"], a: 3, explanation: "While vaccinations can be paternalistic, the lecture specifically listed: Overriding Refusals, Partial Disclosures, and Preventing Excessive Risk as key clinical dilemmas." },
+                { id: 16, q: "Model emphasizing 'Love is the true medicine':", options: ["Hippocratic", "Paracelsus", "Deontological", "Social"], a: 1, explanation: "Paracelsus' model focuses on the emotional and spiritual connection, contrasting with the technical Hippocratic model." },
+                { id: 17, q: "Deontological Model (Nikolay Petrov) is characterized by:", options: ["Utility", "Strict duty", "Virtue", "Autonomy"], a: 1, explanation: "Deontology is the 'Ethics of Duty'. Petrov emphasized strict adherence to professional duties and rules." },
+                { id: 18, q: "Physician-Patient Privilege (PPP) is:", options: ["Refusal right", "Legal protection in court", "Records right", "Nonmaleficence"], a: 1, explanation: "PPP is a legal concept protecting the confidentiality of communication between doctor and patient, preventing it from being disclosed in court." },
+                { id: 19, q: "Public Health definition (1988 report):", options: ["No disease", "Well-being", "Collective action", "Free care"], a: 2, explanation: "The IOM 1988 report defined Public Health as 'What we as a society do collectively to assure the conditions in which people can be healthy'." },
+                { id: 20, q: "Malady distinction: Disease vs Illness is:", options: ["Objective vs Subjective", "Mental vs Physical", "Infectious vs Non", "Acute vs Chronic"], a: 0, explanation: "Disease is the objective biological pathology. Illness is the subjective experience of suffering by the patient." },
+                { id: 21, q: "Principle addressing balancing benefit/harm for population:", options: ["Veracity", "Fidelity", "Utility", "Solidarity"], a: 2, explanation: "The Principle of Utility (in Public Health) focuses on maximizing the net benefit over harm for the largest number of people." },
+                { id: 22, q: "In Russia, consent for 'Immature minors' (6-15) requires:", options: ["Own consent", "Unassisted", "Legal rep", "No consent"], a: 2, explanation: "For minors between 6 and 15 (immature), the consent of a legal representative (parents) is required for medical intervention." },
+                { id: 23, q: "Golden Rule 'What you wish upon others...' is:", options: ["Directive", "Negative", "Empathetic", "Categorical"], a: 2, explanation: "The phrasing 'What you wish upon others, you wish upon yourself' reflects the Empathetic or Responsive form of the Golden Rule." },
+                { id: 24, q: "Ethics of Virtue: Good judgement = Virtue + ...?", options: ["Divine command", "Utility calc", "Practical reason", "Maxims"], a: 2, explanation: "In Virtue Ethics, good moral judgment requires a Virtuous Character combined with Seasoned Practical Reason (Phronesis)." },
+                { id: 25, q: "Autonomy as 'sovereignty in deciding what to believe' defined by:", options: ["Scanlon", "Feinberg", "Kant", "Kohlberg"], a: 0, explanation: "Thomas Scanlon defined autonomy as the 'sovereignty in deciding what to believe and how to act' based on one's own reasons." },
+                { id: 26, q: "Communitarianism is characterized by:", options: ["Rules", "Social context", "Consequences", "Professionalism"], a: 1, explanation: "Communitarianism rejects the isolated individual. It focuses on the social context, community values, and the common good." },
+                { id: 27, q: "5th element of Informed Consent:", options: ["Status", "Recommendation", "Voluntariness", "Guardian"], a: 2, explanation: "The 5 elements are: Disclosure, Understanding, Voluntariness, Competence, and Consent (Decision). Voluntariness ensures no coercion." },
+                { id: 28, q: "Hippocratic Model contrasts with Bioethics in:", options: ["Euthanasia", "Secrecy", "Paternalism", "Nonmaleficence"], a: 2, explanation: "The Hippocratic model is Paternalistic (Doctor knows best). Modern Bioethics emphasizes Patient Autonomy and shared decision-making." },
+                { id: 29, q: "3rd cornerstone of Bioethics Interdisciplinarity:", options: ["Duties", "Common good", "Virtue", "Death"], a: 1, explanation: "The 3 cornerstones are: 1. Duties to self/others, 2. Rights/Justice, 3. The Common Good (Public Interest)." },
+                { id: 30, q: "Autonomy according to Kohlberg involves:", options: ["Consciousness of rules", "Free choice", "Adults only", "No coercion"], a: 0, explanation: "Lawrence Kohlberg viewed autonomy as a high stage of moral development involving 'Deliberate consciousness about obedience to rules'." },
+                { id: 31, q: "Overriding Refusals is a conflict between:", options: ["Justice/Beneficence", "Nonmaleficence/Utility", "Autonomy/Beneficence", "Veracity/Justice"], a: 2, explanation: "Overriding a refusal means going against the patient's Autonomy to provide a medical benefit (Beneficence) - a classic paternalistic conflict." },
+                { id: 32, q: "Privacy and PPP are mandatory for:", options: ["Rationality", "Voluntarism", "Autonomous being", "Agency"], a: 2, explanation: "Respecting privacy and privilege is essential to treat the patient as an 'Autonomous being' who controls their own life and information." }
             ],
             "lec1": [
                 { id: 1, q: "J.J. Thomson's cathode ray deflection proved particles were:", options: ["Massive.", "Negatively charged.", "Inert.", "Positive."], a: 1, explanation: "Repulsion from negative plate = negative charge." },
@@ -233,31 +232,15 @@
             ]
         };
 
-        // --- SETUP ---
         const urlParams = new URLSearchParams(window.location.search);
         const topic = urlParams.get('topic') || 'lec1';
         const questions = questionBank[topic] || [];
-        
-        // **IMPORTANT:** These titles MUST match the ones in ranking.html EXACTLY.
-        // 'bioethics' -> Saved as "Bioethics Final Exam" (Ranking maps 'bio' -> "Bioethics Final Exam")
-        // But wait, the previous ranking code mapped 'bio' -> 'Bioethics Final Exam'.
-        // Let's stick to simple names to be safe.
-        // In this fixed version:
-        // 'bioethics' -> saves as "Bioethics" (Ranking map needs 'bio' -> 'Bioethics')
-        
-        const titles = { 
-            'bioethics': "Bioethics", // Simplified for consistency
-            'lec1': "Lec 01: Basics & Gases", 
-            'lec2': "Lec 02: Solutions", 
-            'lec3': "Lec 03: Kinetics", 
-            'lec4': "Lec 04: Equilibrium" 
-        };
+        const titles = { 'bioethics': "Bioethics Final", 'lec1': "Lec 01: Basics", 'lec2': "Lec 02: Solutions", 'lec3': "Lec 03: Kinetics", 'lec4': "Lec 04: Equilibrium" };
         
         document.getElementById('quiz-title-display').innerText = titles[topic] || "Exam";
         document.getElementById('q-total').innerText = questions.length;
         document.getElementById('q-total-start').innerText = questions.length;
 
-        // --- CORE LOGIC ---
         let currentIndex = 0, userAnswers = new Array(questions.length).fill(null), score = 0, timerInterval, timeLeft = 45 * 60, studentName = "";
 
         window.startQuiz = function() {
@@ -317,21 +300,13 @@
             document.getElementById('progress-container').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
             
-            // --- FIX 1: UPDATE RANK BUTTON LINK ---
-            // When finished, the rank button will take user to the specific filter for this exam
-            const rankTopic = (topic === 'bioethics') ? 'bio' : topic; // map 'bioethics' back to 'bio' used in ranking filter
+            const rankTopic = (topic === 'bioethics') ? 'bio' : topic;
             document.getElementById('rank-btn').href = `ranking.html?filter=${rankTopic}`;
 
             const statusEl = document.getElementById('save-status');
             try {
-                // --- FIX 2: SAVE CORRECT SUBJECT NAME ---
-                // Using titles[topic] ensures "Lec 01: Basics & Gases" is saved, not "Bioethics"
                 await addDoc(collection(db, "leaderboard"), {
-                    name: studentName, 
-                    score: score, 
-                    total: questions.length, 
-                    subject: titles[topic] || topic, // DYNAMIC SUBJECT NAME HERE
-                    timestamp: serverTimestamp()
+                    name: studentName, score: score, total: questions.length, subject: titles[topic] || topic, timestamp: serverTimestamp()
                 });
                 statusEl.innerHTML = '<span class="text-green-400 font-bold flex items-center gap-2"><i class="fa-solid fa-check-circle"></i> Saved to Leaderboard</span>';
                 statusEl.classList.add('bg-green-500/10', 'border-green-500/30');
