@@ -4,193 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>General Chemistry | SPbU Med</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
-            --primary: #ff0033; /* SPbU Red */
+            --primary: #ff0033;
             --dark: #0a0a0a;
             --card-bg: rgba(30, 30, 30, 0.6);
             --border: rgba(255, 255, 255, 0.1);
             --text: #ffffff;
             --text-muted: #aaaaaa;
         }
-
-        body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif; /* English Medical Font */
-            background-color: var(--dark);
-            color: var(--text);
-            min-height: 100vh;
-            background: radial-gradient(circle at top, #1a0000 0%, #000000 80%);
-            padding-bottom: 60px;
-        }
-
-        /* Navbar */
-        header {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(15px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .back-btn {
-            color: var(--text);
-            font-size: 1.2rem;
-            text-decoration: none;
-            transition: 0.3s;
-        }
+        body { margin: 0; font-family: 'Roboto', sans-serif; background-color: var(--dark); color: var(--text); min-height: 100vh; background: radial-gradient(circle at top, #1a0000 0%, #000000 80%); padding-bottom: 60px; }
+        header { padding: 15px 20px; display: flex; align-items: center; gap: 20px; background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); }
+        .back-btn { color: var(--text); font-size: 1.2rem; text-decoration: none; transition: 0.3s; }
         .back-btn:hover { color: var(--primary); }
-
         h2 { margin: 0; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.5px; }
-
-        /* Course Info Header */
-        .course-hero {
-            padding: 40px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .course-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            background: linear-gradient(to right, #fff, #ccc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
+        .course-hero { padding: 40px 20px; max-width: 800px; margin: 0 auto; }
+        .course-title { font-size: 2rem; font-weight: 700; margin-bottom: 5px; background: linear-gradient(to right, #fff, #ccc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .course-subtitle { color: var(--text-muted); font-size: 0.95rem; }
-
-        .progress-container {
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.8rem;
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        /* Module List (Accordion Style) */
-        .modules-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .module-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
+        .modules-container { max-width: 800px; margin: 0 auto; padding: 0 15px; display: flex; flex-direction: column; gap: 15px; }
+        .module-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: all 0.3s ease; }
         .module-card:hover { border-color: rgba(255, 0, 51, 0.4); }
-
-        .module-header {
-            padding: 20px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
+        .module-header { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.02); }
         .module-info { display: flex; align-items: center; gap: 15px; }
-        
-        .module-icon {
-            width: 40px; height: 40px;
-            background: rgba(255, 0, 51, 0.1);
-            color: var(--primary);
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.1rem;
-        }
-
+        .module-icon { width: 40px; height: 40px; background: rgba(255, 0, 51, 0.1); color: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
         .module-text h3 { margin: 0; font-size: 1rem; font-weight: 600; }
         .module-text span { font-size: 0.8rem; color: var(--text-muted); }
-
         .chevron { transition: 0.3s; color: var(--text-muted); }
         .module-card.active .chevron { transform: rotate(180deg); color: var(--primary); }
-
-        /* Video List */
-        .video-list {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
-            background: rgba(0, 0, 0, 0.3);
-        }
-
+        
+        /* Video List Styling */
+        .video-list { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0, 1, 0, 1); background: rgba(0, 0, 0, 0.3); }
         .module-card.active .video-list { max-height: 1000px; transition: max-height 0.5s ease-in-out; }
-
-        .video-item {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
+        
+        /* تحويل العناصر لروابط */
+        .video-link { text-decoration: none; color: inherit; display: block; }
+        
+        .video-item { padding: 15px 20px; display: flex; align-items: center; gap: 15px; border-top: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; }
         .video-item:hover { background: rgba(255, 0, 51, 0.05); padding-left: 25px; }
-
-        .play-btn {
-            width: 26px; height: 26px;
-            border-radius: 50%;
-            border: 2px solid #444;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.7rem; color: #444;
-            flex-shrink: 0;
-        }
-
-        .video-item:hover .play-btn {
-            border-color: var(--primary);
-            background: var(--primary);
-            color: white;
-        }
-
+        .play-btn { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #444; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #444; flex-shrink: 0; transition: 0.2s; }
+        .video-item:hover .play-btn { border-color: var(--primary); background: var(--primary); color: white; }
         .video-title { font-size: 0.9rem; font-weight: 500; color: #eee; }
         .video-duration { font-size: 0.75rem; color: #666; margin-top: 2px; }
-
-        /* Modal Player */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 2000;
-            display: none; justify-content: center; align-items: center;
-            backdrop-filter: blur(5px);
-        }
-        .modal-overlay.open { display: flex; }
-
-        .video-wrapper {
-            width: 90%; max-width: 900px; aspect-ratio: 16/9;
-            background: black; border-radius: 16px;
-            box-shadow: 0 0 40px rgba(255, 0, 51, 0.15);
-            overflow: hidden;
-        }
-        iframe { width: 100%; height: 100%; border: none; }
-        
-        .close-modal {
-            position: absolute; top: 20px; right: 20px;
-            color: white; font-size: 2rem; cursor: pointer;
-            transition: 0.2s;
-        }
-        .close-modal:hover { color: var(--primary); }
-
     </style>
 </head>
 <body>
@@ -203,12 +60,7 @@
     <div class="course-hero">
         <div style="font-size: 0.8rem; color: var(--primary); font-weight: bold; letter-spacing: 1px; margin-bottom: 5px;">YEAR 1 CURRICULUM</div>
         <div class="course-title">General Chemistry</div>
-        <div class="course-subtitle">Comprehensive coverage of Atomic Theory, Gases, and Thermodynamics.</div>
-        
-        <div class="progress-container">
-            <i class="fa-solid fa-chart-simple"></i> 
-            <span>16 Lessons Available</span>
-        </div>
+        <div class="course-subtitle">Atomic Theory, Gases, and Thermodynamics.</div>
     </div>
 
     <div class="modules-container">
@@ -217,42 +69,35 @@
             <div class="module-header" onclick="toggleModule(this)">
                 <div class="module-info">
                     <div class="module-icon"><i class="fa-solid fa-atom"></i></div>
-                    <div class="module-text">
-                        <h3>Lecture 1: Atomic Theory & Gases</h3>
-                        <span>4 Videos</span>
-                    </div>
+                    <div class="module-text"><h3>Lecture 1: Atomic Theory & Gases</h3><span>4 Videos</span></div>
                 </div>
                 <i class="fa-solid fa-chevron-down chevron"></i>
             </div>
             <div class="video-list">
-                <div class="video-item" onclick="openVideo('9B3DDY27ZtE')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div>
-                        <div class="video-title">1. The History of Atomic Theory</div>
-                        <div class="video-duration">Structure of the atom</div>
+                <a href="watch.html?v=9B3DDY27ZtE&title=History of Atomic Theory" class="video-link">
+                    <div class="video-item">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                        <div><div class="video-title">1. The History of Atomic Theory</div><div class="video-duration">Structure of the atom</div></div>
                     </div>
-                </div>
-                <div class="video-item" onclick="openVideo('NHMUXG8RVJM')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div>
-                        <div class="video-title">2. Gas Laws & Ideal Gas Law</div>
-                        <div class="video-duration">Boyle's, Charles's, Avogadro's</div>
+                </a>
+                <a href="watch.html?v=NHMUXG8RVJM&title=Gas Laws and Ideal Gas Law" class="video-link">
+                    <div class="video-item">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                        <div><div class="video-title">2. Gas Laws & Ideal Gas Law</div><div class="video-duration">Boyle's, Charles's, Avogadro's</div></div>
                     </div>
-                </div>
-                <div class="video-item" onclick="openVideo('W2g2iP83JoI')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div>
-                        <div class="video-title">3. Ideal Gas Practice Problems</div>
-                        <div class="video-duration">Problem Solving & Dalton's Law</div>
+                </a>
+                <a href="watch.html?v=W2g2iP83JoI&title=Ideal Gas Practice Problems" class="video-link">
+                    <div class="video-item">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                        <div><div class="video-title">3. Ideal Gas Practice Problems</div><div class="video-duration">Problem Solving</div></div>
                     </div>
-                </div>
-                <div class="video-item" onclick="openVideo('8zJrjEV9n8o')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div>
-                        <div class="video-title">4. Real Gases</div>
-                        <div class="video-duration">Advanced Concepts</div>
+                </a>
+                <a href="watch.html?v=8zJrjEV9n8o&title=Real Gases" class="video-link">
+                    <div class="video-item">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                        <div><div class="video-title">4. Real Gases</div><div class="video-duration">Advanced Concepts</div></div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
 
@@ -260,30 +105,35 @@
             <div class="module-header" onclick="toggleModule(this)">
                 <div class="module-info">
                     <div class="module-icon"><i class="fa-solid fa-flask"></i></div>
-                    <div class="module-text">
-                        <h3>Lecture 2: Advanced Concepts</h3>
-                        <span>4 Videos</span>
-                    </div>
+                    <div class="module-text"><h3>Lecture 2: Advanced Concepts</h3><span>4 Videos</span></div>
                 </div>
                 <i class="fa-solid fa-chevron-down chevron"></i>
             </div>
             <div class="video-list">
-                <div class="video-item" onclick="openVideo('t9rWqnmz7Xo')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div><div class="video-title">Part 1: Theoretical Foundations</div></div>
-                </div>
-                <div class="video-item" onclick="openVideo('dYwdi4Vifkw')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div><div class="video-title">Part 2: Reaction Mechanisms</div></div>
-                </div>
-                <div class="video-item" onclick="openVideo('VM8CX4nl8D8')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div><div class="video-title">Part 3: Chemical Calculations</div></div>
-                </div>
-                <div class="video-item" onclick="openVideo('74Y6UMsEZ3s')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div><div class="video-title">Part 4: Summary & Review</div></div>
-                </div>
+                <a href="watch.html?v=t9rWqnmz7Xo&title=Lecture 2 Part 1" class="video-link">
+                    <div class="video-item">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                        <div><div class="video-title">Part 1: Theoretical Foundations</div></div>
+                    </div>
+                </a>
+                <a href="watch.html?v=dYwdi4Vifkw&title=Lecture 2 Part 2" class="video-link">
+                    <div class="video-item">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                        <div><div class="video-title">Part 2: Reaction Mechanisms</div></div>
+                    </div>
+                </a>
+                <a href="watch.html?v=VM8CX4nl8D8&title=Lecture 2 Part 3" class="video-link">
+                    <div class="video-item">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                        <div><div class="video-title">Part 3: Chemical Calculations</div></div>
+                    </div>
+                </a>
+                <a href="watch.html?v=74Y6UMsEZ3s&title=Lecture 2 Part 4" class="video-link">
+                    <div class="video-item">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                        <div><div class="video-title">Part 4: Summary & Review</div></div>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -291,30 +141,23 @@
             <div class="module-header" onclick="toggleModule(this)">
                 <div class="module-info">
                     <div class="module-icon"><i class="fa-solid fa-share-nodes"></i></div>
-                    <div class="module-text">
-                        <h3>Lecture 3: Chemical Bonding</h3>
-                        <span>4 Videos</span>
-                    </div>
+                    <div class="module-text"><h3>Lecture 3: Chemical Bonding</h3><span>4 Videos</span></div>
                 </div>
                 <i class="fa-solid fa-chevron-down chevron"></i>
             </div>
             <div class="video-list">
-                <div class="video-item" onclick="openVideo('B1bWIrOe0SE')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div><div class="video-title">Part 1: Intro to Bonding</div></div>
-                </div>
-                <div class="video-item" onclick="openVideo('yuMhsPuftXo')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div><div class="video-title">Part 2: Molecular Geometry</div></div>
-                </div>
-                <div class="video-item" onclick="openVideo('HiKLl5-F0PM')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div><div class="video-title">Part 3: Intermolecular Forces</div></div>
-                </div>
-                <div class="video-item" onclick="openVideo('ATG2l8uy8n8')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div><div class="video-title">Part 4: Hybridization</div></div>
-                </div>
+                <a href="watch.html?v=B1bWIrOe0SE&title=Bonding Part 1" class="video-link">
+                    <div class="video-item"><div class="play-btn"><i class="fa-solid fa-play"></i></div><div><div class="video-title">Part 1: Intro to Bonding</div></div></div>
+                </a>
+                <a href="watch.html?v=yuMhsPuftXo&title=Bonding Part 2" class="video-link">
+                    <div class="video-item"><div class="play-btn"><i class="fa-solid fa-play"></i></div><div><div class="video-title">Part 2: Molecular Geometry</div></div></div>
+                </a>
+                <a href="watch.html?v=HiKLl5-F0PM&title=Bonding Part 3" class="video-link">
+                    <div class="video-item"><div class="play-btn"><i class="fa-solid fa-play"></i></div><div><div class="video-title">Part 3: Intermolecular Forces</div></div></div>
+                </a>
+                <a href="watch.html?v=ATG2l8uy8n8&title=Bonding Part 4" class="video-link">
+                    <div class="video-item"><div class="play-btn"><i class="fa-solid fa-play"></i></div><div><div class="video-title">Part 4: Hybridization</div></div></div>
+                </a>
             </div>
         </div>
 
@@ -322,66 +165,31 @@
             <div class="module-header" onclick="toggleModule(this)">
                 <div class="module-info">
                     <div class="module-icon"><i class="fa-solid fa-fire-burner"></i></div>
-                    <div class="module-text">
-                        <h3>Lecture 4: Thermodynamics</h3>
-                        <span>4 Videos</span>
-                    </div>
+                    <div class="module-text"><h3>Lecture 4: Thermodynamics</h3><span>4 Videos</span></div>
                 </div>
                 <i class="fa-solid fa-chevron-down chevron"></i>
             </div>
             <div class="video-list">
-                <div class="video-item" onclick="openVideo('blVUWOmV8Jg')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div><div class="video-title">Part 1: Laws of Thermodynamics</div></div>
-                </div>
-                <div class="video-item" onclick="openVideo('Ks0zUaEKLZc')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div><div class="video-title">Part 2: Enthalpy & Entropy</div></div>
-                </div>
-                <div class="video-item" onclick="openVideo('wnXiS1OIr3A')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div><div class="video-title">Part 3: Gibbs Free Energy</div></div>
-                </div>
-                <div class="video-item" onclick="openVideo('cmVuUFIaLW0')">
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div><div class="video-title">Part 4: Final Problem Solving</div></div>
-                </div>
+                <a href="watch.html?v=blVUWOmV8Jg&title=Thermodynamics Part 1" class="video-link">
+                    <div class="video-item"><div class="play-btn"><i class="fa-solid fa-play"></i></div><div><div class="video-title">Part 1: Laws of Thermodynamics</div></div></div>
+                </a>
+                <a href="watch.html?v=Ks0zUaEKLZc&title=Thermodynamics Part 2" class="video-link">
+                    <div class="video-item"><div class="play-btn"><i class="fa-solid fa-play"></i></div><div><div class="video-title">Part 2: Enthalpy & Entropy</div></div></div>
+                </a>
+                <a href="watch.html?v=wnXiS1OIr3A&title=Thermodynamics Part 3" class="video-link">
+                    <div class="video-item"><div class="play-btn"><i class="fa-solid fa-play"></i></div><div><div class="video-title">Part 3: Gibbs Free Energy</div></div></div>
+                </a>
+                <a href="watch.html?v=cmVuUFIaLW0&title=Thermodynamics Part 4" class="video-link">
+                    <div class="video-item"><div class="play-btn"><i class="fa-solid fa-play"></i></div><div><div class="video-title">Part 4: Final Problem Solving</div></div></div>
+                </a>
             </div>
         </div>
 
     </div>
 
-    <div class="modal-overlay" id="videoModal" onclick="closeVideo()">
-        <div class="close-modal">&times;</div>
-        <div class="video-wrapper">
-            <iframe id="youtubePlayer" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
-    </div>
-
     <script>
-        // Toggle Accordion
         function toggleModule(header) {
-            const card = header.parentElement;
-            // Optional: Close others when one opens (Auto-collapse)
-            // document.querySelectorAll('.module-card').forEach(c => {
-            //     if(c !== card) c.classList.remove('active');
-            // });
-            card.classList.toggle('active');
-        }
-
-        // Open Video Modal
-        function openVideo(videoId) {
-            const modal = document.getElementById('videoModal');
-            const player = document.getElementById('youtubePlayer');
-            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
-            modal.classList.add('open');
-        }
-
-        // Close Video Modal
-        function closeVideo() {
-            const modal = document.getElementById('videoModal');
-            document.getElementById('youtubePlayer').src = "";
-            modal.classList.remove('open');
+            header.parentElement.classList.toggle('active');
         }
     </script>
 
