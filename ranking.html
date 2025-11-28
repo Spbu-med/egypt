@@ -25,34 +25,16 @@
             background: radial-gradient(circle at 50% -20%, #2a0000 0%, #000000 100%);
             min-height: 100vh; overflow-x: hidden;
         }
-        
-        /* Glass Effect */
         .glass-panel {
             background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
-
-        /* Rank Cards */
         .rank-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(255,255,255,0.03); }
         .rank-card:hover { transform: scale(1.02) translateY(-2px); background: rgba(255,255,255,0.08); }
-
-        /* Top 3 Styling */
-        .rank-1 { 
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(0,0,0,0) 100%);
-            border-color: rgba(255, 215, 0, 0.5); box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
-        }
-        .rank-2 { 
-            background: linear-gradient(135deg, rgba(224, 224, 224, 0.1) 0%, rgba(0,0,0,0) 100%);
-            border-color: rgba(224, 224, 224, 0.4);
-        }
-        .rank-3 { 
-            background: linear-gradient(135deg, rgba(205, 127, 50, 0.1) 0%, rgba(0,0,0,0) 100%);
-            border-color: rgba(205, 127, 50, 0.4);
-        }
-
-        /* Avatar Generator Colors */
+        .rank-1 { background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(0,0,0,0) 100%); border-color: rgba(255, 215, 0, 0.5); }
+        .rank-2 { background: linear-gradient(135deg, rgba(224, 224, 224, 0.1) 0%, rgba(0,0,0,0) 100%); border-color: rgba(224, 224, 224, 0.4); }
+        .rank-3 { background: linear-gradient(135deg, rgba(205, 127, 50, 0.1) 0%, rgba(0,0,0,0) 100%); border-color: rgba(205, 127, 50, 0.4); }
         .avatar-gradient { background: linear-gradient(135deg, #ff0033, #500010); }
-
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .fade-in-up { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; transform: translateY(20px); }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
@@ -70,31 +52,27 @@
             لوحة الأبطال
         </h1>
         <p class="text-gray-400 font-medium bg-white/5 inline-block px-5 py-1.5 rounded-full border border-white/5 text-sm">
-            Top 75 • Bioethics
+            Top Rankings
         </p>
     </div>
 
     <div class="flex-1 w-full max-w-2xl mx-auto px-4">
         <div class="glass-panel rounded-3xl p-4 md:p-6 min-h-[300px] relative overflow-hidden">
-            
             <div id="loading" class="absolute inset-0 flex flex-col items-center justify-center z-20">
                 <div class="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
                 <p class="text-gray-400 animate-pulse font-medium">جاري جلب النتائج...</p>
             </div>
-
-            <div id="ranking-list" class="space-y-3 hidden">
-                </div>
-        
+            <div id="ranking-list" class="space-y-3 hidden"></div>
         </div>
     </div>
 
     <div class="fixed bottom-6 left-1/2 -translate-x-1/2 glass-panel rounded-full p-2 flex items-center gap-2 shadow-2xl z-50 border border-white/10">
-        <a href="index.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition" title="Home">
+        <a href="index.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition">
             <i class="fa-solid fa-house text-lg"></i>
         </a>
         <div class="h-6 w-[1px] bg-white/10"></div>
-        <a href="quiz.html" class="px-6 py-2.5 rounded-full bg-primary hover:bg-red-600 text-white font-bold text-sm transition shadow-lg shadow-primary/30 flex items-center gap-2">
-            <i class="fa-solid fa-play"></i> ابدأ امتحان
+        <a href="quizzes-menu.html" class="px-6 py-2.5 rounded-full bg-primary hover:bg-red-600 text-white font-bold text-sm transition shadow-lg shadow-primary/30 flex items-center gap-2">
+            <i class="fa-solid fa-play"></i> الامتحانات
         </a>
     </div>
 
@@ -126,12 +104,7 @@
                 list.classList.remove('hidden');
                 
                 if(querySnapshot.empty) {
-                    list.innerHTML = `
-                        <div class="text-center py-20 text-gray-600">
-                            <i class="fa-solid fa-ghost text-4xl mb-4 opacity-50"></i>
-                            <p>القائمة فارغة.. كن أول بطل!</p>
-                        </div>
-                    `;
+                    list.innerHTML = `<div class="text-center py-20 text-gray-600"><i class="fa-solid fa-ghost text-4xl mb-4 opacity-50"></i><p>القائمة فارغة.. كن أول بطل!</p></div>`;
                     return;
                 }
 
@@ -139,26 +112,17 @@
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
                     const initial = data.name.charAt(0).toUpperCase();
+                    const subject = data.subject || "Bioethics"; 
+                    const maxScore = data.total || 20;
                     
-                    // Rank Logic & Styling
-                    let rankBadge, rowClass, medalIcon;
-                    
-                    if(rank === 1) {
-                        rowClass = "rank-1";
-                        rankBadge = `<div class="text-gold text-2xl drop-shadow-md"><i class="fa-solid fa-trophy"></i></div>`;
-                    } else if(rank === 2) {
-                        rowClass = "rank-2";
-                        rankBadge = `<div class="text-silver text-xl drop-shadow-md"><i class="fa-solid fa-medal"></i></div>`;
-                    } else if(rank === 3) {
-                        rowClass = "rank-3";
-                        rankBadge = `<div class="text-bronze text-xl drop-shadow-md"><i class="fa-solid fa-medal"></i></div>`;
-                    } else {
-                        rowClass = "bg-white/5";
-                        rankBadge = `<div class="text-gray-500 font-bold font-mono text-lg w-8 text-center">#${rank}</div>`;
-                    }
+                    let rankBadge, rowClass;
+                    if(rank === 1) { rowClass = "rank-1"; rankBadge = `<div class="text-gold text-2xl drop-shadow-md"><i class="fa-solid fa-trophy"></i></div>`; } 
+                    else if(rank === 2) { rowClass = "rank-2"; rankBadge = `<div class="text-silver text-xl drop-shadow-md"><i class="fa-solid fa-medal"></i></div>`; } 
+                    else if(rank === 3) { rowClass = "rank-3"; rankBadge = `<div class="text-bronze text-xl drop-shadow-md"><i class="fa-solid fa-medal"></i></div>`; } 
+                    else { rowClass = "bg-white/5"; rankBadge = `<div class="text-gray-500 font-bold font-mono text-lg w-8 text-center">#${rank}</div>`; }
 
-                    // Score Percentage Color
-                    const scoreColor = data.score >= 30 ? "text-green-400" : (data.score >= 20 ? "text-yellow-400" : "text-gray-400");
+                    const percentage = (data.score / maxScore) * 100;
+                    const scoreColor = percentage >= 80 ? "text-green-400" : (percentage >= 50 ? "text-yellow-400" : "text-gray-400");
 
                     const item = document.createElement('div');
                     item.className = `flex items-center justify-between p-4 rounded-2xl rank-card ${rowClass} fade-in-up`;
@@ -167,32 +131,24 @@
                     item.innerHTML = `
                         <div class="flex items-center gap-4">
                             <div class="shrink-0 w-10 flex justify-center">${rankBadge}</div>
-                            
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full avatar-gradient flex items-center justify-center text-white font-bold shadow-lg border border-white/10 text-sm">
-                                    ${initial}
-                                </div>
+                                <div class="w-10 h-10 rounded-full avatar-gradient flex items-center justify-center text-white font-bold shadow-lg border border-white/10 text-sm">${initial}</div>
                                 <div class="flex flex-col">
                                     <span class="font-bold text-white tracking-wide text-sm md:text-base">${data.name}</span>
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-wider font-mono bg-white/5 px-2 py-0.5 rounded w-fit mt-1">${subject}</span>
                                 </div>
                             </div>
                         </div>
-
                         <div class="flex flex-col items-end">
-                            <div class="font-black text-xl ${scoreColor} font-mono">${data.score}</div>
-                            <div class="text-[10px] text-gray-500 font-bold uppercase">Points</div>
+                            <div class="font-black text-xl ${scoreColor} font-mono">${data.score} <span class="text-xs text-gray-500">/ ${maxScore}</span></div>
+                            <div class="text-[10px] text-gray-500 font-bold uppercase">Score</div>
                         </div>
                     `;
                     list.appendChild(item);
                     rank++;
                 });
-
-            } catch (error) {
-                console.error("Error:", error);
-                loading.innerHTML = '<p class="text-red-500 font-bold">خطأ في الاتصال!</p>';
-            }
+            } catch (error) { console.error("Error:", error); loading.innerHTML = '<p class="text-red-500 font-bold">خطأ في الاتصال!</p>'; }
         }
-
         loadRankings();
     </script>
 </body>
