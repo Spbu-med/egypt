@@ -21,7 +21,8 @@
             min-height: 100vh; overflow-x: hidden;
             background: radial-gradient(circle at 50% 50%, #2a0000 0%, #000000 100%);
         }
-        /* Background Pulse */
+        
+        /* تأثير النبض في الخلفية */
         body::before {
             content: ''; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(255, 0, 51, 0.15) 0%, transparent 60%);
@@ -29,16 +30,16 @@
         }
         @keyframes pulseBackground { 0% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.2); } }
 
-        /* Glass Header */
+        /* الهيدر */
         header {
             padding: 15px 5%; background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border); display: flex; justify-content: space-between;
             align-items: center; position: sticky; top: 0; z-index: 1000;
         }
         .logo { font-size: 1.5rem; font-weight: 900; display: flex; align-items: center; gap: 10px; }
-        .logo i { color: var(--primary); }
+        .logo i { color: var(--primary); filter: drop-shadow(0 0 5px var(--primary)); }
 
-        /* Hero */
+        /* Hero Area */
         .hero { text-align: center; padding: 80px 20px 50px; }
         .hero h1 {
             font-size: 3rem; margin: 10px 0; font-weight: 900;
@@ -50,7 +51,7 @@
             font-size: 0.9rem; font-weight: bold; display: inline-block; box-shadow: 0 0 20px rgba(255, 0, 51, 0.4);
         }
 
-        /* Grid & Cards */
+        /* تنسيق الشبكة والكروت */
         .grid-container {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;
             padding: 20px 5% 80px; max-width: 1200px; margin: 0 auto;
@@ -60,10 +61,14 @@
             border-radius: 24px; padding: 30px; text-align: center; position: relative; overflow: hidden;
             text-decoration: none; color: white; display: block; transition: 0.4s ease;
         }
+        
+        /* هوفر الكارت */
         .card:hover {
             transform: translateY(-10px); background: var(--glass-hover); border-color: rgba(255, 0, 51, 0.3);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
         }
+
+        /* الأيقونات */
         .icon-container {
             width: 70px; height: 70px; background: rgba(255, 255, 255, 0.05); border-radius: 50%;
             display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
@@ -71,16 +76,34 @@
         }
         .card:hover .icon-container { background: var(--primary); color: white; box-shadow: 0 0 25px var(--primary); }
         
+        /* تنسيق الأزرار (الوضع العادي) */
         .status {
-            display: inline-block; margin-top: 20px; padding: 6px 15px; border-radius: 50px;
-            font-size: 0.8rem; border: 1px solid rgba(255, 255, 255, 0.1); color: #aaa; letter-spacing: 1px;
+            display: inline-block; margin-top: 20px; padding: 8px 20px; border-radius: 50px;
+            font-size: 0.85rem; border: 1px solid rgba(255, 255, 255, 0.1); color: #aaa; letter-spacing: 1px;
+            transition: 0.3s;
         }
-        .card:hover .status { border-color: var(--primary); color: white; background: rgba(255, 0, 51, 0.1); }
 
-        /* Gold Card Override */
+        /* تنسيق الزر النشط (Active Glow) */
+        .status.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 0 15px var(--primary);
+            font-weight: bold;
+        }
+        
+        /* تنسيق الزر الذهبي (للترتيب) */
+        .status.gold-glow {
+            border-color: var(--gold);
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 15px var(--gold);
+            font-weight: bold;
+        }
+
+        /* تخصيص كارت الترتيب */
         .card.gold:hover { border-color: var(--gold); }
-        .card.gold:hover .icon-container { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 25px var(--gold); }
-        .card.gold:hover .status { border-color: var(--gold); color: var(--gold); background: rgba(255, 215, 0, 0.1); }
+        .card.gold:hover .icon-container { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 25px var(--gold); color: #000; }
 
         footer { text-align: center; padding: 30px; color: #666; font-size: 0.9rem; border-top: 1px solid var(--border); }
     </style>
@@ -104,28 +127,28 @@
             <div class="icon-container"><i class="fa-solid fa-clone"></i></div>
             <h3>Flash Cards</h3>
             <p>ذاكر بذكاء: اختر المادة وابدأ المراجعة.</p>
-            <div class="status">OPEN MENU</div>
+            <div class="status active">OPEN MENU</div>
         </a>
 
         <a href="quizzes-menu.html" class="card">
             <div class="icon-container"><i class="fa-solid fa-flask"></i></div>
             <h3>Quiz Bank</h3>
             <p>اختبارات تفاعلية لكل المواد.</p>
-            <div class="status">OPEN MENU</div>
+            <div class="status active">OPEN MENU</div>
         </a>
 
         <a href="videos.html" class="card">
             <div class="icon-container"><i class="fa-solid fa-play"></i></div>
             <h3>Video Lectures</h3>
             <p>مكتبة فيديوهات الكيمياء والغازات.</p>
-            <div class="status" style="border-color: var(--primary); background: var(--primary); color: white; box-shadow: 0 0 15px var(--primary);">OPEN NOW</div>
+            <div class="status active">OPEN NOW</div>
         </a>
 
         <a href="ranking.html" class="card gold">
             <div class="icon-container"><i class="fa-solid fa-crown"></i></div>
             <h3>Top Ranking</h3>
             <p>شاهد ترتيب الدفعة والأوائل.</p>
-            <div class="status">VIEW NOW</div>
+            <div class="status gold-glow">VIEW NOW</div>
         </a>
 
         <div class="card">
