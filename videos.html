@@ -3,248 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chemistry Course | SPbU</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Chemistry Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        :root {
-            --bg: #0f0f0f;
-            --card: #1c1c1e;
-            --primary: #ff0033;
-            --text: #ffffff;
-            --text-sec: #8e8e93;
-            --border: #2c2c2e;
-        }
-
-        body {
-            margin: 0; font-family: 'Roboto', sans-serif;
-            background-color: var(--bg); color: var(--text);
-            padding-bottom: 40px;
-        }
-
-        /* 1. Header (Like the video) */
-        .app-header {
-            padding: 15px 20px;
-            display: flex; align-items: center; gap: 15px;
-            position: sticky; top: 0; z-index: 100;
-            background: rgba(15, 15, 15, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .back-pill {
-            display: flex; align-items: center; gap: 8px;
-            color: var(--text-sec); text-decoration: none;
-            font-size: 0.9rem; font-weight: 500;
-        }
-        .logo-text { margin-left: auto; font-weight: 800; color: var(--primary); letter-spacing: 1px; }
-
-        /* 2. Tabs (Week 1, Week 2...) */
-        .tabs-wrapper {
-            padding: 15px 20px 0;
-            display: flex; gap: 10px; overflow-x: auto;
-            scrollbar-width: none;
-        }
-        .tab-pill {
-            background: var(--card); color: var(--text-sec);
-            padding: 10px 20px; border-radius: 12px;
-            font-size: 0.9rem; font-weight: 600; white-space: nowrap;
-            border: 1px solid var(--border); cursor: pointer; transition: 0.3s;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .tab-pill.active {
-            background: var(--primary); color: white; border-color: var(--primary);
-            box-shadow: 0 4px 15px rgba(255, 0, 51, 0.3);
-        }
-
-        /* 3. Hero Card (The Big Gradient Card) */
-        .hero-banner {
-            margin: 20px; padding: 25px;
-            border-radius: 24px;
-            background: linear-gradient(135deg, #d32f2f 0%, #ff0033 100%);
-            color: white; position: relative; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(255, 0, 51, 0.15);
-        }
-        .hero-banner::before {
-            content: ''; position: absolute; top: -50%; right: -20%;
-            width: 200px; height: 200px; background: rgba(255,255,255,0.1);
-            border-radius: 50%; filter: blur(40px);
-        }
-        .phase-badge {
-            background: rgba(0,0,0,0.25); padding: 5px 12px;
-            border-radius: 8px; font-size: 0.75rem; font-weight: 700;
-            display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px;
-        }
-        .hero-title { font-size: 1.8rem; font-weight: 800; margin: 0 0 5px 0; line-height: 1.2; }
-        .hero-desc { font-size: 0.9rem; opacity: 0.9; line-height: 1.5; }
-
-        /* 4. Subject Cards (Accordion) */
-        .modules-list { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; }
+        :root { --bg: #0f0f0f; --card: #1c1c1e; --primary: #ff0033; --text: #fff; --sub: #8e8e93; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Roboto', sans-serif; padding-bottom: 20px; }
         
-        .module-card {
-            background: var(--card); border-radius: 20px;
-            overflow: hidden; transition: 0.3s;
-            border: 1px solid transparent;
+        /* App Header */
+        .app-header {
+            padding: 15px 20px; background: rgba(15,15,15,0.95); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #222;
+            display: flex; align-items: center; justify-content: space-between;
         }
-        .module-card.expanded { border-color: rgba(255,255,255,0.1); }
+        .back-link { color: var(--sub); text-decoration: none; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 5px; }
+        .logo { color: var(--primary); font-weight: 800; letter-spacing: 1px; }
 
-        .module-header {
-            padding: 18px; cursor: pointer;
-            display: flex; align-items: center; gap: 15px;
+        /* Hero Section */
+        .hero {
+            margin: 20px; padding: 25px; border-radius: 20px;
+            background: linear-gradient(135deg, #c62828 0%, #ff0033 100%);
+            box-shadow: 0 10px 30px rgba(255, 0, 51, 0.2); position: relative; overflow: hidden;
         }
+        .hero h1 { margin: 0; font-size: 1.8rem; font-weight: 800; }
+        .hero p { margin: 5px 0 0; opacity: 0.9; font-size: 0.9rem; }
+        .badge { background: rgba(0,0,0,0.2); padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; display: inline-block; margin-bottom: 10px; }
 
-        .icon-box {
-            width: 45px; height: 45px; border-radius: 14px;
-            background: rgba(255, 0, 51, 0.1); color: var(--primary);
-            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+        /* Modules */
+        .modules { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; }
+        
+        .module-card { background: var(--card); border-radius: 16px; overflow: hidden; transition: 0.3s; }
+        
+        .module-head {
+            padding: 18px; cursor: pointer; display: flex; align-items: center; gap: 15px;
+            border-bottom: 1px solid transparent;
         }
-
-        .module-info { flex: 1; }
-        .module-title { font-weight: 700; font-size: 1rem; margin-bottom: 3px; }
-        .module-meta { font-size: 0.8rem; color: var(--text-sec); }
-
-        .chevron { color: var(--text-sec); transition: 0.3s; }
-        .module-card.expanded .chevron { transform: rotate(180deg); color: var(--primary); }
-
-        /* 5. Video List (Inside Card) */
-        .video-group {
-            max-height: 0; overflow: hidden; transition: 0.4s ease;
-            background: #151517;
+        .icon { 
+            width: 40px; height: 40px; background: rgba(255,0,51,0.1); color: var(--primary); 
+            border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
         }
-        .module-card.expanded .video-group { max-height: 1000px; }
+        .info h3 { margin: 0; font-size: 1rem; }
+        .info span { font-size: 0.8rem; color: var(--sub); }
+        .arrow { margin-left: auto; color: var(--sub); transition: 0.3s; }
+        
+        /* Expand Logic */
+        .module-card.active .arrow { transform: rotate(180deg); color: var(--primary); }
+        .module-card.active .module-head { border-bottom: 1px solid #2c2c2e; }
+        
+        .videos { max-height: 0; overflow: hidden; transition: 0.4s ease; background: #151517; }
+        .module-card.active .videos { max-height: 1000px; }
 
-        .video-row {
-            padding: 15px 20px; display: flex; align-items: center; gap: 15px;
-            border-top: 1px solid #252525; text-decoration: none; color: inherit;
+        /* Video Link (The Trigger) */
+        .vid-link {
+            display: flex; align-items: center; gap: 15px; padding: 15px 20px;
+            text-decoration: none; color: var(--text); border-bottom: 1px solid #252525;
+            transition: 0.2s;
         }
-        .video-row:active { background: #222; }
-
-        .play-indicator {
-            width: 30px; height: 30px; border-radius: 50%; border: 2px solid #444;
-            display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #444;
-        }
-        .video-row:hover .play-indicator { border-color: var(--primary); background: var(--primary); color: white; }
-
-        .vid-title { font-size: 0.9rem; font-weight: 500; margin-bottom: 2px; }
-        .vid-type { font-size: 0.75rem; color: #666; display: flex; align-items: center; gap: 5px; }
-
-        /* Helpers */
-        .hidden { display: none; }
+        .vid-link:hover { background: #1f1f22; padding-left: 25px; }
+        .play-btn { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #444; color: #444; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+        .vid-link:hover .play-btn { background: var(--primary); border-color: var(--primary); color: white; }
+        
+        .vid-meta div:first-child { font-weight: 500; font-size: 0.9rem; margin-bottom: 2px; }
+        .vid-meta div:last-child { font-size: 0.75rem; color: var(--sub); }
     </style>
 </head>
 <body>
 
     <header class="app-header">
-        <a href="index.html" class="back-pill">
-            <i class="fa-solid fa-chevron-left"></i> Back to Hub
-        </a>
-        <div class="logo-text">SPbU MED</div>
+        <a href="index.html" class="back-link"><i class="fa-solid fa-chevron-left"></i> Back to Hub</a>
+        <div class="logo">SPbU MED</div>
     </header>
 
-    <div class="tabs-wrapper">
-        <div class="tab-pill active" onclick="switchTab('week1', this)">
-            <i class="fa-regular fa-calendar"></i> Week 1
-        </div>
-        <div class="tab-pill" onclick="switchTab('week2', this)">
-            <i class="fa-regular fa-calendar"></i> Week 2
-        </div>
-        <div class="tab-pill" onclick="switchTab('week3', this)">
-            <i class="fa-regular fa-calendar"></i> Week 3
-        </div>
+    <div class="hero">
+        <div class="badge">FOUNDATION PHASE</div>
+        <h1>General Chemistry</h1>
+        <p>Atomic Theory, Gases & Thermo</p>
     </div>
 
-    <div id="week1" class="tab-content">
-        <div class="hero-banner">
-            <div class="phase-badge"><i class="fa-solid fa-fire"></i> FOUNDATION PHASE</div>
-            <h1 class="hero-title">Atomic Theory<br>& Gases</h1>
-            <p class="hero-desc">Essential concepts in structure of atom, gas laws, and basic thermodynamics.</p>
-        </div>
-
-        <div class="modules-list">
-            
-            <div class="module-card">
-                <div class="module-header" onclick="toggleCard(this)">
-                    <div class="icon-box"><i class="fa-solid fa-atom"></i></div>
-                    <div class="module-info">
-                        <div class="module-title">Atomic Theory & Gases</div>
-                        <div class="module-meta">4 Lectures • 50 mins</div>
-                    </div>
-                    <i class="fa-solid fa-chevron-down chevron"></i>
-                </div>
-                <div class="video-group">
-                    <a href="watch.html?v=9B3DDY27ZtE&t=History of Atomic Theory" class="video-row">
-                        <div class="play-indicator"><i class="fa-solid fa-play"></i></div>
-                        <div><div class="vid-title">1. History of Atomic Theory</div><div class="vid-type"><i class="fa-solid fa-video"></i> Theory</div></div>
-                    </a>
-                    <a href="watch.html?v=NHMUXG8RVJM&t=Gas Laws" class="video-row">
-                        <div class="play-indicator"><i class="fa-solid fa-play"></i></div>
-                        <div><div class="vid-title">2. Gas Laws & Ideal Gas</div><div class="vid-type"><i class="fa-solid fa-video"></i> Core Concept</div></div>
-                    </a>
-                    <a href="watch.html?v=W2g2iP83JoI&t=Ideal Gas Practice" class="video-row">
-                        <div class="play-indicator"><i class="fa-solid fa-play"></i></div>
-                        <div><div class="vid-title">3. Practice Problems</div><div class="vid-type"><i class="fa-solid fa-pencil"></i> High Yield</div></div>
-                    </a>
-                    <a href="watch.html?v=8zJrjEV9n8o&t=Real Gases" class="video-row">
-                        <div class="play-indicator"><i class="fa-solid fa-play"></i></div>
-                        <div><div class="vid-title">4. Real Gases</div><div class="vid-type"><i class="fa-solid fa-flask"></i> Advanced</div></div>
-                    </a>
-                </div>
+    <div class="modules">
+        
+        <div class="module-card">
+            <div class="module-head" onclick="toggle(this)">
+                <div class="icon"><i class="fa-solid fa-atom"></i></div>
+                <div class="info"><h3>Atomic Theory & Gases</h3><span>4 Lessons</span></div>
+                <i class="fa-solid fa-chevron-down arrow"></i>
             </div>
-
-            <div class="module-card">
-                <div class="module-header" onclick="toggleCard(this)">
-                    <div class="icon-box"><i class="fa-solid fa-dna"></i></div>
-                    <div class="module-info">
-                        <div class="module-title">Advanced Concepts</div>
-                        <div class="module-meta">4 Lectures • Lecture 2</div>
-                    </div>
-                    <i class="fa-solid fa-chevron-down chevron"></i>
-                </div>
-                <div class="video-group">
-                    <a href="watch.html?v=t9rWqnmz7Xo&t=Lecture 2 Part 1" class="video-row">
-                        <div class="play-indicator"><i class="fa-solid fa-play"></i></div>
-                        <div><div class="vid-title">Part 1: Theoretical Foundations</div><div class="vid-type">Video 1</div></div>
-                    </a>
-                    <a href="watch.html?v=dYwdi4Vifkw&t=Lecture 2 Part 2" class="video-row">
-                        <div class="play-indicator"><i class="fa-solid fa-play"></i></div>
-                        <div><div class="vid-title">Part 2: Mechanisms</div><div class="vid-type">Video 2</div></div>
-                    </a>
-                     <a href="watch.html?v=VM8CX4nl8D8&t=Lecture 2 Part 3" class="video-row">
-                        <div class="play-indicator"><i class="fa-solid fa-play"></i></div>
-                        <div><div class="vid-title">Part 3: Calculations</div><div class="vid-type">Video 3</div></div>
-                    </a>
-                    <a href="watch.html?v=74Y6UMsEZ3s&t=Lecture 2 Part 4" class="video-row">
-                        <div class="play-indicator"><i class="fa-solid fa-play"></i></div>
-                        <div><div class="vid-title">Part 4: Summary</div><div class="vid-type">Video 4</div></div>
-                    </a>
-                </div>
+            <div class="videos">
+                <a href="watch.html?v=9B3DDY27ZtE&t=History of Atomic Theory" class="vid-link">
+                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    <div class="vid-meta"><div>1. Atomic Theory History</div><div>Theory • 12 min</div></div>
+                </a>
+                <a href="watch.html?v=NHMUXG8RVJM&t=Gas Laws & Ideal Gas" class="vid-link">
+                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    <div class="vid-meta"><div>2. Gas Laws & Ideal Gas</div><div>Core Concept • 15 min</div></div>
+                </a>
+                <a href="watch.html?v=W2g2iP83JoI&t=Ideal Gas Practice" class="vid-link">
+                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    <div class="vid-meta"><div>3. Practice Problems</div><div>High Yield • 18 min</div></div>
+                </a>
+                <a href="watch.html?v=8zJrjEV9n8o&t=Real Gases" class="vid-link">
+                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    <div class="vid-meta"><div>4. Real Gases</div><div>Advanced • 10 min</div></div>
+                </a>
             </div>
-
         </div>
-    </div>
 
-    <div id="week2" class="tab-content hidden">
-         <div class="hero-banner" style="background: linear-gradient(135deg, #222 0%, #444 100%);">
-            <div class="phase-badge"><i class="fa-solid fa-lock"></i> MASTERY PHASE</div>
-            <h1 class="hero-title">Chemical Bonding<br>& Thermo</h1>
-            <p class="hero-desc">Coming soon next week.</p>
+        <div class="module-card">
+            <div class="module-head" onclick="toggle(this)">
+                <div class="icon"><i class="fa-solid fa-flask"></i></div>
+                <div class="info"><h3>Advanced Concepts</h3><span>4 Lessons</span></div>
+                <i class="fa-solid fa-chevron-down arrow"></i>
+            </div>
+            <div class="videos">
+                <a href="watch.html?v=t9rWqnmz7Xo&t=Lecture 2 Part 1" class="vid-link">
+                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    <div class="vid-meta"><div>Part 1: Foundations</div><div>Lecture 2</div></div>
+                </a>
+                <a href="watch.html?v=dYwdi4Vifkw&t=Lecture 2 Part 2" class="vid-link">
+                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    <div class="vid-meta"><div>Part 2: Mechanisms</div><div>Lecture 2</div></div>
+                </a>
+                <a href="watch.html?v=VM8CX4nl8D8&t=Lecture 2 Part 3" class="vid-link">
+                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    <div class="vid-meta"><div>Part 3: Calculations</div><div>Lecture 2</div></div>
+                </a>
+                <a href="watch.html?v=74Y6UMsEZ3s&t=Lecture 2 Part 4" class="vid-link">
+                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    <div class="vid-meta"><div>Part 4: Summary</div><div>Lecture 2</div></div>
+                </a>
+            </div>
         </div>
+
+        <div class="module-card">
+            <div class="module-head" onclick="toggle(this)">
+                <div class="icon"><i class="fa-solid fa-share-nodes"></i></div>
+                <div class="info"><h3>Chemical Bonding</h3><span>4 Lessons</span></div>
+                <i class="fa-solid fa-chevron-down arrow"></i>
+            </div>
+            <div class="videos">
+                <a href="watch.html?v=B1bWIrOe0SE&t=Bonding Part 1" class="vid-link">
+                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    <div class="vid-meta"><div>Part 1: Intro to Bonding</div><div>Lecture 3</div></div>
+                </a>
+                <a href="watch.html?v=yuMhsPuftXo&t=Bonding Part 2" class="vid-link">
+                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    <div class="vid-meta"><div>Part 2: Molecular Geometry</div><div>Lecture 3</div></div>
+                </a>
+            </div>
+        </div>
+
     </div>
-    
-    <div id="week3" class="tab-content hidden"></div>
 
     <script>
-        function toggleCard(header) {
-            header.parentElement.classList.toggle('expanded');
-        }
-
-        function switchTab(id, btn) {
-            document.querySelectorAll('.tab-content').forEach(d => d.classList.add('hidden'));
-            document.querySelectorAll('.tab-pill').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.remove('hidden');
-            btn.classList.add('active');
-        }
+        function toggle(header) { header.parentElement.classList.toggle('active'); }
     </script>
 </body>
 </html>
