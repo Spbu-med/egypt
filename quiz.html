@@ -3,160 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bioethics Final Exam</title>
+    <title>Exam Mode</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: '#ff0033', dark: '#0a0a0a', glass: 'rgba(255, 255, 255, 0.05)' },
-                    fontFamily: { cairo: ['Cairo', 'sans-serif'] },
-                    animation: { 'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite' }
-                }
-            }
+            theme: { extend: { colors: { primary: '#ff0033', dark: '#0a0a0a', glass: 'rgba(255, 255, 255, 0.05)' }, fontFamily: { cairo: ['Cairo', 'sans-serif'] }, animation: { 'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite' } } }
         }
     </script>
     <style>
-        body { 
-            background-color: #0a0a0a; color: white; font-family: 'Cairo', sans-serif;
-            background: radial-gradient(circle at 50% 50%, #1a0000 0%, #0a0a0a 100%);
-            min-height: 100vh; overflow-x: hidden;
-        }
-        .glass-panel {
-            background: rgba(20, 20, 20, 0.75); backdrop-filter: blur(25px);
-            border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-        }
-        .custom-input {
-            background: rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.1);
-            color: white; transition: 0.3s all ease;
-        }
-        .custom-input:focus {
-            border-color: #ff0033; outline: none; box-shadow: 0 0 20px rgba(255, 0, 51, 0.15);
-            background: rgba(0,0,0,0.8); transform: translateY(-2px);
-        }
+        body { background-color: #0a0a0a; color: white; font-family: 'Cairo', sans-serif; background: radial-gradient(circle at 50% 50%, #1a0000 0%, #0a0a0a 100%); min-height: 100vh; overflow-x: hidden; }
+        .glass-panel { background: rgba(20, 20, 20, 0.75); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+        .custom-input { background: rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.1); color: white; transition: 0.3s all ease; }
+        .custom-input:focus { border-color: #ff0033; outline: none; box-shadow: 0 0 20px rgba(255, 0, 51, 0.15); background: rgba(0,0,0,0.8); transform: translateY(-2px); }
         .option-card { transition: all 0.2s ease; position: relative; overflow: hidden; }
         .option-card:hover { border-color: rgba(255, 0, 51, 0.6); background: rgba(255, 0, 51, 0.05); transform: translateX(5px); }
         .option-selected { border-color: #ff0033 !important; background: linear-gradient(90deg, rgba(255,0,51,0.2) 0%, transparent 100%) !important; box-shadow: -4px 0 0 #ff0033 inset; }
-        
-        /* New Review Styling (Premium Design) */
-        .review-card-correct {
-            background: linear-gradient(90deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%) !important;
-            border: 1px solid #22c55e !important;
-            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.15);
-            transform: scale(1.01);
-        }
-        .review-card-wrong {
-            background: linear-gradient(90deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%) !important;
-            border: 1px solid #ef4444 !important;
-            opacity: 0.9;
-        }
-        .review-card-neutral {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            opacity: 0.6;
-        }
-        
+        .review-card-correct { background: linear-gradient(90deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%) !important; border: 1px solid #22c55e !important; }
+        .review-card-wrong { background: linear-gradient(90deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%) !important; border: 1px solid #ef4444 !important; opacity: 0.9; }
+        .review-card-neutral { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); opacity: 0.6; }
         .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .progress-bar-glow { box-shadow: 0 0 10px #ff0033; }
-        
-        /* Explanation Box */
-        .explanation-box {
-            background: linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
-            border-left: 4px solid #3b82f6;
-        }
+        .explanation-box { background: linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%); border-left: 4px solid #3b82f6; }
     </style>
 </head>
 <body class="flex flex-col h-screen">
 
     <header class="glass-panel h-16 flex items-center justify-between px-6 z-30 border-b border-white/5 relative">
         <h1 class="text-lg md:text-xl font-bold flex items-center gap-3 tracking-wide">
-            <i class="fa-solid fa-heart-pulse text-primary animate-pulse-slow"></i> 
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Bioethics Exam</span>
+            <i class="fa-solid fa-file-signature text-primary animate-pulse-slow"></i> 
+            <span id="quiz-title-display" class="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Exam</span>
         </h1>
         <a id="exit-btn" href="quizzes-menu.html" class="group flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors">
             <span class="hidden md:block transition-transform group-hover:-translate-x-1">Exit Exam</span>
-            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
-                <i class="fa-solid fa-xmark"></i>
-            </div>
+            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all"><i class="fa-solid fa-xmark"></i></div>
         </a>
     </header>
 
-    <div id="progress-container" class="hidden w-full h-1 bg-gray-800 z-20 absolute top-16 left-0">
-        <div id="progress-bar" class="h-full bg-primary progress-bar-glow transition-all duration-500 ease-out" style="width: 0%"></div>
-    </div>
+    <div id="progress-container" class="hidden w-full h-1 bg-gray-800 z-20 absolute top-16 left-0"><div id="progress-bar" class="h-full bg-primary transition-all duration-500 ease-out" style="width: 0%"></div></div>
 
     <main class="flex-1 flex items-center justify-center p-4 relative overflow-hidden">
-
         <div id="start-screen" class="glass-panel max-w-md w-full p-8 md:p-10 rounded-3xl text-center fade-in border border-white/10 relative overflow-hidden">
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-primary/20 blur-[60px] rounded-full -z-10"></div>
-            <div class="w-24 h-24 bg-gradient-to-br from-gray-800 to-black rounded-full flex items-center justify-center mx-auto mb-8 border border-white/10 shadow-2xl relative">
-                <i class="fa-solid fa-user-graduate text-4xl text-primary"></i>
-            </div>
+            <div class="w-24 h-24 bg-gradient-to-br from-gray-800 to-black rounded-full flex items-center justify-center mx-auto mb-8 border border-white/10 shadow-2xl"><i class="fa-solid fa-user-graduate text-4xl text-primary"></i></div>
             <h2 class="text-3xl font-black mb-2 tracking-tight">Ready to Start?</h2>
             <p class="text-gray-400 mb-8 text-sm leading-relaxed">Please enter your full name to begin.</p>
-            <div class="text-left mb-8 group">
-                <label class="text-xs text-primary font-bold uppercase tracking-widest ml-1 mb-2 block">Student Name</label>
-                <input type="text" id="student-name-input" placeholder="Type your name here..." class="custom-input w-full rounded-xl p-4 text-lg placeholder-gray-600">
-            </div>
+            <div class="text-left mb-8 group"><label class="text-xs text-primary font-bold uppercase tracking-widest ml-1 mb-2 block">Student Name</label><input type="text" id="student-name-input" placeholder="Type your name here..." class="custom-input w-full rounded-xl p-4 text-lg placeholder-gray-600"></div>
             <div class="flex justify-between items-center text-xs font-mono text-gray-500 mb-8 px-4 py-3 bg-white/5 rounded-lg border border-white/5">
-                <span class="flex items-center gap-2"><i class="fa-solid fa-list-check text-primary"></i> 32 Qs</span>
+                <span class="flex items-center gap-2"><i class="fa-solid fa-list-check text-primary"></i> <span id="q-total-start">--</span> Qs</span>
                 <div class="h-4 w-[1px] bg-white/10"></div>
                 <span class="flex items-center gap-2"><i class="fa-regular fa-clock text-primary"></i> 45 Mins</span>
             </div>
-            <button onclick="startQuiz()" class="w-full bg-gradient-to-r from-primary to-red-700 hover:from-red-600 hover:to-red-800 text-white font-bold py-4 rounded-xl shadow-[0_10px_30px_rgba(255,0,51,0.3)] transition-all transform hover:scale-[1.02] flex items-center justify-center gap-3">
-                <span>Start Exam</span> <i class="fa-solid fa-arrow-right-long"></i>
-            </button>
+            <button onclick="startQuiz()" class="w-full bg-gradient-to-r from-primary to-red-700 hover:from-red-600 hover:to-red-800 text-white font-bold py-4 rounded-xl shadow-[0_10px_30px_rgba(255,0,51,0.3)] transition-all transform hover:scale-[1.02] flex items-center justify-center gap-3"><span>Start Exam</span> <i class="fa-solid fa-arrow-right-long"></i></button>
         </div>
 
         <div id="quiz-screen" class="hidden flex-col w-full max-w-4xl h-full md:h-auto fade-in">
             <div class="flex justify-between items-end mb-4 px-2">
-                <div class="text-sm font-medium text-gray-400">
-                    Question <span id="q-number" class="text-white text-2xl font-bold font-cairo mx-1">1</span> / <span id="q-total" class="text-gray-500">32</span>
-                </div>
-                <div class="bg-black/40 text-primary px-4 py-2 rounded-lg font-mono font-bold border border-primary/20 flex items-center gap-2 shadow-lg backdrop-blur-md">
-                    <i class="fa-regular fa-clock animate-pulse"></i> <span id="timer-display">45:00</span>
-                </div>
+                <div class="text-sm font-medium text-gray-400">Question <span id="q-number" class="text-white text-2xl font-bold font-cairo mx-1">1</span> / <span id="q-total" class="text-gray-500">--</span></div>
+                <div class="bg-black/40 text-primary px-4 py-2 rounded-lg font-mono font-bold border border-primary/20 flex items-center gap-2 shadow-lg backdrop-blur-md"><i class="fa-regular fa-clock animate-pulse"></i> <span id="timer-display">45:00</span></div>
             </div>
             <div class="glass-panel flex-1 md:flex-none rounded-2xl p-6 md:p-10 relative overflow-y-auto border-t-4 border-t-primary">
                 <h2 id="q-text" class="text-xl md:text-2xl font-bold mb-8 leading-relaxed text-gray-100">Loading...</h2>
                 <div id="options-container" class="space-y-3 pb-20 md:pb-0"></div>
             </div>
             <div class="flex justify-between mt-6">
-                <button onclick="prevQuestion()" id="prev-btn" class="px-6 py-3 rounded-xl border border-white/10 hover:bg-white/5 text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition flex items-center gap-2">
-                    <i class="fa-solid fa-chevron-left"></i> Prev
-                </button>
-                <button onclick="nextQuestion()" id="next-btn" class="px-8 py-3 rounded-xl bg-white text-black font-bold hover:bg-gray-200 shadow-lg transition flex items-center gap-2 transform active:scale-95">
-                    Next <i class="fa-solid fa-chevron-right"></i>
-                </button>
+                <button onclick="prevQuestion()" id="prev-btn" class="px-6 py-3 rounded-xl border border-white/10 hover:bg-white/5 text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition flex items-center gap-2"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-8 py-3 rounded-xl bg-white text-black font-bold hover:bg-gray-200 shadow-lg transition flex items-center gap-2 transform active:scale-95">Next <i class="fa-solid fa-chevron-right"></i></button>
             </div>
         </div>
 
         <div id="result-screen" class="hidden glass-panel max-w-md w-full p-8 rounded-3xl text-center border border-white/10 fade-in relative z-50">
-            <div class="absolute inset-0 bg-primary/5 blur-3xl rounded-full pointer-events-none"></div>
             <div class="w-28 h-28 rounded-full border-4 border-primary mx-auto flex flex-col items-center justify-center mb-6 shadow-[0_0_40px_rgba(255,0,51,0.4)] bg-black relative z-10">
                 <span id="final-score" class="text-5xl font-black text-white leading-none mt-1">0</span>
                 <span class="text-[10px] text-gray-400 uppercase tracking-widest mt-1">Score</span>
             </div>
             <h2 class="text-2xl font-bold mb-1">Exam Completed</h2>
             <p id="student-name-display" class="text-primary font-bold text-lg mb-4"></p>
-            <div id="save-status" class="mb-8 text-xs font-mono py-2 px-4 rounded-full bg-white/5 inline-flex items-center gap-2 border border-white/5">
-                <i class="fa-solid fa-spinner fa-spin text-primary"></i> <span class="text-gray-400">Syncing with leaderboard...</span>
-            </div>
+            <div id="save-status" class="mb-8 text-xs font-mono py-2 px-4 rounded-full bg-white/5 inline-flex items-center gap-2 border border-white/5"><i class="fa-solid fa-spinner fa-spin text-primary"></i> <span class="text-gray-400">Syncing...</span></div>
             <div class="space-y-3 relative z-10">
-                <button onclick="showReview()" class="w-full py-3.5 bg-gradient-to-r from-gray-800 to-gray-900 border border-white/10 hover:border-primary/50 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 group">
-                    <i class="fa-solid fa-eye text-primary group-hover:scale-110 transition-transform"></i> Review Answers
-                </button>
-                <div class="flex gap-3">
-                    <button onclick="location.reload()" class="flex-1 py-3 border border-white/10 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 text-sm transition font-medium">Retake</button>
-                    <a href="ranking.html" class="flex-1 py-3 bg-primary text-white rounded-xl hover:bg-red-700 text-sm flex items-center justify-center transition font-bold shadow-lg">Rank <i class="fa-solid fa-trophy ml-2"></i></a>
-                </div>
-                <a href="index.html" class="block w-full py-3 mt-2 border border-white/5 rounded-xl text-gray-500 hover:text-white hover:bg-white/5 text-sm transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-house"></i> Back to Home
-                </a>
+                <button onclick="showReview()" class="w-full py-3.5 bg-gradient-to-r from-gray-800 to-gray-900 border border-white/10 hover:border-primary/50 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 group"><i class="fa-solid fa-eye text-primary group-hover:scale-110 transition-transform"></i> Review Answers</button>
+                <div class="flex gap-3"><button onclick="location.reload()" class="flex-1 py-3 border border-white/10 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 text-sm transition font-medium">Retake</button><a href="ranking.html" class="flex-1 py-3 bg-primary text-white rounded-xl hover:bg-red-700 text-sm flex items-center justify-center transition font-bold shadow-lg">Rank <i class="fa-solid fa-trophy ml-2"></i></a></div>
+                <a href="index.html" class="block w-full py-3 mt-2 border border-white/5 rounded-xl text-gray-500 hover:text-white hover:bg-white/5 text-sm transition flex items-center justify-center gap-2"><i class="fa-solid fa-house"></i> Back to Home</a>
             </div>
         </div>
 
@@ -167,115 +94,186 @@
             </div>
             <div id="review-container" class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 max-w-4xl mx-auto w-full pb-20 custom-scrollbar"></div>
         </div>
-
     </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyASq2nOBpRMJtKqWWvTDD4hyGmEOp5cOnI",
-            authDomain: "spbu-med-platform.firebaseapp.com",
-            projectId: "spbu-med-platform",
-            storageBucket: "spbu-med-platform.firebasestorage.app",
-            messagingSenderId: "227576463828",
-            appId: "1:227576463828:web:1114162c17881bf5da9641"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyASq2nOBpRMJtKqWWvTDD4hyGmEOp5cOnI", authDomain: "spbu-med-platform.firebaseapp.com", projectId: "spbu-med-platform", storageBucket: "spbu-med-platform.firebasestorage.app", messagingSenderId: "227576463828", appId: "1:227576463828:web:1114162c17881bf5da9641" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- FULL QUESTIONS (32 Qs with Explanations) ---
-        const questions = [
-            { id: 1, q: "Who is credited with coining the term 'Bioethics' in 1927?", options: ["Van Rensselaer Potter", "André Hellegers", "Fritz Jahr", "Stephen Toulmin"], a: 2, explanation: "Fritz Jahr, a German pastor, coined the term 'Bio-Ethik' in 1927 in an article titled 'Bio-Ethics: Reviewing the Ethical Relations of Humans towards Animals and Plants'." },
-            { id: 2, q: "Which perspective asks: 'What do I owe to the common good?'", options: ["Ethics of Virtue", "Social Relationships", "Cosmopolitan", "Deontology"], a: 2, explanation: "The Cosmopolitan perspective (unlike the personal 'Virtue' approach) focuses on the bigger picture: our duties to society, public interest, and the common good." },
-            { id: 3, q: "Which was NOT a core factor for Bioethics emergence in 1960s?", options: ["Technical progress", "Environmental agenda", "Collapse of religion", "Shift to chronic diseases"], a: 2, explanation: "Bioethics emerged due to tech progress, civil rights, and environmental concerns. It was NOT caused by a 'collapse of religion', but rather changes in how institutions functioned." },
-            { id: 4, q: "Metaethics is primarily concerned with:", options: ["Consequences", "Meaning of moral terms", "Character", "Universalizability"], a: 1, explanation: "Metaethics doesn't ask 'what is right?', but rather 'what does *right* mean?'. It deals with the nature of moral language and concepts (e.g., G.E. Moore's Naturalistic Fallacy)." },
-            { id: 5, q: "What is 'Casuistry'?", options: ["Principlism", "Case-based reasoning", "Communitarianism", "Reflective Equilibrium"], a: 1, explanation: "Casuistry is the method of solving moral problems by analyzing specific individual cases (paradigms) rather than just applying abstract rules." },
-            { id: 6, q: "Bruno Latour's questioning of 'Interrelations of humans and non-humans' raises:", options: ["Human autonomy", "Conquering death", "Are non-humans moral agents?", "Natural law"], a: 2, explanation: "Latour explores the sociology of science, questioning if non-human entities (like technology or animals) can be considered 'moral agents' in the network." },
-            { id: 7, q: "'Wide Reflective Equilibrium' is a technique of:", options: ["Deontology", "Utilitarianism", "Applied Ethics", "Virtue Ethics"], a: 2, explanation: "Wide Reflective Equilibrium (Rawls) is a key method in Applied Ethics to check if our specific judgments match our general principles." },
-            { id: 8, q: "Isaiah Berlin described 'negative liberty' as:", options: ["Self-mastery", "Absence of coercion", "Consciousness of rules", "Ruling oneself"], a: 1, explanation: "Negative Liberty is 'freedom FROM' external interference. Positive Liberty is 'freedom TO' (self-mastery)." },
-            { id: 9, q: "Who stated: 'I am autonomous if I rule me, and no one else rules I'?", options: ["Kant", "Joel Feinberg", "Scanlon", "Beauchamp"], a: 1, explanation: "This is a quote by Joel Feinberg, emphasizing self-rule and independence from external control." },
-            { id: 10, q: "Kant's concept of Autonomy requires principles to meet:", options: ["Happiness", "Universality", "Utility", "Practical reason"], a: 1, explanation: "For Kant, true autonomy isn't just doing what you want; it's acting according to laws that could be Universal (The Categorical Imperative)." },
-            { id: 11, q: "What makes autonomy 'morally powerful'?", options: ["Social stability", "Moral individuality", "Efficiency", "Dogma"], a: 1, explanation: "Autonomy is powerful because it represents 'Moral Individuality' and 'Voluntarism'—the capacity to make one's own moral choices." },
-            { id: 12, q: "Weak vs Strong Paternalism is based on:", options: ["Legality", "Competence", "Harm severity", "Force"], a: 1, explanation: "Weak Paternalism intervenes only if the person is NOT competent (e.g., a child). Strong Paternalism overrides the choices of a competent adult." },
-            { id: 13, q: "The Ottoman document from 1539 is an example of:", options: ["Organ transplant", "Surgery waiver", "Confidentiality", "Experimentation"], a: 1, explanation: "This historical document was a waiver where a patient agreed not to prosecute the surgeon if the surgery failed, an early form of consent." },
-            { id: 14, q: "In Walter Reed's Yellow Fever experiments, death compensation was:", options: ["Pension", "$500", "$100", "$200"], a: 2, explanation: "Volunteers were paid $100 in gold. If they died, an additional $100 was given. It was one of the first contracts for human experimentation." },
-            { id: 15, q: "Which is NOT a Paternalism/Autonomy dilemma listed?", options: ["Overriding Refusals", "Partial Disclosures", "Excessive Risk", "Mandatory Vaccinations"], a: 3, explanation: "While vaccinations can be paternalistic, the lecture specifically listed: Overriding Refusals, Partial Disclosures, and Preventing Excessive Risk as key clinical dilemmas." },
-            { id: 16, q: "Model emphasizing 'Love is the true medicine':", options: ["Hippocratic", "Paracelsus", "Deontological", "Social"], a: 1, explanation: "Paracelsus' model focuses on the emotional and spiritual connection: 'The highest ground of medicine is love'." },
-            { id: 17, q: "Deontological Model (Nikolay Petrov) is characterized by:", options: ["Utility", "Strict duty", "Virtue", "Autonomy"], a: 1, explanation: "Deontology is the 'Ethics of Duty'. Petrov emphasized strict adherence to professional duties and rules." },
-            { id: 18, q: "Physician-Patient Privilege (PPP) is:", options: ["Refusal right", "Legal protection in court", "Records right", "Nonmaleficence"], a: 1, explanation: "PPP is a legal concept protecting the confidentiality of communication between doctor and patient, preventing it from being disclosed in court." },
-            { id: 19, q: "Public Health definition (1988 report):", options: ["No disease", "Well-being", "Collective action", "Free care"], a: 2, explanation: "The IOM 1988 report defined Public Health as 'What we as a society do collectively to assure the conditions in which people can be healthy'." },
-            { id: 20, q: "Malady distinction: Disease vs Illness is:", options: ["Objective vs Subjective", "Mental vs Physical", "Infectious vs Non", "Acute vs Chronic"], a: 0, explanation: "Disease is the objective biological pathology. Illness is the subjective experience of suffering by the patient." },
-            { id: 21, q: "Principle addressing balancing benefit/harm for population:", options: ["Veracity", "Fidelity", "Utility", "Solidarity"], a: 2, explanation: "The Principle of Utility (in Public Health) focuses on maximizing the net benefit over harm for the largest number of people." },
-            { id: 22, q: "In Russia, consent for 'Immature minors' (6-15) requires:", options: ["Own consent", "Unassisted", "Legal rep", "No consent"], a: 2, explanation: "For minors between 6 and 15 (immature), the consent of a legal representative (parents) is required for medical intervention." },
-            { id: 23, q: "Golden Rule 'What you wish upon others...' is:", options: ["Directive", "Negative", "Empathetic", "Categorical"], a: 2, explanation: "The phrasing 'What you wish upon others, you wish upon yourself' reflects the Empathetic or Responsive form of the Golden Rule." },
-            { id: 24, q: "Ethics of Virtue: Good judgement = Virtue + ...?", options: ["Divine command", "Utility calc", "Practical reason", "Maxims"], a: 2, explanation: "In Virtue Ethics, good moral judgment requires a Virtuous Character combined with Seasoned Practical Reason (Phronesis)." },
-            { id: 25, q: "Autonomy as 'sovereignty in deciding what to believe' defined by:", options: ["Scanlon", "Feinberg", "Kant", "Kohlberg"], a: 0, explanation: "Thomas Scanlon defined autonomy as the 'sovereignty in deciding what to believe and how to act' based on one's own reasons." },
-            { id: 26, q: "Communitarianism is characterized by:", options: ["Rules", "Social context", "Consequences", "Professionalism"], a: 1, explanation: "Communitarianism rejects the isolated individual. It focuses on the social context, community values, and the common good." },
-            { id: 27, q: "5th element of Informed Consent:", options: ["Status", "Recommendation", "Voluntariness", "Guardian"], a: 2, explanation: "The 5 elements are: Disclosure, Understanding, Voluntariness, Competence, and Consent (Decision). Voluntariness ensures no coercion." },
-            { id: 28, q: "Hippocratic Model contrasts with Bioethics in:", options: ["Euthanasia", "Secrecy", "Paternalism", "Nonmaleficence"], a: 2, explanation: "The Hippocratic model is Paternalistic (Doctor knows best). Modern Bioethics emphasizes Patient Autonomy and shared decision-making." },
-            { id: 29, q: "3rd cornerstone of Bioethics Interdisciplinarity:", options: ["Duties", "Common good", "Virtue", "Death"], a: 1, explanation: "The 3 cornerstones are: 1. Duties to self/others, 2. Rights/Justice, 3. The Common Good (Public Interest)." },
-            { id: 30, q: "Autonomy according to Kohlberg involves:", options: ["Consciousness of rules", "Free choice", "Adults only", "No coercion"], a: 0, explanation: "Lawrence Kohlberg viewed autonomy as a high stage of moral development involving 'Deliberate consciousness about obedience to rules'." },
-            { id: 31, q: "Overriding Refusals is a conflict between:", options: ["Justice/Beneficence", "Nonmaleficence/Utility", "Autonomy/Beneficence", "Veracity/Justice"], a: 2, explanation: "Overriding a refusal means going against the patient's Autonomy to provide a medical benefit (Beneficence) - a classic paternalistic conflict." },
-            { id: 32, q: "Privacy and PPP are mandatory for:", options: ["Rationality", "Voluntarism", "Autonomous being", "Agency"], a: 2, explanation: "Respecting privacy and privilege is essential to treat the patient as an 'Autonomous being' who controls their own life and information." }
-        ];
+        // --- QUESTION BANK ---
+        const questionBank = {
+            "bioethics": [
+                { id: 1, q: "Who is credited with coining the term 'Bioethics' in 1927?", options: ["Van Rensselaer Potter", "André Hellegers", "Fritz Jahr", "Stephen Toulmin"], a: 2, explanation: "Fritz Jahr coined 'Bio-Ethik' in 1927. Potter popularized it later in 1970." },
+                { id: 2, q: "Which ethical model emphasizes 'Love is the true medicine'?", options: ["Hippocratic", "Paracelsus", "Deontological", "Utilitarian"], a: 1, explanation: "Paracelsus emphasized the spiritual/emotional connection, stating the highest ground of medicine is love." },
+                { id: 3, q: "Which of the following is NOT one of the 4 key factors for the rise of bioethics in the 1960s?", options: ["Technical progress", "Environmental agenda", "Decline of religion", "Civil rights movement"], a: 2, explanation: "The four factors were: Technical progress, Environmental agenda, Civil rights movement, and Institutional changes. Religion's decline was not a primary driver." },
+                { id: 4, q: "What is the 'Golden Rule' in its positive form?", options: ["Do not do to others what you hate.", "Treat others as you would like to be treated.", "Maximize happiness for the greatest number.", "Act only according to that maxim whereby you can at the same time will that it should become a universal law."], a: 1, explanation: "Positive Golden Rule: Treat others as you would like to be treated." },
+                { id: 5, q: "Deontology is primarily concerned with:", options: ["Consequences", "Virtue", "Duty and Rules", "Social relationships"], a: 2, explanation: "Deontology (Kant) focuses on moral duties and rules, regardless of the consequences." },
+                { id: 6, q: "Which principle is associated with 'Primum non nocere'?", options: ["Beneficence", "Nonmaleficence", "Justice", "Autonomy"], a: 1, explanation: "Nonmaleficence means 'First, do no harm'." },
+                { id: 7, q: "In the context of autonomy, Isaiah Berlin defined 'Negative Liberty' as:", options: ["Freedom to self-mastery.", "Freedom from external interference.", "Freedom to vote.", "Freedom from internal desires."], a: 1, explanation: "Negative liberty is the absence of obstacles, barriers or constraints (Freedom FROM)." },
+                { id: 8, q: "What is 'Casuistry'?", options: ["Applying strict rules to every situation.", "Case-based reasoning using paradigms.", "Focusing solely on virtue.", "A mathematical approach to ethics."], a: 1, explanation: "Casuistry solves moral problems by analyzing specific cases and comparing them to paradigm cases." },
+                { id: 9, q: "Strong Paternalism involves overriding the choices of:", options: ["A competent patient.", "An incompetent patient.", "A child.", "An unconscious person."], a: 0, explanation: "Strong paternalism overrides the wishes of a competent person for their 'own good'." },
+                { id: 10, q: "Which element is NOT part of Informed Consent?", options: ["Disclosure", "Voluntariness", "Competence", "Coercion"], a: 3, explanation: "Coercion invalidates consent. The elements are Disclosure, Understanding, Voluntariness, Competence, and Consent." },
+                { id: 11, q: "Physician-Patient Privilege (PPP) primarily protects:", options: ["The doctor from lawsuits.", "The patient's records from being revealed in court.", "The hospital's reputation.", "The insurance company."], a: 1, explanation: "PPP prevents confidential communications from being disclosed in legal proceedings." },
+                { id: 12, q: "Public Health is defined as what society does collectively to:", options: ["Treat individual patients.", "Assure conditions for people to be healthy.", "Maximize profit.", "Enforce laws."], a: 1, explanation: "IOM definition: 'What we as a society do collectively to assure the conditions in which people can be healthy'." },
+                { id: 13, q: "Disease vs. Illness: 'Disease' refers to:", options: ["The subjective experience of suffering.", "The objective biological pathology.", "Social stigma.", "The patient's feelings."], a: 1, explanation: "Disease is objective/biological; Illness is subjective." },
+                { id: 14, q: "The 'Cosmopolitan' perspective asks:", options: ["What do I owe to my family?", "What do I owe to the common good?", "What maximizes my profit?", "What makes me virtuous?"], a: 1, explanation: "Cosmopolitanism focuses on duties to the broader society/common good." },
+                { id: 15, q: "Utilitarianism (Mill/Bentham) judges actions based on:", options: ["Intentions.", "Consequences (Utility).", "Character.", "Divine command."], a: 1, explanation: "Utilitarianism seeks the greatest good for the greatest number." },
+                { id: 16, q: "Who defined autonomy as 'sovereignty in deciding what to believe and how to act'?", options: ["Immanuel Kant", "Thomas Scanlon", "Joel Feinberg", "John Stuart Mill"], a: 1, explanation: "This definition is attributed to Thomas Scanlon." },
+                { id: 17, q: "The Ottoman document from 1539 described in the lecture was essentially:", options: ["A code of ethics.", "A surgical consent/waiver form.", "A prescription.", "A death certificate."], a: 1, explanation: "It was a legal waiver protecting the surgeon from prosecution if the surgery failed." },
+                { id: 18, q: "Which ethical model is characterized by 'The doctor knows best'?", options: ["Bioethical", "Hippocratic", "Democratic", "Consumerist"], a: 1, explanation: "The Hippocratic model is traditionally paternalistic." },
+                { id: 19, q: "Reflective Equilibrium is a method to:", options: ["Balance chemicals.", "Align specific judgments with general principles.", "Meditate.", "Calculate utility."], a: 1, explanation: "It's a state of balance among a set of beliefs, arrived at by mutual adjustment among general principles and particular judgments." },
+                { id: 20, q: "Malady is an umbrella term including:", options: ["Only infectious diseases.", "Disease, illness, sickness, disability.", "Only physical injuries.", "Mental states only."], a: 1, explanation: "Malady covers all forms of compromised health." },
+                { id: 21, q: "In the Walter Reed Yellow Fever experiments, volunteers were:", options: ["Coerced.", "Paid in gold and signed a contract.", "Unaware of the risks.", "Prisoners."], a: 1, explanation: "They signed a contract and were paid $100 in gold (plus $100 if they died)." },
+                { id: 22, q: "Ethics of Virtue focuses on:", options: ["The agent (person).", "The act itself.", "The outcome.", "The rules."], a: 0, explanation: "Virtue ethics emphasizes the character of the moral agent." },
+                { id: 23, q: "Privacy is distinct from Confidentiality because Privacy is:", options: ["A duty of the doctor.", "A right of the individual/patient.", "About data encryption.", "Only for celebrities."], a: 1, explanation: "Privacy is the right of the person; Confidentiality is the duty of the professional to protect that privacy." },
+                { id: 24, q: "The 'Nuremberg Code' was a result of:", options: ["The Tuskegee Study.", "Nazi medical war crimes.", "Yellow Fever experiments.", "The Declaration of Helsinki."], a: 1, explanation: "Established in 1947 after the Nuremberg trials of Nazi doctors." },
+                { id: 25, q: "Veracity refers to the duty of:", options: ["Doing good.", "Truth-telling.", "Fairness.", "Privacy."], a: 1, explanation: "Veracity is the principle of truthfulness." },
+                { id: 26, q: "Justice in bioethics often refers to:", options: ["Punishing criminals.", "Fair distribution of resources.", "Revenge.", "Following laws blindly."], a: 1, explanation: "Distributive Justice concerns the fair allocation of scarce medical resources." },
+                { id: 27, q: "To override a patient's refusal of life-saving treatment is an example of:", options: ["Autonomy.", "Paternalism.", "Justice.", "Veracity."], a: 1, explanation: "It prioritizes the patient's welfare (Beneficence) over their choice (Autonomy)." },
+                { id: 28, q: "Communitarianism emphasizes:", options: ["Individual rights.", "Social context and community values.", "Universal rules.", "Economic growth."], a: 1, explanation: "It focuses on the connection between the individual and the community." },
+                { id: 29, q: "Kant's Categorical Imperative suggests we should act only according to rules that could be:", options: ["Profitable.", "Secret.", "Universal laws.", "Flexible."], a: 2, explanation: "Act only on that maxim which you can at the same time will that it should become a universal law." },
+                { id: 30, q: "Metaethics asks:", options: ["What should I do?", "What does 'right' mean?", "Which policy is best?", "How to treat this patient?"], a: 1, explanation: "Metaethics explores the nature, origin, and meaning of ethical concepts." },
+                { id: 31, q: "In Russia, 'Immature minors' (age 6-15) require:", options: ["No consent.", "Only their own consent.", "Consent of a legal representative.", "Court order."], a: 2, explanation: "Parents/guardians must consent for this age group." },
+                { id: 32, q: "The 'Bioethical Model' views medicine as:", options: ["A business.", "A social institution.", "A religious calling.", "A purely technical field."], a: 1, explanation: "It integrates medicine into the broader social and rights-based framework." }
+            ],
+            "lec1": [
+                { id: 1, q: "J.J. Thomson's cathode ray deflection proved particles were:", options: ["Massive.", "Negatively charged.", "Inert.", "Positive."], a: 1, explanation: "Repulsion from negative plate = negative charge." },
+                { id: 2, q: "Copper (69% Cu-63, 31% Cu-65). Average mass calc:", options: ["(63+65)/2", "Weighted average", "Sum of mass", "Difference"], a: 1, explanation: "Weighted avg: (Mass1*%) + (Mass2*%)." },
+                { id: 3, q: "Gas density formula d = PM/RT implies highest density for:", options: ["CH4", "O2", "CO2", "SF6"], a: 3, explanation: "Highest Molar Mass = Highest Density." },
+                { id: 4, q: "Rutherford's experiment disproved Plum Pudding by showing:", options: ["No deflection.", "Large angle deflection.", "Absorption.", "Reflection."], a: 1, explanation: "Dense positive nucleus caused large deflections." },
+                { id: 5, q: "Total P = 12 atm, 1 mol N2 + 3 mol H2. P(H2) = ?", options: ["3 atm", "9 atm", "4 atm", "6 atm"], a: 1, explanation: "Mole fraction 0.75 * 12 = 9." },
+                { id: 6, q: "Van der Waals 'a' constant corrects for:", options: ["Volume.", "Forces.", "Temp.", "Moles."], a: 1, explanation: "a = intermolecular forces (pressure)." },
+                { id: 7, q: "Molecules in 0.04g Saccharin (M=183.18)?", options: ["1.31e20", "2.5e21", "6.02e23", "9.17e20"], a: 0, explanation: "Moles * Avogadro." },
+                { id: 8, q: "Structural isomers have:", options: ["Different formula.", "Same formula, diff connectivity.", "Same structure.", "Diff neutrons."], a: 1, explanation: "Definition of structural isomers." },
+                { id: 9, q: "Double T (Kelvin) at constant P, Volume:", options: ["Halves.", "Doubles.", "Same.", "Quadruples."], a: 1, explanation: "Charles Law V ~ T." },
+                { id: 10, q: "Millikan's drop experiment found:", options: ["Mass.", "Charge.", "e/m ratio.", "Nucleus."], a: 1, explanation: "Elementary charge." },
+                { id: 11, q: "Diatomic element?", options: ["He", "S", "I", "C"], a: 2, explanation: "Iodine is I2." },
+                { id: 12, q: "Mass number (A) is:", options: ["P+e", "P+N", "N+e", "Avg mass"], a: 1, explanation: "Protons + Neutrons." },
+                { id: 13, q: "Dalton's Law assumes gases:", options: ["Interact.", "Have volume.", "Act independently.", "Vary temp."], a: 2, explanation: "Partial pressures add up." },
+                { id: 14, q: "Isotopes differ in:", options: ["Chemicals.", "Protons.", "Electrons.", "Neutrons."], a: 3, explanation: "Same Z, diff N." },
+                { id: 15, q: "V vs 1/P plot for ideal gas is:", options: ["Hyperbola.", "Linear.", "Parabola.", "Exp."], a: 1, explanation: "Boyle's Law." },
+                { id: 16, q: "Empirical formula of C6H6:", options: ["C6H6", "CH", "CH2", "C3H3"], a: 1, explanation: "Simplest ratio." },
+                { id: 17, q: "Mass of 1 mole C-12:", options: ["12 amu", "12 g", "1 g", "6g"], a: 1, explanation: "Definition of mole." },
+                { id: 18, q: "Molar volume depends on:", options: ["P & T.", "Weight.", "Chemistry.", "Neutrons."], a: 0, explanation: "State variables." },
+                { id: 19, q: "Mass ~1/1800 of proton:", options: ["Neutron", "Electron", "Alpha", "Positron"], a: 1, explanation: "Electron mass." },
+                { id: 20, q: "Cation has:", options: ["More e.", "Fewer e.", "Equal.", "No charge."], a: 1, explanation: "Positive ion = lost electrons." }
+            ],
+            "lec2": [
+                { id: 1, q: "Temp independent unit?", options: ["Molarity", "Molality", "Vol %", "g/L"], a: 1, explanation: "Mass doesn't change with T." },
+                { id: 2, q: "Henry's Law Cg ~ ?", options: ["T", "P", "V", "M"], a: 1, explanation: "Pressure." },
+                { id: 3, q: "i for AlCl3?", options: ["1", "3", "4", "2"], a: 2, explanation: "1+3=4 ions." },
+                { id: 4, q: "Hypertonic effect on RBC:", options: ["Swell.", "Shrink.", "None.", "Divide."], a: 1, explanation: "Crenation." },
+                { id: 5, q: "Raoult's Law:", options: ["Psolv = Xsolv * P0", "P = Xsolute * P0", "P = P0/X", "P = X+P"], a: 0, explanation: "Vapor pressure law." },
+                { id: 6, q: "Colligative property?", options: ["Density", "Viscosity", "Osmotic P", "Color"], a: 2, explanation: "Depends on number of particles." },
+                { id: 7, q: "Solute added, BP:", options: ["Drops.", "Rises.", "Same.", "Fluctuates."], a: 1, explanation: "BP Elevation." },
+                { id: 8, q: "Reverse Osmosis pressure:", options: ["= Osmotic", "< Osmotic", "> Osmotic", "Zero"], a: 2, explanation: "Overcome osmotic pressure." },
+                { id: 9, q: "0.5 mol in 200g solv. Molality?", options: ["0.25", "2.5", "0.1", "0.0025"], a: 1, explanation: "0.5/0.2 = 2.5." },
+                { id: 10, q: "Gas solubility vs T:", options: ["Increases.", "Decreases.", "Same.", "Pressure only."], a: 1, explanation: "Gases escape at high T." },
+                { id: 11, q: "Weak electrolyte?", options: ["NaCl", "HCl", "HF", "NaOH"], a: 2, explanation: "Partial ionization." },
+                { id: 12, q: "Osmotic π = CRT, C is:", options: ["m", "M", "X", "w%"], a: 1, explanation: "Molarity." },
+                { id: 13, q: "Real i < Predicted i due to:", options: ["Ion pairing.", "Polymers.", "Evap.", "H-bond."], a: 0, explanation: "Effective concentration reduces." },
+                { id: 14, q: "Supersaturated solution is:", options: ["Stable.", "Unstable.", "Equilibrium.", "Dilute."], a: 1, explanation: "Precipitates easily." },
+                { id: 15, q: "FP Depression formula:", options: ["m*Kf", "M*Kf", "m/Kf", "PV"], a: 0, explanation: "Molality based." },
+                { id: 16, q: "Immiscible pair?", options: ["Ethanol/Water", "Oil/Water", "Vinegar/Water", "Methanol/Water"], a: 1, explanation: "Polar vs Nonpolar." },
+                { id: 17, q: "Mole fraction Xa:", options: ["na/L", "na/ntotal", "ga/gtotal", "na/kg"], a: 1, explanation: "Ratio of moles." },
+                { id: 18, q: "NaCl + Ice temp:", options: ["-5", "-20", "-50", "0"], a: 1, explanation: "Freezing mixture." },
+                { id: 19, q: "Tyndall effect seen in:", options: ["Solutions.", "Colloids.", "Solvents.", "Gases."], a: 1, explanation: "Light scattering." },
+                { id: 20, q: "Mass %:", options: ["m_solute/m_solution", "m_solute/m_solvent", "n/V", "m*100"], a: 0, explanation: "Fraction of total mass." }
+            ],
+            "lec3": [
+                { id: 1, q: "Reaction Rate unit:", options: ["atm/L", "M/s", "K/s", "g/L"], a: 1, explanation: "Conc change per time." },
+                { id: 2, q: "2A -> B, Rate relative to A:", options: ["d[A]/dt", "-1/2 d[A]/dt", "2 d[A]/dt", "d[A]"], a: 1, explanation: "Stoichiometric coefficient." },
+                { id: 3, q: "Rate = k[A][B], Order?", options: ["0", "1", "2", "3"], a: 2, explanation: "1+1." },
+                { id: 4, q: "1st Order Integrated Law:", options: ["[A]-kt", "ln[A]0-kt", "1/[A]", "Rate=k"], a: 1, explanation: "Ln plot." },
+                { id: 5, q: "Slope of ln[A] vs t:", options: ["k", "-k", "1/k", "Ea"], a: 1, explanation: "Negative k." },
+                { id: 6, q: "1st Order Half-life depends on:", options: ["Conc.", "k only.", "Product.", "P."], a: 1, explanation: "0.693/k." },
+                { id: 7, q: "1/[A] vs t linear -> Order:", options: ["0", "1", "2", "3"], a: 2, explanation: "2nd order characteristic." },
+                { id: 8, q: "Min energy for reaction:", options: ["H", "G", "Ea", "KE"], a: 2, explanation: "Activation Energy." },
+                { id: 9, q: "Arrhenius relates k to:", options: ["Conc.", "T and Ea.", "P.", "V."], a: 1, explanation: "Temperature dependence." },
+                { id: 10, q: "Catalyst:", options: ["Inc T.", "Lowers Ea.", "Inc Conc.", "Shifts K."], a: 1, explanation: "Alt pathway." },
+                { id: 11, q: "Slowest step is:", options: ["Initial.", "Term.", "Rate-determining.", "Fast."], a: 2, explanation: "Bottleneck." },
+                { id: 12, q: "Intermediate:", options: ["Prod then Cons.", "Cons then Prod.", "Start/End.", "Hidden."], a: 1, explanation: "Created and used up." },
+                { id: 13, q: "A+B -> Prod molecularity:", options: ["Uni", "Bi", "Ter", "Zero"], a: 1, explanation: "2 species." },
+                { id: 14, q: "[A]x2 -> Rate x2. Order:", options: ["0", "1", "2", "3"], a: 1, explanation: "Linear." },
+                { id: 15, q: "Rate=k[NO2]^2. Order:", options: ["Uni", "1", "2", "0"], a: 2, explanation: "Exponent." },
+                { id: 16, q: "Arrhenius slope:", options: ["-Ea/R", "Ea", "A", "R"], a: 0, explanation: "Log form." },
+                { id: 17, q: "Heterogeneous catalyst:", options: ["Same phase.", "Diff phase.", "Liquid.", "Gas."], a: 1, explanation: "Surface catalysis." },
+                { id: 18, q: "Collision theory needs:", options: ["Speed.", "Orientation+Ea.", "Vol.", "Cat."], a: 1, explanation: "Effective collision." },
+                { id: 19, q: "Zero order k units:", options: ["s-1", "M/s", "M-1s-1", "None"], a: 1, explanation: "Rate units." },
+                { id: 20, q: "Van't Hoff rule: Rate inc per:", options: ["1C", "10C", "100C", "1K"], a: 1, explanation: "10 deg rule." }
+            ],
+            "lec4": [
+                { id: 1, q: "At equilibrium, rates are:", options: ["Zero.", "Equal.", "Diff.", "Random."], a: 1, explanation: "Dynamic balance." },
+                { id: 2, q: "K expression:", options: ["Prod/React", "React/Prod", "Sum", "Diff"], a: 0, explanation: "Mass Action." },
+                { id: 3, q: "N2O4 <-> 2NO2 Keq:", options: ["[NO2]/[N2O4]", "[NO2]^2/[N2O4]", "Inverse", "Rate"], a: 1, explanation: "Coeff as power." },
+                { id: 4, q: "K >> 1 favors:", options: ["Reactants.", "Products.", "Neither.", "Solids."], a: 1, explanation: "High yield." },
+                { id: 5, q: "Pure solids/liquids in K:", options: ["Included.", "Excluded.", "Zero.", "Var."], a: 1, explanation: "Activity=1." },
+                { id: 6, q: "Q < K shifts:", options: ["Right.", "Left.", "None.", "Stop."], a: 0, explanation: "Make products." },
+                { id: 7, q: "Kp vs Kc:", options: ["Equal", "Kp=Kc(RT)^dn", "Div", "Mult"], a: 1, explanation: "Gas relation." },
+                { id: 8, q: "Exothermic + Heat shifts:", options: ["Right.", "Left.", "None.", "Inc K."], a: 1, explanation: "Consume heat." },
+                { id: 9, q: "Inc Pressure shifts to:", options: ["Less gas moles.", "More moles.", "None.", "Reactants."], a: 0, explanation: "Reduce P." },
+                { id: 10, q: "Catalyst changes:", options: ["K.", "Position.", "Rate.", "H."], a: 2, explanation: "Speed only." },
+                { id: 11, q: "H2+I2<->2HI Pressure effect:", options: ["Right.", "Left.", "None.", "K."], a: 2, explanation: "Delta n = 0." },
+                { id: 12, q: "K calc uses concentrations at:", options: ["Start.", "Equilibrium.", "Max.", "Min."], a: 1, explanation: "Definition." },
+                { id: 13, q: "Rxn x2, new K:", options: ["2K", "K^2", "sqrtK", "K/2"], a: 1, explanation: "Power rule." },
+                { id: 14, q: "Rxn reversed, new K:", options: ["-K", "1/K", "K", "sqrtK"], a: 1, explanation: "Reciprocal." },
+                { id: 15, q: "Remove NH3 (product):", options: ["Shift Left.", "Shift Right.", "None.", "Low K."], a: 1, explanation: "Restore equil." },
+                { id: 16, q: "Activity of solid:", options: ["0", "1", "Var", "Inf"], a: 1, explanation: "Convention." },
+                { id: 17, q: "Q uses concs at:", options: ["Equil.", "Any time.", "Prod.", "React."], a: 1, explanation: "Check status." },
+                { id: 18, q: "Resp. Acidosis (Excess CO2) shifts:", options: ["Right (H+ up).", "Left.", "None.", "Gas."], a: 0, explanation: "More acid." },
+                { id: 19, q: "Ksp is for:", options: ["Gases.", "Salts.", "Liq.", "Acids."], a: 1, explanation: "Solubility." },
+                { id: 20, q: "Factor changing K value:", options: ["Rate.", "Pos.", "Temp.", "P."], a: 2, explanation: "Only T." }
+            ]
+        };
 
-        let currentIndex = 0;
-        let userAnswers = new Array(questions.length).fill(null);
-        let score = 0;
-        let timerInterval;
-        let timeLeft = 45 * 60;
-        let studentName = "";
+        // --- SETUP ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const topic = urlParams.get('topic') || 'lec1';
+        const questions = questionBank[topic] || [];
+        const titles = { 'bioethics': "Bioethics Final", 'lec1': "Lec 01: Basics", 'lec2': "Lec 02: Solutions", 'lec3': "Lec 03: Kinetics", 'lec4': "Lec 04: Equilibrium" };
+        document.getElementById('quiz-title-display').innerText = titles[topic] || "Exam";
+        document.getElementById('q-total').innerText = questions.length;
+        document.getElementById('q-total-start').innerText = questions.length;
 
-        // --- FUNCTIONS ---
+        // --- CORE LOGIC ---
+        let currentIndex = 0, userAnswers = new Array(questions.length).fill(null), score = 0, timerInterval, timeLeft = 45 * 60, studentName = "";
+
         window.startQuiz = function() {
             const input = document.getElementById('student-name-input');
             const name = input.value.trim();
-            if (!name) {
-                input.classList.add('border-red-500', 'animate-pulse');
-                setTimeout(() => input.classList.remove('border-red-500', 'animate-pulse'), 1000);
-                return;
-            }
+            if (!name) { input.classList.add('border-red-500', 'animate-pulse'); setTimeout(() => input.classList.remove('border-red-500', 'animate-pulse'), 1000); return; }
             studentName = name;
-            
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('quiz-screen').classList.remove('hidden');
             document.getElementById('quiz-screen').classList.add('flex');
-            
             document.getElementById('exit-btn').classList.add('hidden');
             document.getElementById('progress-container').classList.remove('hidden');
-
             renderQuestion(0);
             startTimer();
         };
 
         window.renderQuestion = function(index) {
+            if (index >= questions.length) return;
             const q = questions[index];
             document.getElementById('q-number').innerText = index + 1;
             document.getElementById('q-text').innerText = q.q;
             document.getElementById('progress-bar').style.width = `${((index + 1) / questions.length) * 100}%`;
-            
             const container = document.getElementById('options-container');
             container.innerHTML = '';
             q.options.forEach((opt, optIndex) => {
                 const div = document.createElement('div');
                 const isSelected = userAnswers[index] === optIndex;
                 div.className = `option-card cursor-pointer p-4 md:p-5 rounded-xl border border-white/10 flex items-center gap-4 ${isSelected ? 'option-selected' : 'bg-white/5 hover:bg-white/10'}`;
-                div.onclick = () => selectOption(index, optIndex);
-                div.innerHTML = `
-                    <div class="w-6 h-6 rounded-full border-2 border-gray-500 shrink-0 flex items-center justify-center transition-colors ${isSelected ? 'border-primary' : ''}">
-                        ${isSelected ? '<div class="w-3 h-3 rounded-full bg-primary"></div>' : ''}
-                    </div>
-                    <span class="text-gray-300 font-medium ${isSelected ? 'text-white' : ''}">${opt}</span>
-                `;
+                div.onclick = () => { userAnswers[index] = optIndex; renderQuestion(index); };
+                div.innerHTML = `<div class="w-6 h-6 rounded-full border-2 border-gray-500 shrink-0 flex items-center justify-center transition-colors ${isSelected ? 'border-primary' : ''}">${isSelected ? '<div class="w-3 h-3 rounded-full bg-primary"></div>' : ''}</div><span class="text-gray-300 font-medium ${isSelected ? 'text-white' : ''}">${opt}</span>`;
                 container.appendChild(div);
             });
-            
             document.getElementById('prev-btn').disabled = index === 0;
             document.getElementById('prev-btn').classList.toggle('opacity-50', index === 0);
-            
             const nextBtn = document.getElementById('next-btn');
             if (index === questions.length - 1) {
                 nextBtn.innerHTML = 'Finish <i class="fa-solid fa-flag-checkered ml-2"></i>';
@@ -288,25 +286,22 @@
             }
         };
 
-        window.selectOption = function(qIndex, optIndex) { userAnswers[qIndex] = optIndex; renderQuestion(qIndex); };
         window.prevQuestion = function() { if(currentIndex > 0) { currentIndex--; renderQuestion(currentIndex); } };
+        window.nextQuestion = function() { if(currentIndex < questions.length - 1) { currentIndex++; renderQuestion(currentIndex); } };
 
         window.finishExam = async function() {
             clearInterval(timerInterval);
             score = 0;
             userAnswers.forEach((ans, idx) => { if (ans === questions[idx].a) score++; });
-            
             document.getElementById('final-score').innerText = score;
             document.getElementById('student-name-display').innerText = studentName;
-            
             document.getElementById('quiz-screen').classList.add('hidden');
             document.getElementById('progress-container').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
-
             const statusEl = document.getElementById('save-status');
             try {
                 await addDoc(collection(db, "leaderboard"), {
-                    name: studentName, score: score, total: questions.length, subject: "Bioethics", timestamp: serverTimestamp()
+                    name: studentName, score: score, total: questions.length, subject: titles[topic] || topic, timestamp: serverTimestamp()
                 });
                 statusEl.innerHTML = '<span class="text-green-400 font-bold flex items-center gap-2"><i class="fa-solid fa-check-circle"></i> Saved to Leaderboard</span>';
                 statusEl.classList.add('bg-green-500/10', 'border-green-500/30');
@@ -326,69 +321,26 @@
                 let optionsHTML = '';
                 q.options.forEach((opt, optIdx) => {
                     let optClass = "review-card-neutral p-4 rounded-xl mb-3 text-sm text-gray-400 flex justify-between items-center transition-all";
-                    let icon = "";
-                    let label = "";
-
-                    if (optIdx === correctChoice) { 
-                        optClass = "review-card-correct p-4 rounded-xl mb-3 text-sm font-bold text-green-400 flex justify-between items-center"; 
-                        icon = '<i class="fa-solid fa-check-circle text-lg"></i>'; 
-                        label = '<span class="text-[10px] uppercase tracking-wider border border-green-500/30 px-2 py-1 rounded bg-green-500/10 mr-2">Correct Answer</span>';
-                    } 
-                    
+                    let icon = "", label = "";
+                    if (optIdx === correctChoice) { optClass = "review-card-correct p-4 rounded-xl mb-3 text-sm font-bold text-green-400 flex justify-between items-center"; icon = '<i class="fa-solid fa-check-circle text-lg"></i>'; label = '<span class="text-[10px] uppercase tracking-wider border border-green-500/30 px-2 py-1 rounded bg-green-500/10 mr-2">Correct Answer</span>'; }
                     if (optIdx === userChoice) {
-                         if (!isCorrect) {
-                            optClass = "review-card-wrong p-4 rounded-xl mb-3 text-sm font-bold text-red-400 flex justify-between items-center"; 
-                            icon = '<i class="fa-solid fa-circle-xmark text-lg"></i>';
-                            label = '<span class="text-[10px] uppercase tracking-wider border border-red-500/30 px-2 py-1 rounded bg-red-500/10 mr-2">Your Answer</span>';
-                         } else {
-                            label = '<span class="text-[10px] uppercase tracking-wider border border-green-500/30 px-2 py-1 rounded bg-green-500/10 mr-2">Your Answer</span>';
-                         }
+                         if (!isCorrect) { optClass = "review-card-wrong p-4 rounded-xl mb-3 text-sm font-bold text-red-400 flex justify-between items-center"; icon = '<i class="fa-solid fa-circle-xmark text-lg"></i>'; label = '<span class="text-[10px] uppercase tracking-wider border border-red-500/30 px-2 py-1 rounded bg-red-500/10 mr-2">Your Answer</span>'; }
+                         else { label = '<span class="text-[10px] uppercase tracking-wider border border-green-500/30 px-2 py-1 rounded bg-green-500/10 mr-2">Your Answer</span>'; }
                     }
-
-                    optionsHTML += `<div class="${optClass}">
-                                        <span>${opt}</span>
-                                        <div class="flex items-center gap-2">${label} ${icon}</div>
-                                    </div>`;
+                    optionsHTML += `<div class="${optClass}"><span>${opt}</span><div class="flex items-center gap-2">${label} ${icon}</div></div>`;
                 });
-                
                 const qBlock = document.createElement('div');
                 qBlock.className = "bg-white/5 border border-white/10 rounded-2xl p-6 shadow-lg mb-6 relative overflow-hidden";
-                qBlock.innerHTML = `
-                    <div class="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-bl-full -mr-4 -mt-4 pointer-events-none"></div>
-                    <div class="flex gap-4 mb-6">
-                        <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 shadow-lg ${isCorrect ? 'bg-green-500 text-black' : 'bg-red-500 text-white'}">${idx+1}</span>
-                        <h3 class="font-bold text-lg leading-relaxed text-gray-100">${q.q}</h3>
-                    </div>
-                    <div class="pl-0 md:pl-12 mb-6">${optionsHTML}</div>
-                    
-                    <div class="pl-0 md:pl-12">
-                        <div class="explanation-box p-5 rounded-xl relative overflow-hidden">
-                            <div class="flex items-center gap-2 text-blue-400 text-xs font-bold uppercase tracking-widest mb-2">
-                                <i class="fa-solid fa-lightbulb"></i> Explanation
-                            </div>
-                            <p class="text-gray-300 text-sm leading-relaxed">${q.explanation}</p>
-                        </div>
-                    </div>
-                `;
+                qBlock.innerHTML = `<div class="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-bl-full -mr-4 -mt-4 pointer-events-none"></div><div class="flex gap-4 mb-6"><span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 shadow-lg ${isCorrect ? 'bg-green-500 text-black' : 'bg-red-500 text-white'}">${idx+1}</span><h3 class="font-bold text-lg leading-relaxed text-gray-100">${q.q}</h3></div><div class="pl-0 md:pl-12 mb-6">${optionsHTML}</div><div class="pl-0 md:pl-12"><div class="explanation-box p-5 rounded-xl relative overflow-hidden"><div class="flex items-center gap-2 text-blue-400 text-xs font-bold uppercase tracking-widest mb-2"><i class="fa-solid fa-lightbulb"></i> Explanation</div><p class="text-gray-300 text-sm leading-relaxed">${q.explanation}</p></div></div>`;
                 container.appendChild(qBlock);
             });
             document.getElementById('result-screen').classList.add('hidden');
             document.getElementById('review-screen').classList.remove('hidden');
         };
 
-        window.closeReview = function() {
-            document.getElementById('review-screen').classList.add('hidden');
-            document.getElementById('result-screen').classList.remove('hidden');
-        };
-
-        function startTimer() {
-            updateTimerDisplay();
-            timerInterval = setInterval(() => { timeLeft--; updateTimerDisplay(); if (timeLeft <= 0) finishExam(); }, 1000);
-        }
-        function updateTimerDisplay() {
-            const m = Math.floor(timeLeft / 60); const s = timeLeft % 60;
-            document.getElementById('timer-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-        }
+        window.closeReview = function() { document.getElementById('review-screen').classList.add('hidden'); document.getElementById('result-screen').classList.remove('hidden'); };
+        function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeLeft--; updateTimerDisplay(); if (timeLeft <= 0) finishExam(); }, 1000); }
+        function updateTimerDisplay() { const m = Math.floor(timeLeft / 60); const s = timeLeft % 60; document.getElementById('timer-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`; }
     </script>
 </body>
 </html>
