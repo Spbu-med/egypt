@@ -130,17 +130,16 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Database Subject Mapping (Must match quiz.html logic)
-        // If quiz.html saved 'bioethics' as 'Bioethics', we look for 'Bioethics' here.
+        // Database Subject Mapping (Matched with quiz.html)
         const subjectsMap = {
-            'bio': 'Bioethics',
+            'bio': 'Bioethics Final', // الاسم المحفوظ في الداتابيز
             'lec1': 'Lec 01: Basics & Gases',
             'lec2': 'Lec 02: Solutions',
             'lec3': 'Lec 03: Kinetics',
             'lec4': 'Lec 04: Equilibrium'
         };
 
-        // Filter Setup
+        // Filter Setup (NO 'ALL' BUTTON)
         const filtersContainer = document.getElementById('filters-container');
         const filters = [
             { id: 'bio', label: 'Bioethics', icon: 'fa-heart-pulse' },
@@ -160,7 +159,7 @@
         filters.forEach(f => {
             const btn = document.createElement('button');
             btn.className = `filter-btn ${f.id === activeFilter ? 'active' : ''}`;
-            btn.id = `btn-${f.id}`; // Add ID for easy selection
+            btn.id = `btn-${f.id}`; 
             btn.innerHTML = `<i class="fa-solid ${f.icon}"></i> ${f.label}`;
             btn.onclick = () => changeFilter(f.id, btn, f.label);
             filtersContainer.appendChild(btn);
@@ -226,7 +225,7 @@
                     const data = doc.data();
                     const initial = data.name.charAt(0).toUpperCase();
                     // Fallback for max score: Bio=32, Lecs=20
-                    const maxScore = data.total || (data.subject === 'Bioethics' ? 32 : 20);
+                    const maxScore = data.total || (data.subject.includes('Bioethics') ? 32 : 20);
                     
                     let rankBadge, rowClass;
                     if(rank === 1) { 
