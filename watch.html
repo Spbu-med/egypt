@@ -8,155 +8,63 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root {
-            --primary: #ff0033;
-            --bg: #050505;
-            --card-surface: #141414;
-            --text-main: #ffffff;
-            --text-muted: #888888;
-        }
-
+        :root { --primary: #ff0033; --bg: #050505; --glass: rgba(20, 20, 20, 0.7); --text: #fff; }
         body { 
-            margin: 0; 
-            background-color: var(--bg); 
-            color: var(--text-main); 
-            font-family: 'Roboto', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center; /* يخلي الكارت في نص الشاشة */
-            padding: 20px;
-            box-sizing: border-box;
+            margin: 0; background-color: var(--bg); color: var(--text); font-family: 'Roboto', sans-serif;
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; overflow-x: hidden;
         }
 
-        /* 1. تأثير الإضاءة الخلفية (The Glow) */
+        /* Ambient Glow */
         .glow-effect {
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px; height: 300px;
-            background: var(--primary);
-            filter: blur(150px);
-            opacity: 0.2; /* إضاءة هادية */
-            z-index: -1;
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 400px; height: 400px; background: var(--primary);
+            filter: blur(200px); opacity: 0.15; z-index: -1; pointer-events: none;
         }
 
-        /* 2. زر الرجوع العلوي */
-        .nav-container {
-            width: 100%;
-            max-width: 500px; /* نفس عرض الكارت */
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: flex-start;
-        }
-
+        .nav-container { width: 100%; max-width: 600px; margin-bottom: 20px; display: flex; }
         .back-btn {
-            background: rgba(255, 255, 255, 0.08);
-            color: #ccc;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            display: flex; align-items: center; gap: 8px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s ease;
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.05); color: #ccc; text-decoration: none;
+            padding: 10px 20px; border-radius: 50px; font-size: 0.9rem; font-weight: 600;
+            display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s; backdrop-filter: blur(10px);
         }
+        .back-btn:hover { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 20px rgba(255,0,51,0.3); }
 
-        .back-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        /* 3. الكارت الرئيسي (Masterpiece) */
         .lesson-card {
-            width: 100%;
-            max-width: 500px; /* حجم مثالي للموبايل والتابلت */
-            background: var(--card-surface);
-            border-radius: 28px; /* حواف دائرية ناعمة جداً */
-            overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 100%; max-width: 600px; background: var(--glass); backdrop-filter: blur(25px);
+            border-radius: 30px; overflow: hidden; box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08); animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+        .video-box { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; }
+        .video-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-        /* منطقة الفيديو */
-        .video-box {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            background: #000;
-        }
-
-        .video-box iframe {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            border: none;
-        }
-
-        /* منطقة المعلومات */
-        .info-box {
-            padding: 25px;
-        }
-
+        .info-box { padding: 30px; }
         .lesson-title {
-            font-family: 'Cairo', sans-serif;
-            font-size: 1.35rem;
-            font-weight: 800;
-            line-height: 1.3;
-            margin: 0 0 15px 0;
-            background: linear-gradient(to right, #fff, #bbb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'Cairo', sans-serif; font-size: 1.4rem; font-weight: 800; line-height: 1.3; margin: 0 0 15px 0;
+            background: linear-gradient(to right, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* التاجز (High Yield / HD) */
-        .tags-container {
-            display: flex; gap: 10px; margin-bottom: 25px;
-        }
-
+        .tags-container { display: flex; gap: 10px; margin-bottom: 25px; }
         .tag-pill {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #aaa;
-            display: flex; align-items: center; gap: 6px;
+            background: rgba(255, 255, 255, 0.05); padding: 6px 14px; border-radius: 10px;
+            font-size: 0.75rem; font-weight: 600; color: #bbb; display: flex; align-items: center; gap: 6px;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
         .tag-pill i { color: var(--primary); }
 
-        /* أزرار التفاعل السفلية */
         .actions-row {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;
+            display: flex; justify-content: space-between; align-items: center;
         }
-
         .action-item {
             display: flex; flex-direction: column; align-items: center; gap: 5px;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: 0.2s;
+            color: #888; font-size: 0.75rem; cursor: pointer; transition: 0.2s; font-weight: 500;
         }
-        
-        .action-item i { font-size: 1.2rem; margin-bottom: 2px; }
-        .action-item:hover { color: var(--primary); }
+        .action-item i { font-size: 1.3rem; margin-bottom: 2px; transition: 0.2s; }
+        .action-item:hover { color: white; }
+        .action-item:hover i { color: var(--primary); transform: scale(1.1); }
 
     </style>
 </head>
@@ -166,47 +74,38 @@
 
     <div class="nav-container">
         <a href="videos.html" class="back-btn">
-            <i class="fa-solid fa-arrow-left"></i> Back to Course List
+            <i class="fa-solid fa-arrow-left"></i> Back to Course
         </a>
     </div>
 
     <div class="lesson-card">
-        
         <div class="video-box">
             <iframe id="player" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
-
         <div class="info-box">
             <h1 class="lesson-title" id="lesson-title">Loading Lesson...</h1>
-            
             <div class="tags-container">
-                <div class="tag-pill"><i class="fa-solid fa-video"></i> HD Quality</div>
-                <div class="tag-pill"><i class="fa-solid fa-graduation-cap"></i> Year 1</div>
-                <div class="tag-pill"><i class="fa-solid fa-fire"></i> High Yield</div>
+                <div class="tag-pill"><i class="fa-solid fa-video"></i> 1080p</div>
+                <div class="tag-pill"><i class="fa-solid fa-graduation-cap"></i> Chemistry</div>
+                <div class="tag-pill"><i class="fa-solid fa-bolt"></i> High Yield</div>
             </div>
-
             <div class="actions-row">
                 <div class="action-item"><i class="fa-regular fa-thumbs-up"></i> Like</div>
                 <div class="action-item"><i class="fa-regular fa-bookmark"></i> Save</div>
                 <div class="action-item"><i class="fa-solid fa-share-nodes"></i> Share</div>
             </div>
         </div>
-
     </div>
 
     <script>
-        // كود تشغيل الفيديو
         const params = new URLSearchParams(window.location.search);
         const videoId = params.get('v');
         const title = params.get('t');
-
-        if(videoId) {
-            document.getElementById('player').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
-        }
-        if(title) {
-            document.getElementById('lesson-title').textContent = title;
-        }
+        if(videoId) { document.getElementById('player').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`; }
+        if(title) { document.getElementById('lesson-title').textContent = title; }
     </script>
 
 </body>
 </html>
+
+
