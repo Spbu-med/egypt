@@ -1,228 +1,386 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPbU Egypt - Home</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <title>SPbU Medical Platform</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        neon: {
+                            red: '#FF0033',
+                            purple: '#7B2CBF',
+                            gold: '#FFD700',
+                            blue: '#0088cc', // Telegram
+                            green: '#25D366', // Whatsapp
+                        },
+                        dark: {
+                            bg: '#030303',
+                            card: '#0A0A0A',
+                            border: '#1F1F1F'
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'tilt': 'tilt 10s infinite linear',
+                        'shine': 'shine 2s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        tilt: {
+                            '0%, 50%, 100%': { transform: 'rotate(0deg)' },
+                            '25%': { transform: 'rotate(1deg)' },
+                            '75%': { transform: 'rotate(-1deg)' },
+                        },
+                        shine: {
+                            '0%': { backgroundPosition: '200% center' },
+                            '100%': { backgroundPosition: '-200% center' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        :root {
-            --primary: #ff0033;
-            --dark: #050505;
-            --card-bg: rgba(20, 20, 20, 0.6);
-            --border: rgba(255, 255, 255, 0.08);
-            --text: #ffffff;
-        }
-        
         body {
-            margin: 0; 
-            font-family: 'Cairo', sans-serif; 
-            background-color: var(--dark); 
-            color: var(--text);
-            min-height: 100vh; 
+            background-color: #030303;
+            color: #ffffff;
             overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Neon Glow Card */
+        .neon-card {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             position: relative;
-        }
-
-        /* 1. الخلفية المتحركة (Aurora Effect) */
-        body::before, body::after {
-            content: '';
-            position: fixed;
-            width: 500px; height: 500px;
-            border-radius: 50%;
-            filter: blur(100px);
-            z-index: -1;
-            opacity: 0.4;
-            animation: floatbg 15s infinite alternate ease-in-out;
-        }
-        body::before {
-            background: radial-gradient(circle, var(--primary), transparent 70%);
-            top: -10%; left: -10%;
-        }
-        body::after {
-            background: radial-gradient(circle, #500000, transparent 70%);
-            bottom: -10%; right: -10%;
-            animation-delay: -5s;
-        }
-
-        @keyframes floatbg {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 50px) scale(1.2); }
-        }
-
-        /* الهيدر */
-        header {
-            padding: 20px 5%; 
-            background: rgba(5, 5, 5, 0.7); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border); 
-            display: flex; justify-content: space-between; align-items: center; 
-            position: sticky; top: 0; z-index: 1000;
-        }
-        .logo { font-size: 1.6rem; font-weight: 900; display: flex; align-items: center; gap: 12px; letter-spacing: 1px; }
-        .logo i { color: var(--primary); filter: drop-shadow(0 0 10px var(--primary)); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
-
-        /* Hero Area */
-        .hero { text-align: center; padding: 100px 20px 60px; position: relative; }
-        .hero h1 {
-            font-size: 3.5rem; margin: 15px 0; font-weight: 900;
-            background: linear-gradient(to bottom, #fff, #999); 
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));
-        }
-        .badge-year {
-            background: rgba(255, 0, 51, 0.1); 
-            border: 1px solid rgba(255, 0, 51, 0.3);
-            color: #ff4d6d;
-            padding: 6px 20px; border-radius: 50px;
-            font-size: 0.9rem; font-weight: bold; display: inline-block;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 15px rgba(255, 0, 51, 0.2);
-        }
-
-        /* Grid & Cards */
-        .grid-container {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;
-            padding: 20px 5% 100px; max-width: 1200px; margin: 0 auto;
-        }
-        
-        .card {
-            background: var(--card-bg); 
-            backdrop-filter: blur(30px); 
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid var(--border);
-            border-radius: 30px; 
-            padding: 35px; 
-            text-align: center; 
-            position: relative; 
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
-            text-decoration: none; 
-            color: white; 
-            display: block; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Card Hover Effect (Glow Border) */
-        .card:hover {
-            transform: translateY(-10px) scale(1.02);
+        /* The Glow Effect behind cards */
+        .neon-card::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            z-index: -1;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 0, 51, 0.4),
+                rgba(123, 44, 191, 0.1),
+                transparent 60%
+            );
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: inherit;
+        }
+
+        .neon-card:hover {
+            transform: translateY(-5px) scale(1.02);
             border-color: rgba(255, 0, 51, 0.5);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
-                        0 0 0 1px rgba(255, 0, 51, 0.2) inset;
+            box-shadow: 0 0 40px -10px rgba(255, 0, 51, 0.3);
         }
 
-        .icon-container {
-            width: 80px; height: 80px; 
-            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-            border-radius: 25px;
-            display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;
-            font-size: 2.2rem; color: var(--primary); 
-            border: 1px solid var(--border);
-            transition: 0.4s;
+        .neon-card:hover::before { opacity: 1; }
+
+        /* Icon Glow */
+        .icon-glow {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
         }
+        .neon-card:hover .icon-glow {
+            background: #FF0033;
+            color: white;
+            box-shadow: 0 0 30px rgba(255, 0, 51, 0.6);
+            transform: rotate(10deg);
+            border-color: transparent;
+        }
+
+        /* Gold Card Special */
+        .card-gold:hover {
+            border-color: #FFD700;
+            box-shadow: 0 0 40px -10px rgba(255, 215, 0, 0.3);
+        }
+        .card-gold::before { background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), transparent 60%); }
+        .card-gold:hover .icon-glow { background: #FFD700; color: black; box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
+
+        /* Social Cards */
+        .social-card {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .social-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.08); }
         
-        .card:hover .icon-container {
-            background: var(--primary); 
-            color: white; 
-            box-shadow: 0 0 30px rgba(255, 0, 51, 0.4);
-            transform: rotate(10deg) scale(1.1);
-            border-radius: 50%; /* Morph shape */
-        }
-
-        h3 { font-size: 1.5rem; margin: 0 0 10px; font-weight: 800; letter-spacing: 0.5px; }
-        p { font-size: 0.95rem; color: #888; line-height: 1.6; margin-bottom: 25px; }
-
-        /* Buttons */
-        .status {
-            display: inline-block; width: 100%; padding: 12px 0; border-radius: 15px;
-            font-size: 0.9rem; font-weight: 700; letter-spacing: 1px;
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            color: #666; transition: 0.3s;
-        }
+        .social-wa:hover { border-color: #25D366; box-shadow: 0 0 20px rgba(37, 211, 102, 0.2); }
+        .social-wa .s-icon { color: #25D366; }
         
-        .status.active {
-            background: linear-gradient(90deg, var(--primary), #cc0029);
-            color: white; border: none;
-            box-shadow: 0 5px 20px rgba(255, 0, 51, 0.3);
-        }
+        .social-tg:hover { border-color: #0088cc; box-shadow: 0 0 20px rgba(0, 136, 204, 0.2); }
+        .social-tg .s-icon { color: #0088cc; }
 
-        /* Gold Card Special (Ranking) */
-        .card.gold { border-color: rgba(255, 215, 0, 0.2); }
-        .card.gold:hover { border-color: #ffd700; box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255, 215, 0, 0.2) inset; }
-        .card.gold .icon-container { color: #ffd700; border-color: rgba(255, 215, 0, 0.2); }
-        .card.gold:hover .icon-container { background: #ffd700; color: black; box-shadow: 0 0 30px rgba(255, 215, 0, 0.4); }
-        .status.gold-glow {
-            background: linear-gradient(90deg, #ffd700, #b8860b);
-            color: black; box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3); border: none;
-        }
-
-        footer { 
-            text-align: center; padding: 40px; color: #444; font-size: 0.85rem; 
-            border-top: 1px solid var(--border); margin-top: auto;
-        }
-        
-        /* Mobile Optimization */
-        @media (max-width: 600px) {
-            .hero h1 { font-size: 2.5rem; }
-            .grid-container { padding: 20px 5% 60px; gap: 20px; }
-            .card { padding: 25px; }
+        /* Animated Text */
+        .text-shine {
+            background: linear-gradient(to right, #fff 20%, #ff0033 40%, #ff0033 60%, #fff 80%);
+            background-size: 200% auto;
+            color: #000;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            animation: shine 4s linear infinite;
         }
     </style>
 </head>
-<body>
+<body class="flex flex-col min-h-screen relative">
 
-    <header>
-        <div class="logo"> <i class="fa-solid fa-heart-pulse"></i> <span>SPbU MED</span> </div>
-        <div style="font-size: 0.8rem; color: #888; font-weight: 500;">EGYPT BRANCH</div>
+    <!-- Ambient Background Blobs -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-neon-red/20 rounded-full blur-[100px] animate-blob"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-neon-purple/20 rounded-full blur-[100px] animate-blob animation-delay-2000"></div>
+        <div class="absolute top-[40%] left-[40%] w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 border-b border-white/5 bg-black/60 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="relative w-10 h-10 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-neon-red blur-lg opacity-50 animate-pulse"></div>
+                    <i class="fa-solid fa-heart-pulse text-white text-xl relative z-10"></i>
+                </div>
+                <span class="font-heading font-bold text-2xl tracking-tight">SPbU <span class="text-neon-red">MED</span></span>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-400">
+                    <a href="#resources" class="hover:text-white transition-colors">Resources</a>
+                    <a href="#community" class="hover:text-white transition-colors">Community</a>
+                </div>
+                <div class="h-6 w-px bg-white/10 hidden md:block"></div>
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-neon-red/30 bg-neon-red/10">
+                    <span class="w-2 h-2 rounded-full bg-neon-red animate-pulse"></span>
+                    <span class="text-xs font-bold text-neon-red uppercase tracking-wider">Live System</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-16 px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+            <div class="inline-block mb-6 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+                <span class="text-xs font-bold text-gray-300 tracking-[0.2em] uppercase">Batch 2025 • Egypt Branch</span>
+            </div>
+            
+            <h1 class="font-heading font-black text-5xl md:text-7xl lg:text-8xl mb-6 leading-tight tracking-tight">
+                Medical <br>
+                <span class="text-shine">Excellence.</span>
+            </h1>
+            
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+                The ultimate hub for Saint Petersburg medical students. 
+                Master Anatomy, Chemistry, and more with our advanced tools.
+            </p>
+        </div>
     </header>
 
-    <section class="hero">
-        <div class="badge-year" dir="ltr">2025 - 2026</div>
-        <h1>طلاب السنة الأولى</h1>
-        <p style="color:#bbb; margin-top:10px;">المنصة الشاملة لطلاب طب سانت بطرسبرغ</p>
-    </section>
+    <!-- Main Grid -->
+    <main id="resources" class="flex-1 w-full max-w-7xl mx-auto px-6 pb-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-    <section class="grid-container">
-        
-        <a href="flashcards-menu.html" class="card">
-            <div class="icon-container"><i class="fa-solid fa-clone"></i></div>
-            <h3>Flash Cards</h3>
-            <p>ذاكر بذكاء: اختر المادة وابدأ المراجعة السريعة.</p>
-            <div class="status active">OPEN MENU</div>
-        </a>
+            <!-- 1. Quiz Bank (HOT) -->
+            <a href="quizzes-menu.html" class="neon-card group p-8 rounded-[2rem] h-full flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="icon-glow w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-400">
+                            <i class="fa-solid fa-flask"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-neon-red text-white text-[10px] font-black rounded-full shadow-[0_0_15px_rgba(255,0,51,0.6)] animate-bounce">
+                            ANATOMY ADDED
+                        </span>
+                    </div>
+                    <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-red transition-colors">Quiz Bank</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Interactive exams for Chemistry, Bioethics, and Anatomy. Instant grading included.
+                    </p>
+                </div>
+                <div class="mt-8 flex items-center gap-2 text-sm font-bold text-white opacity-60 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
+                    Start Exam <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
 
-        <a href="quizzes-menu.html" class="card">
-            <div class="icon-container"><i class="fa-solid fa-flask"></i></div>
-            <h3>Quiz Bank</h3>
-            <p>اختبارات تفاعلية (كيمياء & بايو) مع إجابات.</p>
-            <div class="status active">OPEN MENU</div>
-        </a>
+            <!-- 2. Leaderboard (GOLD) -->
+            <a href="ranking.html" class="neon-card card-gold group p-8 rounded-[2rem] h-full flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="icon-glow w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-400">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-neon-gold text-black text-[10px] font-black rounded-full shadow-[0_0_15px_rgba(255,215,0,0.4)]">
+                            TOP RATED
+                        </span>
+                    </div>
+                    <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-gold transition-colors">Leaderboard</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Compete with the elite. Check your ranking across all subjects and exams.
+                    </p>
+                </div>
+                <div class="mt-8 flex items-center gap-2 text-sm font-bold text-white opacity-60 group-hover:opacity-100 group-hover:translate-x-2 transition-all group-hover:text-neon-gold">
+                    View Ranks <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
 
-        <a href="videos.html" class="card">
-            <div class="icon-container"><i class="fa-solid fa-play"></i></div>
-            <h3>Video Lectures</h3>
-            <p>مكتبة فيديوهات الكيمياء والغازات.</p>
-            <div class="status active">OPEN NOW</div>
-        </a>
+            <!-- 3. Videos -->
+            <a href="videos.html" class="neon-card group p-8 rounded-[2rem] h-full flex flex-col justify-between">
+                <div>
+                    <div class="mb-6">
+                        <div class="icon-glow w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-400">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                    </div>
+                    <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-red transition-colors">Lectures</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        High-quality video library for Chemistry and Gases module explanations.
+                    </p>
+                </div>
+                <div class="mt-8 flex items-center gap-2 text-sm font-bold text-white opacity-60 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
+                    Watch Now <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
 
-        <a href="ranking.html" class="card gold">
-            <div class="icon-container"><i class="fa-solid fa-crown"></i></div>
-            <h3>Top Ranking</h3>
-            <p>شاهد ترتيب الدفعة والأوائل في كل مادة.</p>
-            <div class="status gold-glow">VIEW NOW</div>
-        </a>
+            <!-- 4. Flashcards -->
+            <a href="flashcards-menu.html" class="neon-card group p-8 rounded-[2rem] h-full flex flex-col justify-between">
+                <div>
+                    <div class="mb-6">
+                        <div class="icon-glow w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-400">
+                            <i class="fa-solid fa-clone"></i>
+                        </div>
+                    </div>
+                    <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-red transition-colors">Flashcards</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Smart revision tool. Flip, learn, and memorize key medical terms efficiently.
+                    </p>
+                </div>
+                <div class="mt-8 flex items-center gap-2 text-sm font-bold text-white opacity-60 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
+                    Start Study <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
 
-        <div class="card">
-            <div class="icon-container"><i class="fa-solid fa-file-medical"></i></div>
-            <h3>Summaries</h3>
-            <p>ملخصات ومذكرات PDF للتحميل.</p>
-            <div class="status">COMING SOON</div>
+            <!-- 5. Summaries (Locked) -->
+            <div class="neon-card opacity-50 cursor-not-allowed p-8 rounded-[2rem] h-full flex flex-col justify-between border-dashed border-white/10">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-600">
+                            <i class="fa-solid fa-file-pdf"></i>
+                        </div>
+                        <i class="fa-solid fa-lock text-gray-500"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-3xl mb-2 text-gray-500">Summaries</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Exclusive PDF notes and summaries. Currently under development.
+                    </p>
+                </div>
+                <div class="mt-8 text-xs font-bold text-gray-600 uppercase tracking-widest">
+                    Coming Soon
+                </div>
+            </div>
+
         </div>
+    </main>
 
+    <!-- Community Section (NEW) -->
+    <section id="community" class="w-full max-w-7xl mx-auto px-6 pb-20 pt-10 border-t border-white/5">
+        <div class="text-center mb-10">
+            <h2 class="font-heading font-bold text-2xl md:text-3xl text-white mb-2">Official <span class="text-neon-red">Community</span></h2>
+            <p class="text-gray-500 text-sm">Join the official channels for SPbU Egypt Branch</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <!-- WhatsApp Main -->
+            <a href="https://chat.whatsapp.com/LOOsYbBjjvI49cSAJxs1u0?mode=wwc" target="_blank" class="social-card social-wa group">
+                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-[#25D366]/20 transition-all">
+                    <i class="fa-brands fa-whatsapp text-2xl s-icon"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-white font-bold text-sm">Group B Medicine</span>
+                    <span class="text-xs text-gray-500">Main Discussion</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-gray-600 group-hover:text-white transition-colors"></i>
+            </a>
+
+            <!-- WhatsApp PDF -->
+            <a href="https://chat.whatsapp.com/BN6dfK5Ksiz2R86HQ6299l?mode=wwc" target="_blank" class="social-card social-wa group">
+                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-[#25D366]/20 transition-all">
+                    <i class="fa-solid fa-file-pdf text-xl s-icon"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-white font-bold text-sm">PDF Archive</span>
+                    <span class="text-xs text-gray-500">Materials Only</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-gray-600 group-hover:text-white transition-colors"></i>
+            </a>
+
+            <!-- Telegram -->
+            <a href="https://t.me/+wUp7H8jo1UgzZGY0" target="_blank" class="social-card social-tg group">
+                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-[#0088cc]/20 transition-all">
+                    <i class="fa-brands fa-telegram text-2xl s-icon"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-white font-bold text-sm">Telegram Group</span>
+                    <span class="text-xs text-gray-500">Announcements</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-gray-600 group-hover:text-white transition-colors"></i>
+            </a>
+
+        </div>
     </section>
 
-    <footer><p>© Created for SPbU Medical Students</p></footer>
+    <!-- Footer -->
+    <footer class="border-t border-white/5 bg-black/80 backdrop-blur-lg py-8">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-center md:text-left">
+                <p class="text-sm text-gray-500 font-medium">© 2025 SPbU Medical Platform.</p>
+                <p class="text-xs text-gray-700 mt-1">Crafted for Excellence.</p>
+            </div>
+            <div class="flex gap-4">
+                <span class="text-xs font-mono text-gray-600 border border-white/5 px-2 py-1 rounded">ver 2.1</span>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>
+
+
