@@ -132,17 +132,19 @@
 
         // Database Subject Mapping (Matched with quiz.html)
         const subjectsMap = {
-            'bio': 'Bioethics Final', // الاسم المحفوظ في الداتابيز
-            'lec1': 'Lec 01: Basics & Gases',
+            'bio': 'Bioethics Final', 
+            'anat_lab1': 'Anatomy Lab 1 (Hard)', // Added
+            'lec1': 'Lec 01: Basics',
             'lec2': 'Lec 02: Solutions',
             'lec3': 'Lec 03: Kinetics',
             'lec4': 'Lec 04: Equilibrium'
         };
 
-        // Filter Setup (NO 'ALL' BUTTON)
+        // Filter Setup
         const filtersContainer = document.getElementById('filters-container');
         const filters = [
             { id: 'bio', label: 'Bioethics', icon: 'fa-heart-pulse' },
+            { id: 'anat_lab1', label: 'Anatomy Lab 1', icon: 'fa-bone' }, // Added
             { id: 'lec1', label: 'Lec 01', icon: 'fa-atom' },
             { id: 'lec2', label: 'Lec 02', icon: 'fa-flask' },
             { id: 'lec3', label: 'Lec 03', icon: 'fa-stopwatch' },
@@ -225,7 +227,12 @@
                     const data = doc.data();
                     const initial = data.name.charAt(0).toUpperCase();
                     // Fallback for max score: Bio=32, Lecs=20
-                    const maxScore = data.total || (data.subject.includes('Bioethics') ? 32 : 20);
+                    let maxScore = data.total;
+                    if (!maxScore) {
+                         if (data.subject.includes('Bioethics')) maxScore = 32;
+                         else if (data.subject.includes('Anatomy')) maxScore = 20;
+                         else maxScore = 20;
+                    }
                     
                     let rankBadge, rowClass;
                     if(rank === 1) { 
@@ -296,3 +303,5 @@
     </script>
 </body>
 </html>
+
+
