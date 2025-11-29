@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -32,8 +32,8 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .explanation-box { background: linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%); border-left: 4px solid #3b82f6; }
         
-        /* KaTeX Adjustments */
-        .katex { font-size: 1.1em; }
+        /* KaTeX Adjustments for Inline Flow */
+        .katex { font-size: 1.1em; line-height: 1.2; }
         .katex-display { margin: 0.5em 0; }
     </style>
 </head>
@@ -116,7 +116,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- FORMATTED QUESTION BANK (KaTeX Support) ---
+        // --- FORMATTED QUESTION BANK (Fixed Inline Math with $) ---
         const questionBank = {
             "bioethics": [
                  { id: 1, q: "Who is credited with coining the term 'Bioethics' in 1927?", options: ["Van Rensselaer Potter", "André Hellegers", "Fritz Jahr", "Stephen Toulmin"], a: 2, explanation: "Fritz Jahr coined 'Bio-Ethik' in 1927. Potter popularized it later." },
@@ -154,21 +154,21 @@
             ],
             "lec1": [
                 { id: 1, q: "J.J. Thomson's cathode ray deflection proved particles were:", options: ["Massive.", "Negatively charged.", "Inert.", "Positive."], a: 1, explanation: "Deflected away from negative plate implies negative charge." },
-                { id: 2, q: "Copper (69% Cu-63, 31% Cu-65). Average mass calc:", options: ["(63+65)/2", "Weighted average", "Sum of mass", "Difference"], a: 1, explanation: "Weighted average: $$(62.93 \\times 0.69) + (64.93 \\times 0.31)$$" },
-                { id: 3, q: "Gas density formula $$d = \\frac{PM}{RT}$$ implies highest density for:", options: ["$$CH_4$$", "$$O_2$$", "$$CO_2$$", "$$SF_6$$"], a: 3, explanation: "Highest Molar Mass ($$M$$) = Highest Density. $$SF_6$$ is approx 146 g/mol." },
+                { id: 2, q: "Copper (69% Cu-63, 31% Cu-65). Average mass calc:", options: ["(63+65)/2", "Weighted average", "Sum of mass", "Difference"], a: 1, explanation: "Weighted average: $(62.93 \\times 0.69) + (64.93 \\times 0.31)$" },
+                { id: 3, q: "Gas density formula $d = \\frac{PM}{RT}$ implies highest density for:", options: ["$CH_4$", "$O_2$", "$CO_2$", "$SF_6$"], a: 3, explanation: "Highest Molar Mass ($M$) = Highest Density. $SF_6$ is approx 146 g/mol." },
                 { id: 4, q: "Rutherford's experiment disproved Plum Pudding by showing:", options: ["No deflection.", "Large angle deflection.", "Absorption.", "Reflection."], a: 1, explanation: "Dense positive nucleus caused large deflections of alpha particles." },
-                { id: 5, q: "Total P = 12 atm, 1 mol $$N_2$$ + 3 mol $$H_2$$. P($$H_2$$) = ?", options: ["3 atm", "9 atm", "4 atm", "6 atm"], a: 1, explanation: "$$X_{H_2} = \\frac{3}{4} = 0.75$$. $$P_{H_2} = 0.75 \\times 12 = 9$$ atm." },
+                { id: 5, q: "Total P = 12 atm, 1 mol $N_2$ + 3 mol $H_2$. P($H_2$) = ?", options: ["3 atm", "9 atm", "4 atm", "6 atm"], a: 1, explanation: "$X_{H_2} = \\frac{3}{4} = 0.75$. $P_{H_2} = 0.75 \\times 12 = 9$ atm." },
                 { id: 6, q: "Van der Waals 'a' constant corrects for:", options: ["Volume.", "Forces.", "Temp.", "Moles."], a: 1, explanation: "'a' corrects for intermolecular attractive forces (pressure)." },
-                { id: 7, q: "Molecules in 0.04g Saccharin (M=183.18)?", options: ["$$1.31 \\times 10^{20}$$", "$$2.5 \\times 10^{21}$$", "$$6.02 \\times 10^{23}$$", "$$9.17 \\times 10^{20}$$"], a: 0, explanation: "Moles = 0.04/183.18. Molecules = Moles * Avogadro." },
+                { id: 7, q: "Molecules in 0.04g Saccharin (M=183.18)?", options: ["$1.31 \\times 10^{20}$", "$2.5 \\times 10^{21}$", "$6.02 \\times 10^{23}$", "$9.17 \\times 10^{20}$"], a: 0, explanation: "Moles = 0.04/183.18. Molecules = Moles * Avogadro." },
                 { id: 8, q: "Structural isomers have:", options: ["Different formula.", "Same formula, diff connectivity.", "Same structure.", "Diff neutrons."], a: 1, explanation: "Same molecular formula, different bonding arrangement." },
-                { id: 9, q: "Double T (Kelvin) at constant P, Volume:", options: ["Halves.", "Doubles.", "Same.", "Quadruples."], a: 1, explanation: "Charles Law: $$V \\propto T$$." },
-                { id: 10, q: "Millikan's drop experiment found:", options: ["Mass.", "Charge.", "e/m ratio.", "Nucleus."], a: 1, explanation: "Determined the elementary charge $$e = 1.6 \\times 10^{-19}$$ C." },
-                { id: 11, q: "Diatomic element?", options: ["He", "S", "I", "C"], a: 2, explanation: "Iodine exists as $$I_2$$." },
-                { id: 12, q: "Mass number (A) is:", options: ["P+e", "P+N", "N+e", "Avg mass"], a: 1, explanation: "$$A = Z + N$$ (Protons + Neutrons)." },
+                { id: 9, q: "Double T (Kelvin) at constant P, Volume:", options: ["Halves.", "Doubles.", "Same.", "Quadruples."], a: 1, explanation: "Charles Law: $V \\propto T$." },
+                { id: 10, q: "Millikan's drop experiment found:", options: ["Mass.", "Charge.", "e/m ratio.", "Nucleus."], a: 1, explanation: "Determined the elementary charge $e = 1.6 \\times 10^{-19}$ C." },
+                { id: 11, q: "Diatomic element?", options: ["He", "S", "I", "C"], a: 2, explanation: "Iodine exists as $I_2$." },
+                { id: 12, q: "Mass number (A) is:", options: ["P+e", "P+N", "N+e", "Avg mass"], a: 1, explanation: "$A = Z + N$ (Protons + Neutrons)." },
                 { id: 13, q: "Dalton's Law assumes gases:", options: ["Interact.", "Have volume.", "Act independently.", "Vary temp."], a: 2, explanation: "Partial pressures act independently." },
                 { id: 14, q: "Isotopes differ in:", options: ["Chemicals.", "Protons.", "Electrons.", "Neutrons."], a: 3, explanation: "Same Z, different N." },
-                { id: 15, q: "V vs 1/P plot for ideal gas is:", options: ["Hyperbola.", "Linear.", "Parabola.", "Exp."], a: 1, explanation: "Boyle's Law: $$V = k(1/P)$$ is linear." },
-                { id: 16, q: "Empirical formula of $$C_6H_6$$:", options: ["$$C_6H_6$$", "$$CH$$", "$$CH_2$$", "$$C_3H_3$$"], a: 1, explanation: "Simplest ratio 1:1." },
+                { id: 15, q: "V vs 1/P plot for ideal gas is:", options: ["Hyperbola.", "Linear.", "Parabola.", "Exp."], a: 1, explanation: "Boyle's Law: $V = k(1/P)$ is linear." },
+                { id: 16, q: "Empirical formula of $C_6H_6$:", options: ["$C_6H_6$", "$CH$", "$CH_2$", "$C_3H_3$"], a: 1, explanation: "Simplest ratio 1:1." },
                 { id: 17, q: "Mass of 1 mole C-12:", options: ["12 amu", "12 g", "1 g", "6g"], a: 1, explanation: "Definition of mole." },
                 { id: 18, q: "Molar volume depends on:", options: ["P & T.", "Weight.", "Chemistry.", "Neutrons."], a: 0, explanation: "For ideal gas, depends only on state variables P and T." },
                 { id: 19, q: "Mass ~1/1800 of proton:", options: ["Neutron", "Electron", "Alpha", "Positron"], a: 1, explanation: "Electron is much lighter than nucleons." },
@@ -176,33 +176,33 @@
             ],
             "lec2": [
                 { id: 1, q: "Temp independent unit?", options: ["Molarity", "Molality", "Vol %", "g/L"], a: 1, explanation: "Molality (mol/kg) relies on mass, which doesn't change with T." },
-                { id: 2, q: "Henry's Law $$C_g$$ ~ ?", options: ["T", "P", "V", "M"], a: 1, explanation: "$$C_g = k \\cdot P_g$$." },
-                { id: 3, q: "i for $$AlCl_3$$?", options: ["1", "3", "4", "2"], a: 2, explanation: "$$Al^{3+} + 3Cl^-$$ = 4 particles." },
+                { id: 2, q: "Henry's Law $C_g$ ~ ?", options: ["T", "P", "V", "M"], a: 1, explanation: "$C_g = k \\cdot P_g$." },
+                { id: 3, q: "i for $AlCl_3$?", options: ["1", "3", "4", "2"], a: 2, explanation: "$Al^{3+} + 3Cl^-$ = 4 particles." },
                 { id: 4, q: "Hypertonic effect on RBC:", options: ["Swell.", "Shrink.", "None.", "Divide."], a: 1, explanation: "Water leaves cell -> Crenation." },
-                { id: 5, q: "Raoult's Law:", options: ["P = Xsolv * P0", "P = Xsolute * P0", "P = P0/X", "P = X+P"], a: 0, explanation: "$$P_{solution} = X_{solvent} \\cdot P^0_{solvent}$$" },
+                { id: 5, q: "Raoult's Law:", options: ["P = Xsolv * P0", "P = Xsolute * P0", "P = P0/X", "P = X+P"], a: 0, explanation: "$P_{solution} = X_{solvent} \\cdot P^0_{solvent}$" },
                 { id: 6, q: "Colligative property?", options: ["Density", "Viscosity", "Osmotic P", "Color"], a: 2, explanation: "Depends on number of particles." },
                 { id: 7, q: "Solute added, BP:", options: ["Drops.", "Rises.", "Same.", "Fluctuates."], a: 1, explanation: "Boiling Point Elevation." },
                 { id: 8, q: "Reverse Osmosis pressure:", options: ["= Osmotic", "< Osmotic", "> Osmotic", "Zero"], a: 2, explanation: "Must overcome osmotic pressure." },
-                { id: 9, q: "0.5 mol in 200g solv. Molality?", options: ["0.25", "2.5", "0.1", "0.0025"], a: 1, explanation: "$$0.5 / 0.2 = 2.5$$ m." },
+                { id: 9, q: "0.5 mol in 200g solv. Molality?", options: ["0.25", "2.5", "0.1", "0.0025"], a: 1, explanation: "$0.5 / 0.2 = 2.5$ m." },
                 { id: 10, q: "Gas solubility vs T:", options: ["Increases.", "Decreases.", "Same.", "Pressure only."], a: 1, explanation: "Gases escape at high T." },
                 { id: 11, q: "Weak electrolyte?", options: ["NaCl", "HCl", "HF", "NaOH"], a: 2, explanation: "HF partially dissociates." },
-                { id: 12, q: "Osmotic $$\\pi = CRT$$, C is:", options: ["m", "M", "X", "w%"], a: 1, explanation: "Molarity (mol/L)." },
+                { id: 12, q: "Osmotic $\\pi = CRT$, C is:", options: ["m", "M", "X", "w%"], a: 1, explanation: "Molarity (mol/L)." },
                 { id: 13, q: "Real i < Predicted i due to:", options: ["Ion pairing.", "Polymers.", "Evap.", "H-bond."], a: 0, explanation: "Ions attract each other reducing effective concentration." },
                 { id: 14, q: "Supersaturated solution is:", options: ["Stable.", "Unstable.", "Equilibrium.", "Dilute."], a: 1, explanation: "Precipitates easily." },
-                { id: 15, q: "FP Depression formula:", options: ["$$m \\cdot K_f$$", "$$M \\cdot K_f$$", "$$m / K_f$$", "PV"], a: 0, explanation: "$$\\Delta T_f = i \\cdot m \\cdot K_f$$." },
+                { id: 15, q: "FP Depression formula:", options: ["$m \\cdot K_f$", "$M \\cdot K_f$", "$m / K_f$", "PV"], a: 0, explanation: "$\\Delta T_f = i \\cdot m \\cdot K_f$." },
                 { id: 16, q: "Immiscible pair?", options: ["Ethanol/Water", "Oil/Water", "Vinegar/Water", "Methanol/Water"], a: 1, explanation: "Polar vs Nonpolar." },
-                { id: 17, q: "Mole fraction $$X_A$$:", options: ["na/L", "na/ntotal", "ga/gtotal", "na/kg"], a: 1, explanation: "Ratio of moles." },
+                { id: 17, q: "Mole fraction $X_A$:", options: ["na/L", "na/ntotal", "ga/gtotal", "na/kg"], a: 1, explanation: "Ratio of moles." },
                 { id: 18, q: "NaCl + Ice temp:", options: ["-5", "-20", "-50", "0"], a: 1, explanation: "Freezing mixture approx -20 C." },
                 { id: 19, q: "Tyndall effect seen in:", options: ["Solutions.", "Colloids.", "Solvents.", "Gases."], a: 1, explanation: "Light scattering by particles." },
                 { id: 20, q: "Mass %:", options: ["m_solute/m_solution", "m_solute/m_solvent", "n/V", "m*100"], a: 0, explanation: "Fraction of total mass." }
             ],
             "lec3": [
                 { id: 1, q: "Reaction Rate unit:", options: ["atm/L", "M/s", "K/s", "g/L"], a: 1, explanation: "Concentration change per time." },
-                { id: 2, q: "2A -> B, Rate relative to A:", options: ["d[A]/dt", "-1/2 d[A]/dt", "2 d[A]/dt", "d[A]"], a: 1, explanation: "$$Rate = -\\frac{1}{2} \\frac{d[A]}{dt}$$" },
+                { id: 2, q: "2A -> B, Rate relative to A:", options: ["d[A]/dt", "-1/2 d[A]/dt", "2 d[A]/dt", "d[A]"], a: 1, explanation: "$Rate = -\\frac{1}{2} \\frac{d[A]}{dt}$" },
                 { id: 3, q: "Rate = k[A][B], Order?", options: ["0", "1", "2", "3"], a: 2, explanation: "1+1=2." },
-                { id: 4, q: "1st Order Integrated Law:", options: ["[A]-kt", "$$\\ln[A] = \\ln[A]_0 - kt$$", "1/[A]", "Rate=k"], a: 1, explanation: "Ln plot." },
+                { id: 4, q: "1st Order Integrated Law:", options: ["[A]-kt", "$\\ln[A] = \\ln[A]_0 - kt$", "1/[A]", "Rate=k"], a: 1, explanation: "Ln plot." },
                 { id: 5, q: "Slope of ln[A] vs t:", options: ["k", "-k", "1/k", "Ea"], a: 1, explanation: "Slope is negative rate constant." },
-                { id: 6, q: "1st Order Half-life depends on:", options: ["Conc.", "k only.", "Product.", "P."], a: 1, explanation: "$$t_{1/2} = \\frac{0.693}{k}$$" },
+                { id: 6, q: "1st Order Half-life depends on:", options: ["Conc.", "k only.", "Product.", "P."], a: 1, explanation: "$t_{1/2} = \\frac{0.693}{k}$" },
                 { id: 7, q: "1/[A] vs t linear -> Order:", options: ["0", "1", "2", "3"], a: 2, explanation: "Second order kinetics." },
                 { id: 8, q: "Min energy for reaction:", options: ["H", "G", "Ea", "KE"], a: 2, explanation: "Activation Energy." },
                 { id: 9, q: "Arrhenius relates k to:", options: ["Conc.", "T and Ea.", "P.", "V."], a: 1, explanation: "Temperature dependence." },
@@ -212,7 +212,7 @@
                 { id: 13, q: "A+B -> Prod molecularity:", options: ["Uni", "Bi", "Ter", "Zero"], a: 1, explanation: "Two molecules colliding." },
                 { id: 14, q: "[A]x2 -> Rate x2. Order:", options: ["0", "1", "2", "3"], a: 1, explanation: "Linear relationship." },
                 { id: 15, q: "Rate=k[NO2]^2. Order:", options: ["Uni", "1", "2", "0"], a: 2, explanation: "Exponent is 2." },
-                { id: 16, q: "Arrhenius slope (ln k vs 1/T):", options: ["-Ea/R", "Ea", "A", "R"], a: 0, explanation: "$$m = -\\frac{E_a}{R}$$" },
+                { id: 16, q: "Arrhenius slope (ln k vs 1/T):", options: ["-Ea/R", "Ea", "A", "R"], a: 0, explanation: "$m = -\\frac{E_a}{R}$" },
                 { id: 17, q: "Heterogeneous catalyst:", options: ["Same phase.", "Diff phase.", "Liquid.", "Gas."], a: 1, explanation: "Different physical phase." },
                 { id: 18, q: "Collision theory needs:", options: ["Speed.", "Orientation+Ea.", "Vol.", "Cat."], a: 1, explanation: "Effective collision requirements." },
                 { id: 19, q: "Zero order k units:", options: ["s-1", "M/s", "M-1s-1", "None"], a: 1, explanation: "Same as Rate." },
@@ -221,17 +221,17 @@
             "lec4": [
                 { id: 1, q: "At equilibrium, rates are:", options: ["Zero.", "Equal.", "Diff.", "Random."], a: 1, explanation: "Forward rate = Reverse rate." },
                 { id: 2, q: "K expression:", options: ["Prod/React", "React/Prod", "Sum", "Diff"], a: 0, explanation: "Mass Action Law." },
-                { id: 3, q: "$$N_2O_4 \\rightleftharpoons 2NO_2$$ Keq:", options: ["$$[NO_2]/[N_2O_4]$$", "$$[NO_2]^2/[N_2O_4]$$", "Inverse", "Rate"], a: 1, explanation: "Coefficient becomes exponent." },
+                { id: 3, q: "$N_2O_4 \\rightleftharpoons 2NO_2$ Keq:", options: ["$[NO_2]/[N_2O_4]$", "$[NO_2]^2/[N_2O_4]$", "Inverse", "Rate"], a: 1, explanation: "Coefficient becomes exponent." },
                 { id: 4, q: "K >> 1 favors:", options: ["Reactants.", "Products.", "Neither.", "Solids."], a: 1, explanation: "More products." },
                 { id: 5, q: "Pure solids/liquids in K:", options: ["Included.", "Excluded.", "Zero.", "Var."], a: 1, explanation: "Activity is 1." },
                 { id: 6, q: "Q < K shifts:", options: ["Right.", "Left.", "None.", "Stop."], a: 0, explanation: "To form products." },
-                { id: 7, q: "Kp vs Kc:", options: ["Equal", "$$K_p = K_c(RT)^{\\Delta n}$$", "Div", "Mult"], a: 1, explanation: "Gas constant relation." },
+                { id: 7, q: "Kp vs Kc:", options: ["Equal", "$K_p = K_c(RT)^{\\Delta n}$", "Div", "Mult"], a: 1, explanation: "Gas constant relation." },
                 { id: 8, q: "Exothermic + Heat shifts:", options: ["Right.", "Left.", "None.", "Inc K."], a: 1, explanation: "Heat is product, shift away." },
                 { id: 9, q: "Inc Pressure shifts to:", options: ["Less gas moles.", "More moles.", "None.", "Reactants."], a: 0, explanation: "Relieve pressure." },
                 { id: 10, q: "Catalyst changes:", options: ["K.", "Position.", "Rate.", "H."], a: 2, explanation: "Speeds up equilibrium only." },
-                { id: 11, q: "$$H_2+I_2 \\rightleftharpoons 2HI$$ Pressure effect:", options: ["Right.", "Left.", "None.", "K."], a: 2, explanation: "$$\\Delta n = 0$$." },
+                { id: 11, q: "$H_2+I_2 \\rightleftharpoons 2HI$ Pressure effect:", options: ["Right.", "Left.", "None.", "K."], a: 2, explanation: "$\\Delta n = 0$." },
                 { id: 12, q: "K calc uses concentrations at:", options: ["Start.", "Equilibrium.", "Max.", "Min."], a: 1, explanation: "Definition of K." },
-                { id: 13, q: "Rxn x2, new K:", options: ["2K", "$$K^2$$", "sqrtK", "K/2"], a: 1, explanation: "Power rule." },
+                { id: 13, q: "Rxn x2, new K:", options: ["2K", "$K^2$", "sqrtK", "K/2"], a: 1, explanation: "Power rule." },
                 { id: 14, q: "Rxn reversed, new K:", options: ["-K", "1/K", "K", "sqrtK"], a: 1, explanation: "Reciprocal." },
                 { id: 15, q: "Remove NH3 (product):", options: ["Shift Left.", "Shift Right.", "None.", "Low K."], a: 1, explanation: "Replace product." },
                 { id: 16, q: "Activity of solid:", options: ["0", "1", "Var", "Inf"], a: 1, explanation: "Standard state." },
@@ -239,6 +239,28 @@
                 { id: 18, q: "Resp. Acidosis (Excess CO2) shifts:", options: ["Right (H+ up).", "Left.", "None.", "Gas."], a: 0, explanation: "Forms acid." },
                 { id: 19, q: "Ksp is for:", options: ["Gases.", "Salts.", "Liq.", "Acids."], a: 1, explanation: "Solubility Product." },
                 { id: 20, q: "Factor changing K value:", options: ["Rate.", "Pos.", "Temp.", "P."], a: 2, explanation: "Only T changes K." }
+            ],
+            "anat_lab1": [
+                { id: 1, q: "Which bony landmark represents the fusion of the articular processes on the posterior aspect of the sacrum?", options: ["Median sacral crest", "Intermediate sacral crest", "Lateral sacral crest", "Sacral tuberosity"], a: 1, explanation: "The Intermediate sacral crest represents the fusion of the articular processes." },
+                { id: 2, q: "Regarding the 5th Lumbar Vertebra (L5), which feature characterizes its transverse process as atypical?", options: ["It has a foramen transversarium.", "It is thin, long, and projects inferiorly.", "It is bulky, thick, and attached to the whole pedicle and part of the body.", "It lacks a mammillary process."], a: 2, explanation: "Atypical L5 transverse process is bulky and attaches to the whole pedicle and part of the body." },
+                { id: 3, q: "The Sternal Angle (Angle of Louis) corresponds to the intervertebral disc between which two vertebrae?", options: ["T2 and T3", "T3 and T4", "T4 and T5", "T5 and T6"], a: 2, explanation: "The sternal angle lies at the level of the disc between T4 and T5." },
+                { id: 4, q: "Which thoracic vertebra is considered atypical because it possesses a complete circular costal facet for the 1st rib?", options: ["T1", "T4", "T7", "T9"], a: 0, explanation: "T1 is atypical because it has a complete facet for the 1st rib and a demi-facet for the 2nd rib." },
+                { id: 5, q: "In a typical rib, the two articular demi-facets on the head are separated by which structure?", options: ["The Tubercle", "The Crest of the Head", "The Costal Groove", "The Neck"], a: 1, explanation: "The head of a typical rib has two facets separated by a crest." },
+                { id: 6, q: "Which structure gives exit to the ventral rami of the upper 4 sacral nerves?", options: ["Posterior sacral foramina", "Sacral hiatus", "Anterior sacral foramina", "Sacral canal"], a: 2, explanation: "The anterior (pelvic) foramina transmit the ventral rami." },
+                { id: 7, q: "The Uncinate Process is a characteristic feature found on the body of which vertebrae?", options: ["Typical Cervical Vertebrae (C3-C6)", "Atlas (C1)", "Typical Thoracic Vertebrae", "Lumbar Vertebrae"], a: 0, explanation: "The uncinate process is a raised lip on the lateral margins of the superior surface of cervical vertebral bodies." },
+                { id: 8, q: "Which of the following is NOT a feature of the Atlas (C1)?", options: ["Anterior Arch", "Lateral Mass", "Spinous Process", "Transverse Foramen"], a: 2, explanation: "Atlas lacks a spinous process; it has a posterior tubercle instead." },
+                { id: 9, q: "The superior vertebral notch of a thoracic vertebra forms which margin of the intervertebral foramen?", options: ["The upper margin", "The lower margin", "The posterior margin", "The anterior margin"], a: 1, explanation: "Superior vertebral notch forms the LOWER margin of the intervertebral foramen." },
+                { id: 10, q: "Identify the bone that is described as having a 'Sternal end' and an 'Acromial end'.", options: ["Rib 1", "Scapula", "Clavicle", "Humerus"], a: 2, explanation: "The clavicle connects the sternum (sternal end) to the acromion of the scapula (acromial end)." },
+                { id: 11, q: "On the sacrum, the Sacral Tuberosity is located immediately posterior to which structure?", options: ["The Promontory", "The Auricular Surface", "The Median Sacral Crest", "The Sacral Hiatus"], a: 1, explanation: "The sacral tuberosity is a rough area just behind the auricular surface for ligament attachment." },
+                { id: 12, q: "Which specific rib is described in the lab manual as having a 'Scalene tubercle'?", options: ["1st Rib", "2nd Rib", "11th Rib", "12th Rib"], a: 0, explanation: "The first rib is flat and has the scalene tubercle." },
+                { id: 13, q: "The Mammillary Process is a unique feature found on the posterior aspect of which part of the lumbar vertebrae?", options: ["Transverse Process", "Spinous Process", "Superior Articular Process", "Inferior Articular Process"], a: 2, explanation: "The mammillary process projects backward from the superior articular process." },
+                { id: 14, q: "Which of the following describes the spinous process of the Axis (C2)?", options: ["Long and non-bifid", "Absent", "Large and bifid", "Sharp and downward sloping"], a: 2, explanation: "The axis has a strong, bifid spinous process (often larger than C3-C6)." },
+                { id: 15, q: "Where is the costal groove located on a typical rib?", options: ["Upper border of the inner surface", "Lower border of the inner surface", "Outer surface of the shaft", "Superior surface of the neck"], a: 1, explanation: "The costal groove is located along the inferior (lower) border of the internal surface." },
+                { id: 16, q: "Which statement regarding the Zygomatic bone is correct based on the Lab?", options: ["It is a movable bone.", "It is also known as the cheek bone.", "It contains the mental foramen.", "It articulates directly with the mandible."], a: 1, explanation: "It is the cheek bone. Only mandible is movable." },
+                { id: 17, q: "The 'Angle of the Rib' is defined as:", options: ["The sharpest curve of the rib shaft", "The junction between head and neck", "The junction between the rib and costal cartilage", "The articulation point with the transverse process"], a: 0, explanation: "This is the definition of the angle." },
+                { id: 18, q: "Which anatomical plane is described as 'dividing the body into upper and lower parts'?", options: ["Sagittal", "Coronal", "Transverse", "Paramedian"], a: 2, explanation: "Transverse plane divides the body into superior and inferior parts." },
+                { id: 19, q: "Which of the following is an appendicular bone of the lower limb?", options: ["Sacrum", "Coccyx", "Hip Bone", "Sternum"], a: 2, explanation: "The hip bone (pelvic girdle) is part of the appendicular skeleton." },
+                { id: 20, q: "The 'Sacral Cornu' are the remnants of which vertebral structure?", options: ["Spinous processes of S5", "Inferior articular processes of S5", "Transverse processes of S5", "Superior articular processes of S1"], a: 1, explanation: "The sacral cornua represent the inferior articular processes of the fifth sacral vertebra." }
             ]
         };
 
@@ -246,7 +268,14 @@
         const urlParams = new URLSearchParams(window.location.search);
         const topic = urlParams.get('topic') || 'lec1';
         const questions = questionBank[topic] || [];
-        const titles = { 'bioethics': "Bioethics Final", 'lec1': "Lec 01: Basics", 'lec2': "Lec 02: Solutions", 'lec3': "Lec 03: Kinetics", 'lec4': "Lec 04: Equilibrium" };
+        const titles = { 
+            'bioethics': "Bioethics Final", 
+            'lec1': "Lec 01: Basics", 
+            'lec2': "Lec 02: Solutions", 
+            'lec3': "Lec 03: Kinetics", 
+            'lec4': "Lec 04: Equilibrium",
+            'anat_lab1': "Anatomy Lab 1 (Hard)"
+        };
         
         document.getElementById('quiz-title-display').innerText = titles[topic] || "Exam";
         document.getElementById('q-total').innerText = questions.length;
@@ -327,6 +356,7 @@
             document.getElementById('progress-container').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
             
+            // Handle ranking filter link
             const rankTopic = (topic === 'bioethics') ? 'bio' : topic;
             document.getElementById('rank-btn').href = `ranking.html?filter=${rankTopic}`;
 
@@ -384,3 +414,5 @@
     </script>
 </body>
 </html>
+
+
