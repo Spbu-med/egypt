@@ -8,60 +8,61 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root { --bg: #0f0f0f; --card: #1c1c1e; --primary: #ff0033; --text: #fff; --sub: #8e8e93; }
-        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Roboto', sans-serif; padding-bottom: 40px; }
+        :root { --bg: #050505; --card: rgba(25, 25, 25, 0.7); --primary: #ff0033; --text: #fff; --sub: #aaa; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Roboto', sans-serif; padding-bottom: 40px; min-height: 100vh; position: relative; overflow-x: hidden; }
         
+        /* Aurora */
+        body::before {
+            content: ''; position: fixed; top: -10%; right: -10%; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255,0,51,0.15), transparent 70%);
+            filter: blur(100px); z-index: -1; animation: pulse 10s infinite alternate;
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+
         /* Header */
         .app-header {
-            padding: 15px 20px; background: rgba(15,15,15,0.95); backdrop-filter: blur(10px);
-            position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #222;
+            padding: 15px 20px; background: rgba(10,10,10,0.8); backdrop-filter: blur(20px);
+            position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05);
             display: flex; align-items: center; justify-content: space-between;
         }
-        .back-link { color: var(--sub); text-decoration: none; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 5px; }
+        .back-link { color: var(--text); text-decoration: none; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
+        .back-link:hover { background: var(--primary); border-color: var(--primary); }
         .logo { color: var(--primary); font-weight: 800; letter-spacing: 1px; }
 
         /* Hero Banner */
         .hero {
-            margin: 20px; padding: 30px 25px; border-radius: 24px;
-            background: linear-gradient(135deg, #b71c1c 0%, #ff0033 100%);
-            box-shadow: 0 10px 30px rgba(255, 0, 51, 0.2); position: relative; overflow: hidden;
+            margin: 20px; padding: 40px 25px; border-radius: 30px;
+            background: linear-gradient(135deg, #a30024 0%, #ff0033 100%);
+            box-shadow: 0 10px 40px rgba(255, 0, 51, 0.3); position: relative; overflow: hidden;
         }
-        .hero h1 { margin: 0; font-size: 1.8rem; font-weight: 800; }
-        .hero p { margin: 5px 0 0; opacity: 0.9; font-size: 0.95rem; }
-        .badge { background: rgba(0,0,0,0.25); padding: 5px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; display: inline-block; margin-bottom: 10px; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://www.transparenttextures.com/patterns/cubes.png'); opacity: 0.1; }
+        .hero h1 { margin: 0; font-size: 2rem; font-weight: 800; position: relative; }
+        .hero p { margin: 5px 0 0; opacity: 0.9; font-size: 1rem; position: relative; }
+        .badge { background: rgba(0,0,0,0.3); padding: 5px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; display: inline-block; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.2); }
 
-        /* Modules List */
-        .modules { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; }
+        /* Modules */
+        .modules { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; max-width: 800px; margin: 0 auto; }
         
-        .module-card { background: var(--card); border-radius: 18px; overflow: hidden; transition: 0.3s; border: 1px solid transparent; }
-        .module-card.active { border-color: rgba(255,255,255,0.1); }
+        .module-card { background: var(--card); backdrop-filter: blur(15px); border-radius: 20px; overflow: hidden; transition: 0.3s; border: 1px solid rgba(255,255,255,0.05); }
+        .module-card:hover { border-color: rgba(255,0,51,0.3); transform: translateY(-2px); }
         
-        .module-head {
-            padding: 20px; cursor: pointer; display: flex; align-items: center; gap: 15px;
-        }
-        .icon { 
-            width: 45px; height: 45px; background: rgba(255,0,51,0.1); color: var(--primary); 
-            border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-        }
-        .info h3 { margin: 0; font-size: 1.05rem; font-weight: 700; }
+        .module-head { padding: 20px; cursor: pointer; display: flex; align-items: center; gap: 15px; }
+        .icon { width: 50px; height: 50px; background: rgba(255,0,51,0.1); color: var(--primary); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 1px solid rgba(255,0,51,0.1); }
+        .info h3 { margin: 0; font-size: 1.1rem; font-weight: 700; }
         .info span { font-size: 0.85rem; color: var(--sub); }
         .arrow { margin-left: auto; color: var(--sub); transition: 0.3s; }
         
         .module-card.active .arrow { transform: rotate(180deg); color: var(--primary); }
-        .videos { max-height: 0; overflow: hidden; transition: 0.4s ease; background: #151517; }
+        .videos { max-height: 0; overflow: hidden; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(0,0,0,0.2); }
         .module-card.active .videos { max-height: 1000px; }
 
         /* Video Row */
-        .vid-link {
-            display: flex; align-items: center; gap: 15px; padding: 15px 20px;
-            text-decoration: none; color: var(--text); border-top: 1px solid #252525;
-            transition: 0.2s;
-        }
-        .vid-link:active { background: #222; }
-        .play-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #444; color: #444; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
-        .vid-link:hover .play-btn { background: var(--primary); border-color: var(--primary); color: white; }
+        .vid-link { display: flex; align-items: center; gap: 15px; padding: 18px 20px; text-decoration: none; color: var(--text); border-top: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
+        .vid-link:hover { background: rgba(255,255,255,0.03); }
+        .play-btn { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #555; color: #555; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: 0.2s; }
+        .vid-link:hover .play-btn { background: var(--primary); border-color: var(--primary); color: white; box-shadow: 0 0 15px rgba(255,0,51,0.4); }
         
-        .vid-meta div:first-child { font-weight: 500; font-size: 0.95rem; margin-bottom: 3px; }
+        .vid-meta div:first-child { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
         .vid-meta div:last-child { font-size: 0.8rem; color: var(--sub); }
     </style>
 </head>
@@ -69,21 +70,22 @@
 
     <header class="app-header">
         <a href="index.html" class="back-link"><i class="fa-solid fa-chevron-left"></i> Back to Hub</a>
-        <div class="logo">SPbU MED</div>
+        <div class="logo"><i class="fa-solid fa-flask"></i> SPbU CHEM</div>
     </header>
 
     <div class="hero">
         <div class="badge">FULL CURRICULUM</div>
         <h1>General Chemistry</h1>
-        <p>Complete Year 1 Course (16 Lessons)</p>
+        <p>Complete Year 1 Course • 16 Lessons</p>
     </div>
 
     <div class="modules">
         
+        <!-- Module 1 -->
         <div class="module-card">
             <div class="module-head" onclick="toggle(this)">
                 <div class="icon"><i class="fa-solid fa-atom"></i></div>
-                <div class="info"><h3>1. Atomic Theory & Gases</h3><span>4 Lessons</span></div>
+                <div class="info"><h3>1. Atomic Theory & Gases</h3><span>4 Lessons • Basics</span></div>
                 <i class="fa-solid fa-chevron-down arrow"></i>
             </div>
             <div class="videos">
@@ -106,58 +108,61 @@
             </div>
         </div>
 
+        <!-- Module 2 -->
         <div class="module-card">
             <div class="module-head" onclick="toggle(this)">
-                <div class="icon"><i class="fa-solid fa-flask"></i></div>
-                <div class="info"><h3>2. Advanced Concepts</h3><span>4 Lessons</span></div>
+                <div class="icon"><i class="fa-solid fa-flask-vial"></i></div>
+                <div class="info"><h3>2. Solutions & Kinetics</h3><span>4 Lessons • Advanced</span></div>
                 <i class="fa-solid fa-chevron-down arrow"></i>
             </div>
             <div class="videos">
-                <a href="watch.html?v=t9rWqnmz7Xo&t=Lecture 2 Part 1" class="vid-link">
+                <a href="watch.html?v=t9rWqnmz7Xo&t=Solutions Part 1" class="vid-link">
                     <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div class="vid-meta"><div>Part 1: Theoretical Foundations</div><div>Concept Intro</div></div>
+                    <div class="vid-meta"><div>1. Solutions: Intro</div><div>Concentration Units</div></div>
                 </a>
-                <a href="watch.html?v=dYwdi4Vifkw&t=Lecture 2 Part 2" class="vid-link">
+                <a href="watch.html?v=dYwdi4Vifkw&t=Solutions Part 2" class="vid-link">
                     <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div class="vid-meta"><div>Part 2: Reaction Mechanisms</div><div>Detailed Explanations</div></div>
+                    <div class="vid-meta"><div>2. Colligative Properties</div><div>Exam Favorite</div></div>
                 </a>
-                <a href="watch.html?v=VM8CX4nl8D8&t=Lecture 2 Part 3" class="vid-link">
+                <a href="watch.html?v=VM8CX4nl8D8&t=Kinetics Part 1" class="vid-link">
                     <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div class="vid-meta"><div>Part 3: Chemical Calculations</div><div>Applications</div></div>
+                    <div class="vid-meta"><div>3. Kinetics: Rate Laws</div><div>Reaction Order</div></div>
                 </a>
-                <a href="watch.html?v=74Y6UMsEZ3s&t=Lecture 2 Part 4" class="vid-link">
+                <a href="watch.html?v=74Y6UMsEZ3s&t=Kinetics Part 2" class="vid-link">
                     <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div class="vid-meta"><div>Part 4: Summary & Review</div><div>Final Recap</div></div>
+                    <div class="vid-meta"><div>4. Integrated Rate Laws</div><div>Calculations</div></div>
                 </a>
             </div>
         </div>
 
+        <!-- Module 3 -->
         <div class="module-card">
             <div class="module-head" onclick="toggle(this)">
-                <div class="icon"><i class="fa-solid fa-share-nodes"></i></div>
-                <div class="info"><h3>3. Chemical Bonding</h3><span>4 Lessons</span></div>
+                <div class="icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                <div class="info"><h3>3. Chemical Equilibrium</h3><span>4 Lessons • Le Chatelier</span></div>
                 <i class="fa-solid fa-chevron-down arrow"></i>
             </div>
             <div class="videos">
-                <a href="watch.html?v=B1bWIrOe0SE&t=Bonding Part 1" class="vid-link">
+                <a href="watch.html?v=B1bWIrOe0SE&t=Equilibrium Part 1" class="vid-link">
                     <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div class="vid-meta"><div>Part 1: Intro to Bonding</div><div>Basics</div></div>
+                    <div class="vid-meta"><div>1. Intro to Equilibrium</div><div>Kc and Kp</div></div>
                 </a>
-                <a href="watch.html?v=yuMhsPuftXo&t=Bonding Part 2" class="vid-link">
+                <a href="watch.html?v=yuMhsPuftXo&t=Equilibrium Part 2" class="vid-link">
                     <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div class="vid-meta"><div>Part 2: Molecular Geometry</div><div>Structure</div></div>
+                    <div class="vid-meta"><div>2. Le Chatelier's Principle</div><div>Shifting</div></div>
                 </a>
-                <a href="watch.html?v=HiKLl5-F0PM&t=Bonding Part 3" class="vid-link">
+                <a href="watch.html?v=HiKLl5-F0PM&t=Equilibrium Part 3" class="vid-link">
                     <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div class="vid-meta"><div>Part 3: Intermolecular Forces</div><div>Advanced Bonding</div></div>
+                    <div class="vid-meta"><div>3. ICE Tables</div><div>Problem Solving</div></div>
                 </a>
-                <a href="watch.html?v=ATG2l8uy8n8&t=Bonding Part 4" class="vid-link">
+                <a href="watch.html?v=ATG2l8uy8n8&t=Equilibrium Part 4" class="vid-link">
                     <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div class="vid-meta"><div>Part 4: Hybridization</div><div>Review</div></div>
+                    <div class="vid-meta"><div>4. Solubility Product (Ksp)</div><div>Advanced</div></div>
                 </a>
             </div>
         </div>
 
+        <!-- Module 4 -->
         <div class="module-card">
             <div class="module-head" onclick="toggle(this)">
                 <div class="icon"><i class="fa-solid fa-fire-burner"></i></div>
@@ -191,3 +196,5 @@
     </script>
 </body>
 </html>
+
+
