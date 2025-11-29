@@ -281,6 +281,12 @@
         document.getElementById('q-total').innerText = questions.length;
         document.getElementById('q-total-start').innerText = questions.length;
 
+        // DEBUG: Check loaded topics
+        console.log("Available Topics:", Object.keys(questionBank));
+        if (!questionBank[topic]) {
+            alert("Error: Topic '" + topic + "' not found! Loaded topics: " + Object.keys(questionBank).join(", "));
+        }
+
         // --- CORE LOGIC ---
         let currentIndex = 0, userAnswers = new Array(questions.length).fill(null), score = 0, timerInterval, timeLeft = 45 * 60, studentName = "";
 
