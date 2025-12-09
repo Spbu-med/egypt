@@ -13,21 +13,27 @@
         .back-btn { position: fixed; top: 20px; left: 20px; background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 30px; text-decoration: none; color: white; backdrop-filter: blur(10px); border: 1px solid var(--border); transition: 0.3s; z-index: 100; font-weight: bold; }
         .back-btn:hover { background: var(--primary); border-color: var(--primary); }
 
-        .header { text-align: center; padding: 80px 20px 40px; }
+        .header { text-align: center; padding: 100px 20px 40px; }
         .header h1 { font-size: 2.5rem; margin: 0; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px 5%; max-width: 1000px; margin: 0 auto; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         
         .quiz-card {
-            background: var(--glass); border: 1px solid var(--border); border-radius: 20px; padding: 25px;
-            text-align: center; text-decoration: none; color: white; transition: 0.3s; display: block; position: relative; overflow: hidden;
+            background: linear-gradient(180deg, rgba(255,0,51,0.1) 0%, rgba(20,20,20,0.8) 100%);
+            border: 1px solid var(--primary); border-radius: 20px; padding: 40px;
+            text-align: center; text-decoration: none; color: white; transition: 0.3s; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 10px 30px rgba(255,0,51,0.15); position: relative; overflow: hidden;
         }
-        .quiz-card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(255, 0, 51, 0.05); }
+        .quiz-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 20px 50px rgba(255,0,51,0.3); }
         
-        .tag { position: absolute; top: 15px; left: 15px; background: var(--primary); padding: 3px 10px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; }
-        .icon { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
-        .title { font-size: 1.4rem; font-weight: bold; margin: 0; }
-        .details { font-size: 0.85rem; color: #888; margin-top: 8px; }
+        .tag { position: absolute; top: 20px; right: 20px; background: var(--primary); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; display: flex; items-center; gap: 5px; }
+        .icon { font-size: 4rem; color: var(--primary); margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); }
+        .title { font-size: 2rem; font-weight: 900; margin: 0; letter-spacing: 1px; }
+        .details { font-size: 1rem; color: #aaa; margin-top: 10px; font-family: monospace; }
+        
+        .animate-pulse-slow { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
     </style>
 </head>
 <body>
@@ -35,56 +41,22 @@
     <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-right"></i> الرئيسية</a>
 
     <div class="header">
-        <i class="fa-solid fa-flask" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
-        <h1>بنك الأسئلة</h1>
-        <p style="color: #aaa;">Chemistry, Bioethics & Anatomy Exams</p>
+        <h1 class="font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500">الامتحانات المتاحة</h1>
+        <p style="color: #666; margin-top: 10px;">اختر الامتحان للبدء</p>
     </div>
 
-    <div class="grid">
-        <a href="quiz.html?topic=bioethics" class="quiz-card">
-            <div class="tag">FINAL</div>
-            <div class="icon"><i class="fa-solid fa-heart-pulse"></i></div>
-            <div class="title">Bioethics</div>
-            <div class="details">32 Questions • General</div>
-        </a>
-
-        <a href="quiz.html?topic=anat_lab1" class="quiz-card">
-            <div class="tag" style="background: #eab308; color: black;">ANATOMY</div>
-            <div class="icon" style="color: #eab308;"><i class="fa-solid fa-bone"></i></div>
-            <div class="title">Lab 1: Bones</div>
-            <div class="details">20 Hard Questions • Vertebrae</div>
-        </a>
-
-        <a href="quiz.html?topic=lec1" class="quiz-card">
-            <div class="tag">CHEMISTRY</div>
-            <div class="icon"><i class="fa-solid fa-atom"></i></div>
-            <div class="title">Lecture 01</div>
-            <div class="details">Basics & Gases</div>
-        </a>
-
-        <a href="quiz.html?topic=lec2" class="quiz-card">
-            <div class="tag">CHEMISTRY</div>
-            <div class="icon"><i class="fa-solid fa-flask-vial"></i></div>
-            <div class="title">Lecture 02</div>
-            <div class="details">Solutions</div>
-        </a>
-
-        <a href="quiz.html?topic=lec3" class="quiz-card">
-            <div class="tag">CHEMISTRY</div>
-            <div class="icon"><i class="fa-solid fa-stopwatch"></i></div>
-            <div class="title">Lecture 03</div>
-            <div class="details">Kinetics</div>
-        </a>
-
-        <a href="quiz.html?topic=lec4" class="quiz-card">
-            <div class="tag">CHEMISTRY</div>
-            <div class="icon"><i class="fa-solid fa-scale-balanced"></i></div>
-            <div class="title">Lecture 04</div>
-            <div class="details">Equilibrium</div>
+    <div class="container">
+        <a href="chem-exam.html" class="quiz-card">
+            <div class="tag animate-pulse-slow"><i class="fa-solid fa-lock"></i> SECURE</div>
+            <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="title">Gen Chem Midterm</div>
+            <div class="details">16 Questions • 30 Minutes • Anti-Cheat Active</div>
+            <div style="margin-top: 20px; width: 100%; height: 1px; background: rgba(255,255,255,0.1);"></div>
+            <div style="margin-top: 15px; color: #ff4444; font-size: 0.9rem; font-weight: bold;">
+                <i class="fa-solid fa-triangle-exclamation"></i> يرجى استخدام وضع ملء الشاشة
+            </div>
         </a>
     </div>
 
 </body>
 </html>
-
-
