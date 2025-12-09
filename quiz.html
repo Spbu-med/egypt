@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Mode</title>
+    <title>General Chemistry Exam - Secure Mode</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,7 +18,23 @@
         }
     </script>
     <style>
-        body { background-color: #0a0a0a; color: white; font-family: 'Cairo', sans-serif; background: radial-gradient(circle at 50% 50%, #1a0000 0%, #0a0a0a 100%); min-height: 100vh; overflow-x: hidden; }
+        /* Anti-Cheat Styles */
+        body { 
+            background-color: #0a0a0a; 
+            color: white; 
+            font-family: 'Cairo', sans-serif; 
+            background: radial-gradient(circle at 50% 50%, #1a0000 0%, #0a0a0a 100%); 
+            min-height: 100vh; 
+            overflow-x: hidden;
+            user-select: none; /* Prevent text selection */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        .blur-content { filter: blur(8px); pointer-events: none; }
+        .warning-overlay { position: fixed; inset: 0; background: rgba(255,0,0,0.9); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+
         .glass-panel { background: rgba(20, 20, 20, 0.75); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
         .custom-input { background: rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.1); color: white; transition: 0.3s all ease; }
         .custom-input:focus { border-color: #ff0033; outline: none; box-shadow: 0 0 20px rgba(255, 0, 51, 0.15); background: rgba(0,0,0,0.8); transform: translateY(-2px); }
@@ -31,45 +47,57 @@
         .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .explanation-box { background: linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%); border-left: 4px solid #3b82f6; }
-        
-        /* KaTeX Adjustments for Inline Flow */
         .katex { font-size: 1.1em; line-height: 1.2; }
         .katex-display { margin: 0.5em 0; }
     </style>
 </head>
-<body class="flex flex-col h-screen">
+<body class="flex flex-col h-screen" oncontextmenu="return false;">
+
+    <div id="security-warning" class="hidden warning-overlay fade-in">
+        <i class="fa-solid fa-triangle-exclamation text-6xl text-white mb-4 animate-bounce"></i>
+        <h2 class="text-4xl font-black uppercase tracking-widest mb-2">Security Alert</h2>
+        <p class="text-xl max-w-lg mb-8">You navigated away from the exam window. This action has been recorded.</p>
+        <button onclick="resumeExam()" class="px-8 py-3 bg-white text-red-600 font-bold rounded-full hover:scale-105 transition">Resume Exam</button>
+    </div>
 
     <header class="glass-panel h-16 flex items-center justify-between px-6 z-30 border-b border-white/5 relative">
         <h1 class="text-lg md:text-xl font-bold flex items-center gap-3 tracking-wide">
-            <i class="fa-solid fa-file-signature text-primary animate-pulse-slow"></i> 
-            <span id="quiz-title-display" class="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Exam</span>
+            <i class="fa-solid fa-shield-halved text-green-500"></i> 
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Gen Chem Exam</span>
         </h1>
-        <a id="exit-btn" href="quizzes-menu.html" class="group flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors">
-            <span class="hidden md:block transition-transform group-hover:-translate-x-1">Exit Exam</span>
-            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all"><i class="fa-solid fa-xmark"></i></div>
-        </a>
+        <div id="timer-badge" class="hidden bg-red-600/20 text-red-500 px-4 py-1 rounded-full border border-red-500/50 font-mono font-bold flex items-center gap-2">
+            <i class="fa-regular fa-clock animate-pulse"></i> <span id="timer-display">30:00</span>
+        </div>
     </header>
 
     <div id="progress-container" class="hidden w-full h-1 bg-gray-800 z-20 absolute top-16 left-0"><div id="progress-bar" class="h-full bg-primary transition-all duration-500 ease-out" style="width: 0%"></div></div>
 
     <main class="flex-1 flex items-center justify-center p-4 relative overflow-hidden">
+        
         <div id="start-screen" class="glass-panel max-w-md w-full p-8 md:p-10 rounded-3xl text-center fade-in border border-white/10 relative overflow-hidden">
-            <div class="w-24 h-24 bg-gradient-to-br from-gray-800 to-black rounded-full flex items-center justify-center mx-auto mb-8 border border-white/10 shadow-2xl"><i class="fa-solid fa-user-graduate text-4xl text-primary"></i></div>
-            <h2 class="text-3xl font-black mb-2 tracking-tight">Ready to Start?</h2>
-            <p class="text-gray-400 mb-8 text-sm leading-relaxed">Please enter your full name to begin.</p>
-            <div class="text-left mb-8 group"><label class="text-xs text-primary font-bold uppercase tracking-widest ml-1 mb-2 block">Student Name</label><input type="text" id="student-name-input" placeholder="Type your name here..." class="custom-input w-full rounded-xl p-4 text-lg placeholder-gray-600"></div>
-            <div class="flex justify-between items-center text-xs font-mono text-gray-500 mb-8 px-4 py-3 bg-white/5 rounded-lg border border-white/5">
-                <span class="flex items-center gap-2"><i class="fa-solid fa-list-check text-primary"></i> <span id="q-total-start">--</span> Qs</span>
-                <div class="h-4 w-[1px] bg-white/10"></div>
-                <span class="flex items-center gap-2"><i class="fa-regular fa-clock text-primary"></i> 45 Mins</span>
+            <div class="w-24 h-24 bg-gradient-to-br from-gray-800 to-black rounded-full flex items-center justify-center mx-auto mb-8 border border-white/10 shadow-2xl"><i class="fa-solid fa-atom text-4xl text-primary"></i></div>
+            <h2 class="text-3xl font-black mb-2 tracking-tight">Chemistry Midterm</h2>
+            <p class="text-gray-400 mb-8 text-sm leading-relaxed">Secure Environment • 16 Questions • 30 Mins</p>
+            
+            <div class="text-left mb-6 group">
+                <label class="text-xs text-primary font-bold uppercase tracking-widest ml-1 mb-2 block">Full Name</label>
+                <input type="text" id="student-name-input" placeholder="Enter your full name..." class="custom-input w-full rounded-xl p-4 text-lg placeholder-gray-600">
             </div>
-            <button onclick="startQuiz()" class="w-full bg-gradient-to-r from-primary to-red-700 hover:from-red-600 hover:to-red-800 text-white font-bold py-4 rounded-xl shadow-[0_10px_30px_rgba(255,0,51,0.3)] transition-all transform hover:scale-[1.02] flex items-center justify-center gap-3"><span>Start Exam</span> <i class="fa-solid fa-arrow-right-long"></i></button>
+
+            <ul class="text-left text-xs text-gray-500 mb-8 space-y-2 bg-white/5 p-4 rounded-lg">
+                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Fullscreen mode required</li>
+                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Tab switching is monitored</li>
+                <li class="flex items-center gap-2"><i class="fa-solid fa-ban text-red-500"></i> Copy/Paste disabled</li>
+            </ul>
+
+            <button onclick="requestFullScreenAndStart()" class="w-full bg-gradient-to-r from-primary to-red-700 hover:from-red-600 hover:to-red-800 text-white font-bold py-4 rounded-xl shadow-[0_10px_30px_rgba(255,0,51,0.3)] transition-all transform hover:scale-[1.02] flex items-center justify-center gap-3">
+                <span>Enter Exam Mode</span> <i class="fa-solid fa-lock"></i>
+            </button>
         </div>
 
         <div id="quiz-screen" class="hidden flex-col w-full max-w-4xl h-full md:h-auto fade-in">
             <div class="flex justify-between items-end mb-4 px-2">
-                <div class="text-sm font-medium text-gray-400">Question <span id="q-number" class="text-white text-2xl font-bold font-cairo mx-1">1</span> / <span id="q-total" class="text-gray-500">--</span></div>
-                <div class="bg-black/40 text-primary px-4 py-2 rounded-lg font-mono font-bold border border-primary/20 flex items-center gap-2 shadow-lg backdrop-blur-md"><i class="fa-regular fa-clock animate-pulse"></i> <span id="timer-display">45:00</span></div>
+                <div class="text-sm font-medium text-gray-400">Question <span id="q-number" class="text-white text-2xl font-bold font-cairo mx-1">1</span> / <span id="q-total">16</span></div>
             </div>
             <div class="glass-panel flex-1 md:flex-none rounded-2xl p-6 md:p-10 relative overflow-y-auto border-t-4 border-t-primary">
                 <h2 id="q-text" class="text-xl md:text-2xl font-bold mb-8 leading-relaxed text-gray-100">Loading...</h2>
@@ -84,19 +112,19 @@
         <div id="result-screen" class="hidden glass-panel max-w-md w-full p-8 rounded-3xl text-center border border-white/10 fade-in relative z-50">
             <div class="w-28 h-28 rounded-full border-4 border-primary mx-auto flex flex-col items-center justify-center mb-6 shadow-[0_0_40px_rgba(255,0,51,0.4)] bg-black relative z-10">
                 <span id="final-score" class="text-5xl font-black text-white leading-none mt-1">0</span>
-                <span class="text-[10px] text-gray-400 uppercase tracking-widest mt-1">Score</span>
+                <span class="text-[10px] text-gray-400 uppercase tracking-widest mt-1">/ 16</span>
             </div>
-            <h2 class="text-2xl font-bold mb-1">Exam Completed</h2>
+            <h2 class="text-2xl font-bold mb-1">Exam Submitted</h2>
             <p id="student-name-display" class="text-primary font-bold text-lg mb-4"></p>
-            <div id="save-status" class="mb-8 text-xs font-mono py-2 px-4 rounded-full bg-white/5 inline-flex items-center gap-2 border border-white/5"><i class="fa-solid fa-spinner fa-spin text-primary"></i> <span class="text-gray-400">Syncing...</span></div>
-            <div class="space-y-3 relative z-10">
-                <button onclick="showReview()" class="w-full py-3.5 bg-gradient-to-r from-gray-800 to-gray-900 border border-white/10 hover:border-primary/50 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 group"><i class="fa-solid fa-eye text-primary group-hover:scale-110 transition-transform"></i> Review Answers</button>
-                <div class="flex gap-3">
-                    <button onclick="location.reload()" class="flex-1 py-3 border border-white/10 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 text-sm transition font-medium">Retake</button>
-                    <a id="rank-btn" href="#" class="flex-1 py-3 bg-primary text-white rounded-xl hover:bg-red-700 text-sm flex items-center justify-center transition font-bold shadow-lg">Rank <i class="fa-solid fa-trophy ml-2"></i></a>
-                </div>
-                <a href="index.html" class="block w-full py-3 mt-2 border border-white/5 rounded-xl text-gray-500 hover:text-white hover:bg-white/5 text-sm transition flex items-center justify-center gap-2"><i class="fa-solid fa-house"></i> Back to Home</a>
+            
+            <div id="violation-badge" class="hidden mb-4 py-2 px-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-xs font-bold">
+                <i class="fa-solid fa-triangle-exclamation mr-1"></i> Security Violations Detected
             </div>
+
+            <button onclick="showReview()" class="w-full py-3.5 bg-gradient-to-r from-gray-800 to-gray-900 border border-white/10 hover:border-primary/50 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 group mb-3">
+                <i class="fa-solid fa-eye text-primary group-hover:scale-110 transition-transform"></i> Review Answers
+            </button>
+            <button onclick="location.reload()" class="w-full py-3 border border-white/10 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 text-sm transition">Exit Exam</button>
         </div>
 
         <div id="review-screen" class="hidden absolute inset-0 bg-[#0a0a0a] z-[60] flex flex-col fade-in">
@@ -108,238 +136,113 @@
         </div>
     </main>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        const firebaseConfig = { apiKey: "AIzaSyASq2nOBpRMJtKqWWvTDD4hyGmEOp5cOnI", authDomain: "spbu-med-platform.firebaseapp.com", projectId: "spbu-med-platform", storageBucket: "spbu-med-platform.firebasestorage.app", messagingSenderId: "227576463828", appId: "1:227576463828:web:1114162c17881bf5da9641" };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // --- FORMATTED QUESTION BANK (Fixed Inline Math with $) ---
-        const questionBank = {
-            "bioethics": [
-                 { id: 1, q: "Who is credited with coining the term 'Bioethics' in 1927?", options: ["Van Rensselaer Potter", "André Hellegers", "Fritz Jahr", "Stephen Toulmin"], a: 2, explanation: "Fritz Jahr coined 'Bio-Ethik' in 1927. Potter popularized it later." },
-                 { id: 2, q: "Which perspective asks: 'What do I owe to the common good?'", options: ["Ethics of Virtue", "Social Relationships", "Cosmopolitan", "Deontology"], a: 2, explanation: "Cosmopolitan perspective focuses on society and common good." },
-                 { id: 3, q: "Which was NOT a core factor for Bioethics emergence in 1960s?", options: ["Technical progress", "Environmental agenda", "Collapse of religion", "Shift to chronic diseases"], a: 2, explanation: "It was NOT caused by a collapse of religion." },
-                 { id: 4, q: "Metaethics is primarily concerned with:", options: ["Consequences", "Meaning of moral terms", "Character", "Universalizability"], a: 1, explanation: "Metaethics deals with the nature and meaning of ethical concepts." },
-                 { id: 5, q: "What is 'Casuistry'?", options: ["Principlism", "Case-based reasoning", "Communitarianism", "Reflective Equilibrium"], a: 1, explanation: "Casuistry is case-based reasoning." },
-                 { id: 6, q: "Bruno Latour's questioning of 'Interrelations of humans and non-humans' raises:", options: ["Human autonomy", "Conquering death", "Are non-humans moral agents?", "Natural law"], a: 2, explanation: "Latour questions non-human agency in networks." },
-                 { id: 7, q: "'Wide Reflective Equilibrium' is a technique of:", options: ["Deontology", "Utilitarianism", "Applied Ethics", "Virtue Ethics"], a: 2, explanation: "Used in Applied Ethics to align judgments and principles." },
-                 { id: 8, q: "Isaiah Berlin described 'negative liberty' as:", options: ["Self-mastery", "Absence of coercion", "Consciousness of rules", "Ruling oneself"], a: 1, explanation: "Negative Liberty is freedom FROM interference." },
-                 { id: 9, q: "Who stated: 'I am autonomous if I rule me, and no one else rules I'?", options: ["Kant", "Joel Feinberg", "Scanlon", "Beauchamp"], a: 1, explanation: "Quote by Joel Feinberg." },
-                 { id: 10, q: "Kant's concept of Autonomy requires principles to meet:", options: ["Happiness", "Universality", "Utility", "Practical reason"], a: 1, explanation: "Categorical Imperative requires Universality." },
-                 { id: 11, q: "What makes autonomy 'morally powerful'?", options: ["Social stability", "Moral individuality", "Efficiency", "Dogma"], a: 1, explanation: "It represents Moral Individuality." },
-                 { id: 12, q: "Weak vs Strong Paternalism is based on:", options: ["Legality", "Competence", "Harm severity", "Force"], a: 1, explanation: "Weak involves incompetent patients; Strong involves competent ones." },
-                 { id: 13, q: "The Ottoman document from 1539 is an example of:", options: ["Organ transplant", "Surgery waiver", "Confidentiality", "Experimentation"], a: 1, explanation: "An early surgical waiver/consent form." },
-                 { id: 14, q: "In Walter Reed's Yellow Fever experiments, death compensation was:", options: ["Pension", "$500", "$100", "$200"], a: 2, explanation: "$100 in gold." },
-                 { id: 15, q: "Which is NOT a Paternalism/Autonomy dilemma listed?", options: ["Overriding Refusals", "Partial Disclosures", "Excessive Risk", "Mandatory Vaccinations"], a: 3, explanation: "Lectures list Overriding Refusals, Partial Disclosures, Preventing Excessive Risk." },
-                 { id: 16, q: "Model emphasizing 'Love is the true medicine':", options: ["Hippocratic", "Paracelsus", "Deontological", "Social"], a: 1, explanation: "Paracelsus emphasized the spiritual connection." },
-                 { id: 17, q: "Deontological Model (Nikolay Petrov) is characterized by:", options: ["Utility", "Strict duty", "Virtue", "Autonomy"], a: 1, explanation: "Deontology is Ethics of Duty." },
-                 { id: 18, q: "Physician-Patient Privilege (PPP) is:", options: ["Refusal right", "Legal protection in court", "Records right", "Nonmaleficence"], a: 1, explanation: "Protects confidentiality in legal settings." },
-                 { id: 19, q: "Public Health definition (1988 report):", options: ["No disease", "Well-being", "Collective action", "Free care"], a: 2, explanation: "Society's collective action for healthy conditions." },
-                 { id: 20, q: "Malady distinction: Disease vs Illness is:", options: ["Objective vs Subjective", "Mental vs Physical", "Infectious vs Non", "Acute vs Chronic"], a: 0, explanation: "Disease is objective; Illness is subjective." },
-                 { id: 21, q: "Principle addressing balancing benefit/harm for population:", options: ["Veracity", "Fidelity", "Utility", "Solidarity"], a: 2, explanation: "Utility focuses on net benefit for the population." },
-                 { id: 22, q: "In Russia, consent for 'Immature minors' (6-15) requires:", options: ["Own consent", "Unassisted", "Legal rep", "No consent"], a: 2, explanation: "Legal representative consent required." },
-                 { id: 23, q: "Golden Rule 'What you wish upon others...' is:", options: ["Directive", "Negative", "Empathetic", "Categorical"], a: 2, explanation: "Empathetic form." },
-                 { id: 24, q: "Ethics of Virtue: Good judgement = Virtue + ...?", options: ["Divine command", "Utility calc", "Practical reason", "Maxims"], a: 2, explanation: "Virtue + Phronesis (Practical Reason)." },
-                 { id: 25, q: "Autonomy as 'sovereignty in deciding what to believe' defined by:", options: ["Scanlon", "Feinberg", "Kant", "Kohlberg"], a: 0, explanation: "Thomas Scanlon." },
-                 { id: 26, q: "Communitarianism is characterized by:", options: ["Rules", "Social context", "Consequences", "Professionalism"], a: 1, explanation: "Focus on social context and community." },
-                 { id: 27, q: "5th element of Informed Consent:", options: ["Status", "Recommendation", "Voluntariness", "Guardian"], a: 2, explanation: "Voluntariness." },
-                 { id: 28, q: "Hippocratic Model contrasts with Bioethics in:", options: ["Euthanasia", "Secrecy", "Paternalism", "Nonmaleficence"], a: 2, explanation: "Hippocratic is Paternalistic." },
-                 { id: 29, q: "3rd cornerstone of Bioethics Interdisciplinarity:", options: ["Duties", "Common good", "Virtue", "Death"], a: 1, explanation: "The Common Good." },
-                 { id: 30, q: "Autonomy according to Kohlberg involves:", options: ["Consciousness of rules", "Free choice", "Adults only", "No coercion"], a: 0, explanation: "Consciousness about obedience to rules." },
-                 { id: 31, q: "Overriding Refusals is a conflict between:", options: ["Justice/Beneficence", "Nonmaleficence/Utility", "Autonomy/Beneficence", "Veracity/Justice"], a: 2, explanation: "Autonomy vs Beneficence." },
-                 { id: 32, q: "Privacy and PPP are mandatory for:", options: ["Rationality", "Voluntarism", "Autonomous being", "Agency"], a: 2, explanation: "Respecting the patient as an Autonomous being." }
-            ],
-            "lec1": [
-                { id: 1, q: "J.J. Thomson's cathode ray deflection proved particles were:", options: ["Massive.", "Negatively charged.", "Inert.", "Positive."], a: 1, explanation: "Deflected away from negative plate implies negative charge." },
-                { id: 2, q: "Copper (69% Cu-63, 31% Cu-65). Average mass calc:", options: ["(63+65)/2", "Weighted average", "Sum of mass", "Difference"], a: 1, explanation: "Weighted average: $(62.93 \\times 0.69) + (64.93 \\times 0.31)$" },
-                { id: 3, q: "Gas density formula $d = \\frac{PM}{RT}$ implies highest density for:", options: ["$CH_4$", "$O_2$", "$CO_2$", "$SF_6$"], a: 3, explanation: "Highest Molar Mass ($M$) = Highest Density. $SF_6$ is approx 146 g/mol." },
-                { id: 4, q: "Rutherford's experiment disproved Plum Pudding by showing:", options: ["No deflection.", "Large angle deflection.", "Absorption.", "Reflection."], a: 1, explanation: "Dense positive nucleus caused large deflections of alpha particles." },
-                { id: 5, q: "Total P = 12 atm, 1 mol $N_2$ + 3 mol $H_2$. P($H_2$) = ?", options: ["3 atm", "9 atm", "4 atm", "6 atm"], a: 1, explanation: "$X_{H_2} = \\frac{3}{4} = 0.75$. $P_{H_2} = 0.75 \\times 12 = 9$ atm." },
-                { id: 6, q: "Van der Waals 'a' constant corrects for:", options: ["Volume.", "Forces.", "Temp.", "Moles."], a: 1, explanation: "'a' corrects for intermolecular attractive forces (pressure)." },
-                { id: 7, q: "Molecules in 0.04g Saccharin (M=183.18)?", options: ["$1.31 \\times 10^{20}$", "$2.5 \\times 10^{21}$", "$6.02 \\times 10^{23}$", "$9.17 \\times 10^{20}$"], a: 0, explanation: "Moles = 0.04/183.18. Molecules = Moles * Avogadro." },
-                { id: 8, q: "Structural isomers have:", options: ["Different formula.", "Same formula, diff connectivity.", "Same structure.", "Diff neutrons."], a: 1, explanation: "Same molecular formula, different bonding arrangement." },
-                { id: 9, q: "Double T (Kelvin) at constant P, Volume:", options: ["Halves.", "Doubles.", "Same.", "Quadruples."], a: 1, explanation: "Charles Law: $V \\propto T$." },
-                { id: 10, q: "Millikan's drop experiment found:", options: ["Mass.", "Charge.", "e/m ratio.", "Nucleus."], a: 1, explanation: "Determined the elementary charge $e = 1.6 \\times 10^{-19}$ C." },
-                { id: 11, q: "Diatomic element?", options: ["He", "S", "I", "C"], a: 2, explanation: "Iodine exists as $I_2$." },
-                { id: 12, q: "Mass number (A) is:", options: ["P+e", "P+N", "N+e", "Avg mass"], a: 1, explanation: "$A = Z + N$ (Protons + Neutrons)." },
-                { id: 13, q: "Dalton's Law assumes gases:", options: ["Interact.", "Have volume.", "Act independently.", "Vary temp."], a: 2, explanation: "Partial pressures act independently." },
-                { id: 14, q: "Isotopes differ in:", options: ["Chemicals.", "Protons.", "Electrons.", "Neutrons."], a: 3, explanation: "Same Z, different N." },
-                { id: 15, q: "V vs 1/P plot for ideal gas is:", options: ["Hyperbola.", "Linear.", "Parabola.", "Exp."], a: 1, explanation: "Boyle's Law: $V = k(1/P)$ is linear." },
-                { id: 16, q: "Empirical formula of $C_6H_6$:", options: ["$C_6H_6$", "$CH$", "$CH_2$", "$C_3H_3$"], a: 1, explanation: "Simplest ratio 1:1." },
-                { id: 17, q: "Mass of 1 mole C-12:", options: ["12 amu", "12 g", "1 g", "6g"], a: 1, explanation: "Definition of mole." },
-                { id: 18, q: "Molar volume depends on:", options: ["P & T.", "Weight.", "Chemistry.", "Neutrons."], a: 0, explanation: "For ideal gas, depends only on state variables P and T." },
-                { id: 19, q: "Mass ~1/1800 of proton:", options: ["Neutron", "Electron", "Alpha", "Positron"], a: 1, explanation: "Electron is much lighter than nucleons." },
-                { id: 20, q: "Cation has:", options: ["More e.", "Fewer e.", "Equal.", "No charge."], a: 1, explanation: "Positive charge = lost electrons." }
-            ],
-            "lec2": [
-                { id: 1, q: "Temp independent unit?", options: ["Molarity", "Molality", "Vol %", "g/L"], a: 1, explanation: "Molality (mol/kg) relies on mass, which doesn't change with T." },
-                { id: 2, q: "Henry's Law $C_g$ ~ ?", options: ["T", "P", "V", "M"], a: 1, explanation: "$C_g = k \\cdot P_g$." },
-                { id: 3, q: "i for $AlCl_3$?", options: ["1", "3", "4", "2"], a: 2, explanation: "$Al^{3+} + 3Cl^-$ = 4 particles." },
-                { id: 4, q: "Hypertonic effect on RBC:", options: ["Swell.", "Shrink.", "None.", "Divide."], a: 1, explanation: "Water leaves cell -> Crenation." },
-                { id: 5, q: "Raoult's Law:", options: ["P = Xsolv * P0", "P = Xsolute * P0", "P = P0/X", "P = X+P"], a: 0, explanation: "$P_{solution} = X_{solvent} \\cdot P^0_{solvent}$" },
-                { id: 6, q: "Colligative property?", options: ["Density", "Viscosity", "Osmotic P", "Color"], a: 2, explanation: "Depends on number of particles." },
-                { id: 7, q: "Solute added, BP:", options: ["Drops.", "Rises.", "Same.", "Fluctuates."], a: 1, explanation: "Boiling Point Elevation." },
-                { id: 8, q: "Reverse Osmosis pressure:", options: ["= Osmotic", "< Osmotic", "> Osmotic", "Zero"], a: 2, explanation: "Must overcome osmotic pressure." },
-                { id: 9, q: "0.5 mol in 200g solv. Molality?", options: ["0.25", "2.5", "0.1", "0.0025"], a: 1, explanation: "$0.5 / 0.2 = 2.5$ m." },
-                { id: 10, q: "Gas solubility vs T:", options: ["Increases.", "Decreases.", "Same.", "Pressure only."], a: 1, explanation: "Gases escape at high T." },
-                { id: 11, q: "Weak electrolyte?", options: ["NaCl", "HCl", "HF", "NaOH"], a: 2, explanation: "HF partially dissociates." },
-                { id: 12, q: "Osmotic $\\pi = CRT$, C is:", options: ["m", "M", "X", "w%"], a: 1, explanation: "Molarity (mol/L)." },
-                { id: 13, q: "Real i < Predicted i due to:", options: ["Ion pairing.", "Polymers.", "Evap.", "H-bond."], a: 0, explanation: "Ions attract each other reducing effective concentration." },
-                { id: 14, q: "Supersaturated solution is:", options: ["Stable.", "Unstable.", "Equilibrium.", "Dilute."], a: 1, explanation: "Precipitates easily." },
-                { id: 15, q: "FP Depression formula:", options: ["$m \\cdot K_f$", "$M \\cdot K_f$", "$m / K_f$", "PV"], a: 0, explanation: "$\\Delta T_f = i \\cdot m \\cdot K_f$." },
-                { id: 16, q: "Immiscible pair?", options: ["Ethanol/Water", "Oil/Water", "Vinegar/Water", "Methanol/Water"], a: 1, explanation: "Polar vs Nonpolar." },
-                { id: 17, q: "Mole fraction $X_A$:", options: ["na/L", "na/ntotal", "ga/gtotal", "na/kg"], a: 1, explanation: "Ratio of moles." },
-                { id: 18, q: "NaCl + Ice temp:", options: ["-5", "-20", "-50", "0"], a: 1, explanation: "Freezing mixture approx -20 C." },
-                { id: 19, q: "Tyndall effect seen in:", options: ["Solutions.", "Colloids.", "Solvents.", "Gases."], a: 1, explanation: "Light scattering by particles." },
-                { id: 20, q: "Mass %:", options: ["m_solute/m_solution", "m_solute/m_solvent", "n/V", "m*100"], a: 0, explanation: "Fraction of total mass." }
-            ],
-            "lec3": [
-                { id: 1, q: "Reaction Rate unit:", options: ["atm/L", "M/s", "K/s", "g/L"], a: 1, explanation: "Concentration change per time." },
-                { id: 2, q: "2A -> B, Rate relative to A:", options: ["d[A]/dt", "-1/2 d[A]/dt", "2 d[A]/dt", "d[A]"], a: 1, explanation: "$Rate = -\\frac{1}{2} \\frac{d[A]}{dt}$" },
-                { id: 3, q: "Rate = k[A][B], Order?", options: ["0", "1", "2", "3"], a: 2, explanation: "1+1=2." },
-                { id: 4, q: "1st Order Integrated Law:", options: ["[A]-kt", "$\\ln[A] = \\ln[A]_0 - kt$", "1/[A]", "Rate=k"], a: 1, explanation: "Ln plot." },
-                { id: 5, q: "Slope of ln[A] vs t:", options: ["k", "-k", "1/k", "Ea"], a: 1, explanation: "Slope is negative rate constant." },
-                { id: 6, q: "1st Order Half-life depends on:", options: ["Conc.", "k only.", "Product.", "P."], a: 1, explanation: "$t_{1/2} = \\frac{0.693}{k}$" },
-                { id: 7, q: "1/[A] vs t linear -> Order:", options: ["0", "1", "2", "3"], a: 2, explanation: "Second order kinetics." },
-                { id: 8, q: "Min energy for reaction:", options: ["H", "G", "Ea", "KE"], a: 2, explanation: "Activation Energy." },
-                { id: 9, q: "Arrhenius relates k to:", options: ["Conc.", "T and Ea.", "P.", "V."], a: 1, explanation: "Temperature dependence." },
-                { id: 10, q: "Catalyst:", options: ["Inc T.", "Lowers Ea.", "Inc Conc.", "Shifts K."], a: 1, explanation: "Alt pathway with lower Ea." },
-                { id: 11, q: "Slowest step is:", options: ["Initial.", "Term.", "Rate-determining.", "Fast."], a: 2, explanation: "Determines overall rate." },
-                { id: 12, q: "Intermediate:", options: ["Prod then Cons.", "Cons then Prod.", "Start/End.", "Hidden."], a: 1, explanation: "Formed then used up." },
-                { id: 13, q: "A+B -> Prod molecularity:", options: ["Uni", "Bi", "Ter", "Zero"], a: 1, explanation: "Two molecules colliding." },
-                { id: 14, q: "[A]x2 -> Rate x2. Order:", options: ["0", "1", "2", "3"], a: 1, explanation: "Linear relationship." },
-                { id: 15, q: "Rate=k[NO2]^2. Order:", options: ["Uni", "1", "2", "0"], a: 2, explanation: "Exponent is 2." },
-                { id: 16, q: "Arrhenius slope (ln k vs 1/T):", options: ["-Ea/R", "Ea", "A", "R"], a: 0, explanation: "$m = -\\frac{E_a}{R}$" },
-                { id: 17, q: "Heterogeneous catalyst:", options: ["Same phase.", "Diff phase.", "Liquid.", "Gas."], a: 1, explanation: "Different physical phase." },
-                { id: 18, q: "Collision theory needs:", options: ["Speed.", "Orientation+Ea.", "Vol.", "Cat."], a: 1, explanation: "Effective collision requirements." },
-                { id: 19, q: "Zero order k units:", options: ["s-1", "M/s", "M-1s-1", "None"], a: 1, explanation: "Same as Rate." },
-                { id: 20, q: "Van't Hoff rule: Rate inc per:", options: ["1C", "10C", "100C", "1K"], a: 1, explanation: "10 degree rule." }
-            ],
-            "lec4": [
-                { id: 1, q: "At equilibrium, rates are:", options: ["Zero.", "Equal.", "Diff.", "Random."], a: 1, explanation: "Forward rate = Reverse rate." },
-                { id: 2, q: "K expression:", options: ["Prod/React", "React/Prod", "Sum", "Diff"], a: 0, explanation: "Mass Action Law." },
-                { id: 3, q: "$N_2O_4 \\rightleftharpoons 2NO_2$ Keq:", options: ["$[NO_2]/[N_2O_4]$", "$[NO_2]^2/[N_2O_4]$", "Inverse", "Rate"], a: 1, explanation: "Coefficient becomes exponent." },
-                { id: 4, q: "K >> 1 favors:", options: ["Reactants.", "Products.", "Neither.", "Solids."], a: 1, explanation: "More products." },
-                { id: 5, q: "Pure solids/liquids in K:", options: ["Included.", "Excluded.", "Zero.", "Var."], a: 1, explanation: "Activity is 1." },
-                { id: 6, q: "Q < K shifts:", options: ["Right.", "Left.", "None.", "Stop."], a: 0, explanation: "To form products." },
-                { id: 7, q: "Kp vs Kc:", options: ["Equal", "$K_p = K_c(RT)^{\\Delta n}$", "Div", "Mult"], a: 1, explanation: "Gas constant relation." },
-                { id: 8, q: "Exothermic + Heat shifts:", options: ["Right.", "Left.", "None.", "Inc K."], a: 1, explanation: "Heat is product, shift away." },
-                { id: 9, q: "Inc Pressure shifts to:", options: ["Less gas moles.", "More moles.", "None.", "Reactants."], a: 0, explanation: "Relieve pressure." },
-                { id: 10, q: "Catalyst changes:", options: ["K.", "Position.", "Rate.", "H."], a: 2, explanation: "Speeds up equilibrium only." },
-                { id: 11, q: "$H_2+I_2 \\rightleftharpoons 2HI$ Pressure effect:", options: ["Right.", "Left.", "None.", "K."], a: 2, explanation: "$\\Delta n = 0$." },
-                { id: 12, q: "K calc uses concentrations at:", options: ["Start.", "Equilibrium.", "Max.", "Min."], a: 1, explanation: "Definition of K." },
-                { id: 13, q: "Rxn x2, new K:", options: ["2K", "$K^2$", "sqrtK", "K/2"], a: 1, explanation: "Power rule." },
-                { id: 14, q: "Rxn reversed, new K:", options: ["-K", "1/K", "K", "sqrtK"], a: 1, explanation: "Reciprocal." },
-                { id: 15, q: "Remove NH3 (product):", options: ["Shift Left.", "Shift Right.", "None.", "Low K."], a: 1, explanation: "Replace product." },
-                { id: 16, q: "Activity of solid:", options: ["0", "1", "Var", "Inf"], a: 1, explanation: "Standard state." },
-                { id: 17, q: "Q uses concs at:", options: ["Equil.", "Any time.", "Prod.", "React."], a: 1, explanation: "Non-equilibrium check." },
-                { id: 18, q: "Resp. Acidosis (Excess CO2) shifts:", options: ["Right (H+ up).", "Left.", "None.", "Gas."], a: 0, explanation: "Forms acid." },
-                { id: 19, q: "Ksp is for:", options: ["Gases.", "Salts.", "Liq.", "Acids."], a: 1, explanation: "Solubility Product." },
-                { id: 20, q: "Factor changing K value:", options: ["Rate.", "Pos.", "Temp.", "P."], a: 2, explanation: "Only T changes K." }
-            ],
-            "anat_lab1": [
-                { id: 1, q: "Which bony landmark represents the fusion of the articular processes on the posterior aspect of the sacrum?", options: ["Median sacral crest", "Intermediate sacral crest", "Lateral sacral crest", "Sacral tuberosity"], a: 1, explanation: "The Intermediate sacral crest represents the fusion of the articular processes." },
-                { id: 2, q: "Regarding the 5th Lumbar Vertebra (L5), which feature characterizes its transverse process as atypical?", options: ["It has a foramen transversarium.", "It is thin, long, and projects inferiorly.", "It is bulky, thick, and attached to the whole pedicle and part of the body.", "It lacks a mammillary process."], a: 2, explanation: "Atypical L5 transverse process is bulky and attaches to the whole pedicle and part of the body." },
-                { id: 3, q: "The Sternal Angle (Angle of Louis) corresponds to the intervertebral disc between which two vertebrae?", options: ["T2 and T3", "T3 and T4", "T4 and T5", "T5 and T6"], a: 2, explanation: "The sternal angle lies at the level of the disc between T4 and T5." },
-                { id: 4, q: "Which thoracic vertebra is considered atypical because it possesses a complete circular costal facet for the 1st rib?", options: ["T1", "T4", "T7", "T9"], a: 0, explanation: "T1 is atypical because it has a complete facet for the 1st rib and a demi-facet for the 2nd rib." },
-                { id: 5, q: "In a typical rib, the two articular demi-facets on the head are separated by which structure?", options: ["The Tubercle", "The Crest of the Head", "The Costal Groove", "The Neck"], a: 1, explanation: "The head of a typical rib has two facets separated by a crest." },
-                { id: 6, q: "Which structure gives exit to the ventral rami of the upper 4 sacral nerves?", options: ["Posterior sacral foramina", "Sacral hiatus", "Anterior sacral foramina", "Sacral canal"], a: 2, explanation: "The anterior (pelvic) foramina transmit the ventral rami." },
-                { id: 7, q: "The Uncinate Process is a characteristic feature found on the body of which vertebrae?", options: ["Typical Cervical Vertebrae (C3-C6)", "Atlas (C1)", "Typical Thoracic Vertebrae", "Lumbar Vertebrae"], a: 0, explanation: "The uncinate process is a raised lip on the lateral margins of the superior surface of cervical vertebral bodies." },
-                { id: 8, q: "Which of the following is NOT a feature of the Atlas (C1)?", options: ["Anterior Arch", "Lateral Mass", "Spinous Process", "Transverse Foramen"], a: 2, explanation: "Atlas lacks a spinous process; it has a posterior tubercle instead." },
-                { id: 9, q: "The superior vertebral notch of a thoracic vertebra forms which margin of the intervertebral foramen?", options: ["The upper margin", "The lower margin", "The posterior margin", "The anterior margin"], a: 1, explanation: "Superior vertebral notch forms the LOWER margin of the intervertebral foramen." },
-                { id: 10, q: "Identify the bone that is described as having a 'Sternal end' and an 'Acromial end'.", options: ["Rib 1", "Scapula", "Clavicle", "Humerus"], a: 2, explanation: "The clavicle connects the sternum (sternal end) to the acromion of the scapula (acromial end)." },
-                { id: 11, q: "On the sacrum, the Sacral Tuberosity is located immediately posterior to which structure?", options: ["The Promontory", "The Auricular Surface", "The Median Sacral Crest", "The Sacral Hiatus"], a: 1, explanation: "The sacral tuberosity is a rough area just behind the auricular surface for ligament attachment." },
-                { id: 12, q: "Which specific rib is described in the lab manual as having a 'Scalene tubercle'?", options: ["1st Rib", "2nd Rib", "11th Rib", "12th Rib"], a: 0, explanation: "The first rib is flat and has the scalene tubercle." },
-                { id: 13, q: "The Mammillary Process is a unique feature found on the posterior aspect of which part of the lumbar vertebrae?", options: ["Transverse Process", "Spinous Process", "Superior Articular Process", "Inferior Articular Process"], a: 2, explanation: "The mammillary process projects backward from the superior articular process." },
-                { id: 14, q: "Which of the following describes the spinous process of the Axis (C2)?", options: ["Long and non-bifid", "Absent", "Large and bifid", "Sharp and downward sloping"], a: 2, explanation: "The axis has a strong, bifid spinous process (often larger than C3-C6)." },
-                { id: 15, q: "Where is the costal groove located on a typical rib?", options: ["Upper border of the inner surface", "Lower border of the inner surface", "Outer surface of the shaft", "Superior surface of the neck"], a: 1, explanation: "The costal groove is located along the inferior (lower) border of the internal surface." },
-                { id: 16, q: "Which statement regarding the Zygomatic bone is correct based on the Lab?", options: ["It is a movable bone.", "It is also known as the cheek bone.", "It contains the mental foramen.", "It articulates directly with the mandible."], a: 1, explanation: "It is the cheek bone. Only mandible is movable." },
-                { id: 17, q: "The 'Angle of the Rib' is defined as:", options: ["The sharpest curve of the rib shaft", "The junction between head and neck", "The junction between the rib and costal cartilage", "The articulation point with the transverse process"], a: 0, explanation: "This is the definition of the angle." },
-                { id: 18, q: "Which anatomical plane is described as 'dividing the body into upper and lower parts'?", options: ["Sagittal", "Coronal", "Transverse", "Paramedian"], a: 2, explanation: "Transverse plane divides the body into superior and inferior parts." },
-                { id: 19, q: "Which of the following is an appendicular bone of the lower limb?", options: ["Sacrum", "Coccyx", "Hip Bone", "Sternum"], a: 2, explanation: "The hip bone (pelvic girdle) is part of the appendicular skeleton." },
-                { id: 20, q: "The 'Sacral Cornu' are the remnants of which vertebral structure?", options: ["Spinous processes of S5", "Inferior articular processes of S5", "Transverse processes of S5", "Superior articular processes of S1"], a: 1, explanation: "The sacral cornua represent the inferior articular processes of the fifth sacral vertebra." }
-            ]
-        };
-
-        // --- SETUP ---
-        const urlParams = new URLSearchParams(window.location.search);
-        const topic = urlParams.get('topic') || 'lec1';
-        const questions = questionBank[topic] || [];
-        const titles = { 
-            'bioethics': "Bioethics Final", 
-            'lec1': "Lec 01: Basics", 
-            'lec2': "Lec 02: Solutions", 
-            'lec3': "Lec 03: Kinetics", 
-            'lec4': "Lec 04: Equilibrium",
-            'anat_lab1': "Anatomy Lab 1 (Hard)"
-        };
-        
-        document.getElementById('quiz-title-display').innerText = titles[topic] || "Exam";
-        document.getElementById('q-total').innerText = questions.length;
-        document.getElementById('q-total-start').innerText = questions.length;
-
-        // DEBUG: Check loaded topics
-        console.log("Available Topics:", Object.keys(questionBank));
-        if (!questionBank[topic]) {
-            alert("Error: Topic '" + topic + "' not found! Loaded topics: " + Object.keys(questionBank).join(", "));
-        }
+    <script>
+        // --- 16 QUESTIONS (Modified from PDF & Harder) ---
+        const questions = [
+            { id: 1, q: "For the isotope Cobalt-60 in the $Co^{2+}$ state, determine the number of protons, neutrons, and electrons. (Z=27)", options: ["27p, 33n, 27e", "27p, 33n, 25e", "60p, 27n, 25e", "27p, 60n, 29e"], a: 1, explanation: "Protons = Z = 27. Neutrons = A - Z = 60 - 27 = 33. Electrons = 27 - 2 (charge) = 25." },
+            { id: 2, q: "Gallium consists of two isotopes: $^{69}Ga$ (60.1% abundance, mass 68.926 u) and $^{71}Ga$ (39.9% abundance, mass 70.925 u). Calculate average atomic mass.", options: ["69.92 u", "69.72 u", "70.10 u", "69.00 u"], a: 1, explanation: "Avg = $(68.926 \\times 0.601) + (70.925 \\times 0.399) \\approx 69.72$ u." },
+            { id: 3, q: "A balloon contains 2.50 L of Helium at $40^\\circ C$. It is cooled to $-10^\\circ C$ at constant pressure. What is the new volume?", options: ["2.10 L", "2.95 L", "0.62 L", "3.00 L"], a: 0, explanation: "Charles Law: $V_1/T_1 = V_2/T_2$. $2.5/(313) = V_2/(263)$. $V_2 \\approx 2.10$ L." },
+            { id: 4, q: "How many moles of air are inhaled if a person breathes 0.75 L at $30^\\circ C$ and 0.95 atm? ($R=0.08206$)", options: ["0.045 mol", "0.029 mol", "0.290 mol", "34.5 mol"], a: 1, explanation: "$n = PV/RT = (0.95 \\times 0.75) / (0.08206 \\times 303) \\approx 0.029$ mol." },
+            { id: 5, q: "A gas mixture has total pressure 5.0 atm. It contains 2 mol He, 3 mol Ne, and 5 mol Ar. What is the partial pressure of Ne?", options: ["1.0 atm", "1.5 atm", "2.5 atm", "3.0 atm"], a: 1, explanation: "Total moles = 10. $X_{Ne} = 3/10 = 0.3$. $P_{Ne} = 0.3 \\times 5.0 = 1.5$ atm." },
+            { id: 6, q: "How many grams of Glucose ($C_6H_{12}O_6$) and water are needed to prepare 500 g of a 5.0% by mass solution?", options: ["25 g Glucose, 500 g Water", "5 g Glucose, 495 g Water", "25 g Glucose, 475 g Water", "50 g Glucose, 450 g Water"], a: 2, explanation: "$5\\%$ of 500g = 25g solute. Solvent = $500 - 25 = 475$g." },
+            { id: 7, q: "To prepare 250 mL of 0.50 M $H_2SO_4$ from a stock solution of 18.0 M $H_2SO_4$, how much stock do you need?", options: ["13.9 mL", "6.9 mL", "36 mL", "1.8 mL"], a: 1, explanation: "$M_1V_1 = M_2V_2$. $(18)V_1 = (0.5)(250)$. $V_1 = 6.94$ mL." },
+            { id: 8, q: "Dissolve 20.0 g of NaOH (M=40.0 g/mol) in 250 g of water. Calculate the Molality (m).", options: ["2.00 m", "0.20 m", "0.80 m", "1.25 m"], a: 0, explanation: "Moles = $20/40 = 0.5$ mol. Kg solvent = 0.25 kg. $m = 0.5 / 0.25 = 2.0$ m." },
+            { id: 9, q: "If the solubility of a gas is 0.5 g/L at 2.0 atm, what is its solubility at 6.0 atm at the same temperature?", options: ["1.0 g/L", "1.5 g/L", "3.0 g/L", "0.16 g/L"], a: 1, explanation: "Henry's Law: $S_1/P_1 = S_2/P_2$. $0.5/2 = S_2/6 \\to S_2 = 1.5$." },
+            { id: 10, q: "Calculate the freezing point of a solution containing 0.5 mol of $CaCl_2$ in 1.0 kg of water. ($K_f = 1.86$). Note: $CaCl_2$ is a strong electrolyte.", options: ["-0.93 $^\\circ C$", "-1.86 $^\\circ C$", "-2.79 $^\\circ C$", "-5.58 $^\\circ C$"], a: 2, explanation: "$CaCl_2 \\to 3$ ions ($i=3$). $\\Delta T = i \\cdot K_f \\cdot m = 3 \\times 1.86 \\times 0.5 = 2.79$. FP = -2.79 C." },
+            { id: 11, q: "Calculate the osmotic pressure of 0.10 M $Na_2SO_4$ solution at $27^\\circ C$. (Assume complete dissociation, $i=3$)", options: ["2.46 atm", "7.39 atm", "4.92 atm", "0.82 atm"], a: 1, explanation: "$\\pi = iMRT$. $i=3$. $T=300K$. $\\pi = 3 \\times 0.10 \\times 0.08206 \\times 300 \\approx 7.39$ atm." },
+            { id: 12, q: "Reaction: $2NaN_3(s) \\to 2Na(s) + 3N_2(g)$. How many liters of $N_2$ are produced at STP from decomposition of 65.0 g $NaN_3$? (M=65.0 g/mol)", options: ["22.4 L", "44.8 L", "33.6 L", "67.2 L"], a: 2, explanation: "Moles $NaN_3 = 1$. Moles $N_2 = 1 \\times (3/2) = 1.5$ mol. Vol = $1.5 \\times 22.4 = 33.6$ L." },
+            { id: 13, q: "An unknown gas has a density of 1.96 g/L at STP. Calculate its Molar Mass.", options: ["28 g/mol", "44 g/mol", "16 g/mol", "32 g/mol"], a: 1, explanation: "At STP, 1 mol = 22.4 L. $M = d \\times 22.4 = 1.96 \\times 22.4 \\approx 43.9$ g/mol ($CO_2$)." },
+            { id: 14, q: "Which of the following will have the LOWEST vapor pressure at $25^\\circ C$?", options: ["Pure water", "0.1 M Glucose", "0.1 M NaCl", "0.1 M $AlCl_3$"], a: 3, explanation: "Lowest VP = Highest solute concentration (particles). $AlCl_3$ gives 4 particles ($i=4$), causing max depression." },
+            { id: 15, q: "What is the mass percent of Carbon in Acetone $C_3H_6O$? (C=12, H=1, O=16)", options: ["62.1 %", "50.0 %", "40.0 %", "20.7 %"], a: 0, explanation: "MW = 58. Mass C = $3 \\times 12 = 36$. $\\% = (36/58) \\times 100 = 62.06\\%$." },
+            { id: 16, q: "Adding a catalyst to a reaction increases the rate by:", options: ["Increasing collision frequency", "Lowering Activation Energy ($E_a$)", "Increasing Temperature", "Increasing $\\Delta H$"], a: 1, explanation: "Catalysts provide an alternative pathway with lower Activation Energy." }
+        ];
 
         // --- CORE LOGIC ---
-        let currentIndex = 0, userAnswers = new Array(questions.length).fill(null), score = 0, timerInterval, timeLeft = 45 * 60, studentName = "";
+        let currentIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let score = 0;
+        let timerInterval;
+        let timeLeft = 30 * 60; // 30 Minutes
+        let studentName = "";
+        let violations = 0;
 
-        window.startQuiz = function() {
+        // --- SECURITY FUNCTIONS ---
+        async function requestFullScreenAndStart() {
+            const elem = document.documentElement;
+            try {
+                if (elem.requestFullscreen) { await elem.requestFullscreen(); }
+                else if (elem.webkitRequestFullscreen) { await elem.webkitRequestFullscreen(); }
+                startQuiz();
+            } catch (err) {
+                alert("Fullscreen mode is required to take this exam.");
+            }
+        }
+
+        // Detect Tab Switching
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden && document.getElementById('quiz-screen').style.display === 'flex') {
+                violations++;
+                document.getElementById('security-warning').classList.remove('hidden');
+            }
+        });
+
+        // Block Keys
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) { return false; } // F12
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } // Ctrl+Shift+I
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } // Ctrl+U
+        };
+
+        function resumeExam() {
+            document.getElementById('security-warning').classList.add('hidden');
+        }
+
+        // --- QUIZ FUNCTIONS ---
+        function startQuiz() {
             const input = document.getElementById('student-name-input');
             const name = input.value.trim();
             if (!name) { input.classList.add('border-red-500', 'animate-pulse'); setTimeout(() => input.classList.remove('border-red-500', 'animate-pulse'), 1000); return; }
             studentName = name;
+            
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('quiz-screen').classList.remove('hidden');
             document.getElementById('quiz-screen').classList.add('flex');
-            document.getElementById('exit-btn').classList.add('hidden');
+            document.getElementById('timer-badge').classList.remove('hidden');
             document.getElementById('progress-container').classList.remove('hidden');
+            
             renderQuestion(0);
             startTimer();
-        };
+        }
 
-        // --- UPDATED RENDER FUNCTION TO SUPPORT KATEX ---
-        window.renderQuestion = function(index) {
-            if (index >= questions.length) return;
+        function renderQuestion(index) {
             const q = questions[index];
             document.getElementById('q-number').innerText = index + 1;
-            
-            // Use innerHTML to allow math rendering
             const qTextEl = document.getElementById('q-text');
             qTextEl.innerHTML = q.q; 
             
             document.getElementById('progress-bar').style.width = `${((index + 1) / questions.length) * 100}%`;
             const container = document.getElementById('options-container');
             container.innerHTML = '';
+            
             q.options.forEach((opt, optIndex) => {
                 const div = document.createElement('div');
                 const isSelected = userAnswers[index] === optIndex;
                 div.className = `option-card cursor-pointer p-4 md:p-5 rounded-xl border border-white/10 flex items-center gap-4 ${isSelected ? 'option-selected' : 'bg-white/5 hover:bg-white/10'}`;
                 div.onclick = () => { userAnswers[index] = optIndex; renderQuestion(index); };
-                // Render option text as HTML for math
                 div.innerHTML = `<div class="w-6 h-6 rounded-full border-2 border-gray-500 shrink-0 flex items-center justify-center transition-colors ${isSelected ? 'border-primary' : ''}">${isSelected ? '<div class="w-3 h-3 rounded-full bg-primary"></div>' : ''}</div><span class="text-gray-300 font-medium ${isSelected ? 'text-white' : ''}">${opt}</span>`;
                 container.appendChild(div);
             });
 
-            // Trigger KaTeX Rendering on the newly added content
-            renderMathInElement(qTextEl, {
-                delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}]
-            });
-            renderMathInElement(container, {
-                delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}]
-            });
+            // KaTeX Rendering
+            renderMathInElement(qTextEl, { delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}] });
+            renderMathInElement(container, { delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}] });
 
             document.getElementById('prev-btn').disabled = index === 0;
             document.getElementById('prev-btn').classList.toggle('opacity-50', index === 0);
+            
             const nextBtn = document.getElementById('next-btn');
             if (index === questions.length - 1) {
-                nextBtn.innerHTML = 'Finish <i class="fa-solid fa-flag-checkered ml-2"></i>';
+                nextBtn.innerHTML = 'Submit Exam <i class="fa-solid fa-lock ml-2"></i>';
                 nextBtn.onclick = finishExam;
                 nextBtn.className = "px-8 py-3 rounded-xl bg-primary text-white font-bold hover:bg-red-700 shadow-lg transition flex items-center gap-2 transform active:scale-95";
             } else {
@@ -347,78 +250,63 @@
                 nextBtn.onclick = () => { currentIndex++; renderQuestion(currentIndex); };
                 nextBtn.className = "px-8 py-3 rounded-xl bg-white text-black font-bold hover:bg-gray-200 shadow-lg transition flex items-center gap-2 transform active:scale-95";
             }
-        };
+        }
 
-        window.prevQuestion = function() { if(currentIndex > 0) { currentIndex--; renderQuestion(currentIndex); } };
-        window.nextQuestion = function() { if(currentIndex < questions.length - 1) { currentIndex++; renderQuestion(currentIndex); } };
+        function prevQuestion() { if(currentIndex > 0) { currentIndex--; renderQuestion(currentIndex); } }
+        function nextQuestion() { if(currentIndex < questions.length - 1) { currentIndex++; renderQuestion(currentIndex); } }
 
-        window.finishExam = async function() {
+        function finishExam() {
             clearInterval(timerInterval);
             score = 0;
             userAnswers.forEach((ans, idx) => { if (ans === questions[idx].a) score++; });
+            
             document.getElementById('final-score').innerText = score;
             document.getElementById('student-name-display').innerText = studentName;
             document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('timer-badge').classList.add('hidden');
             document.getElementById('progress-container').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
-            
-            // Handle ranking filter link
-            const rankTopic = (topic === 'bioethics') ? 'bio' : topic;
-            document.getElementById('rank-btn').href = `ranking.html?filter=${rankTopic}`;
 
-            const statusEl = document.getElementById('save-status');
-            try {
-                await addDoc(collection(db, "leaderboard"), {
-                    name: studentName, score: score, total: questions.length, subject: titles[topic] || topic, timestamp: serverTimestamp()
-                });
-                statusEl.innerHTML = '<span class="text-green-400 font-bold flex items-center gap-2"><i class="fa-solid fa-check-circle"></i> Saved to Leaderboard</span>';
-                statusEl.classList.add('bg-green-500/10', 'border-green-500/30');
-            } catch (e) {
-                statusEl.innerHTML = '<span class="text-red-400 font-bold flex items-center gap-2"><i class="fa-solid fa-circle-exclamation"></i> Save Failed</span>';
-                statusEl.classList.add('bg-red-500/10', 'border-red-500/30');
+            if (violations > 0) {
+                const badge = document.getElementById('violation-badge');
+                badge.classList.remove('hidden');
+                badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> ${violations} Security Violations Recorded`;
             }
-        };
+            
+            if (document.exitFullscreen) document.exitFullscreen();
+        }
 
-        window.showReview = function() {
+        function showReview() {
             const container = document.getElementById('review-container');
             container.innerHTML = '';
             questions.forEach((q, idx) => {
                 const userChoice = userAnswers[idx];
-                const correctChoice = q.a;
-                const isCorrect = userChoice === correctChoice;
+                const isCorrect = userChoice === q.a;
                 let optionsHTML = '';
                 q.options.forEach((opt, optIdx) => {
                     let optClass = "review-card-neutral p-4 rounded-xl mb-3 text-sm text-gray-400 flex justify-between items-center transition-all";
                     let icon = "", label = "";
-                    if (optIdx === correctChoice) { optClass = "review-card-correct p-4 rounded-xl mb-3 text-sm font-bold text-green-400 flex justify-between items-center"; icon = '<i class="fa-solid fa-check-circle text-lg"></i>'; label = '<span class="text-[10px] uppercase tracking-wider border border-green-500/30 px-2 py-1 rounded bg-green-500/10 mr-2">Correct Answer</span>'; }
+                    if (optIdx === q.a) { optClass = "review-card-correct p-4 rounded-xl mb-3 text-sm font-bold text-green-400 flex justify-between items-center"; icon = '<i class="fa-solid fa-check-circle text-lg"></i>'; }
                     if (optIdx === userChoice) {
-                         if (!isCorrect) { optClass = "review-card-wrong p-4 rounded-xl mb-3 text-sm font-bold text-red-400 flex justify-between items-center"; icon = '<i class="fa-solid fa-circle-xmark text-lg"></i>'; label = '<span class="text-[10px] uppercase tracking-wider border border-red-500/30 px-2 py-1 rounded bg-red-500/10 mr-2">Your Answer</span>'; }
-                         else { label = '<span class="text-[10px] uppercase tracking-wider border border-green-500/30 px-2 py-1 rounded bg-green-500/10 mr-2">Your Answer</span>'; }
+                         if (!isCorrect) { optClass = "review-card-wrong p-4 rounded-xl mb-3 text-sm font-bold text-red-400 flex justify-between items-center"; icon = '<i class="fa-solid fa-circle-xmark text-lg"></i>'; }
                     }
-                    // Allow formatting in review options
-                    optionsHTML += `<div class="${optClass}"><span>${opt}</span><div class="flex items-center gap-2">${label} ${icon}</div></div>`;
+                    optionsHTML += `<div class="${optClass}"><span>${opt}</span><div class="flex items-center gap-2">${icon}</div></div>`;
                 });
+                
                 const qBlock = document.createElement('div');
                 qBlock.className = "bg-white/5 border border-white/10 rounded-2xl p-6 shadow-lg mb-6 relative overflow-hidden";
-                // Allow formatting in review questions and explanation
-                qBlock.innerHTML = `<div class="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-bl-full -mr-4 -mt-4 pointer-events-none"></div><div class="flex gap-4 mb-6"><span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 shadow-lg ${isCorrect ? 'bg-green-500 text-black' : 'bg-red-500 text-white'}">${idx+1}</span><h3 class="font-bold text-lg leading-relaxed text-gray-100">${q.q}</h3></div><div class="pl-0 md:pl-12 mb-6">${optionsHTML}</div><div class="pl-0 md:pl-12"><div class="explanation-box p-5 rounded-xl relative overflow-hidden"><div class="flex items-center gap-2 text-blue-400 text-xs font-bold uppercase tracking-widest mb-2"><i class="fa-solid fa-lightbulb"></i> Explanation</div><p class="text-gray-300 text-sm leading-relaxed">${q.explanation}</p></div></div>`;
+                qBlock.innerHTML = `<div class="flex gap-4 mb-6"><span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 shadow-lg ${isCorrect ? 'bg-green-500 text-black' : 'bg-red-500 text-white'}">${idx+1}</span><h3 class="font-bold text-lg leading-relaxed text-gray-100">${q.q}</h3></div><div class="pl-0 md:pl-12 mb-6">${optionsHTML}</div><div class="pl-0 md:pl-12"><div class="explanation-box p-5 rounded-xl"><div class="flex items-center gap-2 text-blue-400 text-xs font-bold uppercase tracking-widest mb-2"><i class="fa-solid fa-lightbulb"></i> Explanation</div><p class="text-gray-300 text-sm leading-relaxed">${q.explanation}</p></div></div>`;
                 container.appendChild(qBlock);
             });
-
-            // Render math in the review container
-            renderMathInElement(container, {
-                delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}]
-            });
-
+            renderMathInElement(container, { delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}] });
             document.getElementById('result-screen').classList.add('hidden');
             document.getElementById('review-screen').classList.remove('hidden');
-        };
+        }
 
-        window.closeReview = function() { document.getElementById('review-screen').classList.add('hidden'); document.getElementById('result-screen').classList.remove('hidden'); };
+        function closeReview() { document.getElementById('review-screen').classList.add('hidden'); document.getElementById('result-screen').classList.remove('hidden'); }
+        
         function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeLeft--; updateTimerDisplay(); if (timeLeft <= 0) finishExam(); }, 1000); }
         function updateTimerDisplay() { const m = Math.floor(timeLeft / 60); const s = timeLeft % 60; document.getElementById('timer-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`; }
     </script>
 </body>
 </html>
-
-
