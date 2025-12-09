@@ -124,7 +124,7 @@
             <button onclick="showReview()" class="w-full py-3.5 bg-gradient-to-r from-gray-800 to-gray-900 border border-white/10 hover:border-primary/50 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 group mb-3">
                 <i class="fa-solid fa-eye text-primary group-hover:scale-110 transition-transform"></i> Review Answers
             </button>
-            <button onclick="location.reload()" class="w-full py-3 border border-white/10 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 text-sm transition">Exit Exam</button>
+            <button onclick="location.href='index.html'" class="w-full py-3 border border-white/10 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 text-sm transition">Exit Exam</button>
         </div>
 
         <div id="review-screen" class="hidden absolute inset-0 bg-[#0a0a0a] z-[60] flex flex-col fade-in">
@@ -136,8 +136,15 @@
         </div>
     </main>
 
-    <script>
-        // --- 16 QUESTIONS (Modified from PDF & Harder) ---
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyASq2nOBpRMJtKqWWvTDD4hyGmEOp5cOnI", authDomain: "spbu-med-platform.firebaseapp.com", projectId: "spbu-med-platform", storageBucket: "spbu-med-platform.firebasestorage.app", messagingSenderId: "227576463828", appId: "1:227576463828:web:1114162c17881bf5da9641" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- 16 QUESTIONS (CHEMISTRY) ---
         const questions = [
             { id: 1, q: "For the isotope Cobalt-60 in the $Co^{2+}$ state, determine the number of protons, neutrons, and electrons. (Z=27)", options: ["27p, 33n, 27e", "27p, 33n, 25e", "60p, 27n, 25e", "27p, 60n, 29e"], a: 1, explanation: "Protons = Z = 27. Neutrons = A - Z = 60 - 27 = 33. Electrons = 27 - 2 (charge) = 25." },
             { id: 2, q: "Gallium consists of two isotopes: $^{69}Ga$ (60.1% abundance, mass 68.926 u) and $^{71}Ga$ (39.9% abundance, mass 70.925 u). Calculate average atomic mass.", options: ["69.92 u", "69.72 u", "70.10 u", "69.00 u"], a: 1, explanation: "Avg = $(68.926 \\times 0.601) + (70.925 \\times 0.399) \\approx 69.72$ u." },
@@ -166,17 +173,37 @@
         let studentName = "";
         let violations = 0;
 
-        // --- SECURITY FUNCTIONS ---
-        async function requestFullScreenAndStart() {
+        // Make functions global
+        window.requestFullScreenAndStart = async function() {
             const elem = document.documentElement;
             try {
                 if (elem.requestFullscreen) { await elem.requestFullscreen(); }
                 else if (elem.webkitRequestFullscreen) { await elem.webkitRequestFullscreen(); }
                 startQuiz();
             } catch (err) {
-                alert("Fullscreen mode is required to take this exam.");
+                alert("Fullscreen mode is required for security.");
             }
-        }
+        };
+
+        window.resumeExam = function() {
+            document.getElementById('security-warning').classList.add('hidden');
+        };
+
+        window.startQuiz = function() {
+            const input = document.getElementById('student-name-input');
+            const name = input.value.trim();
+            if (!name) { input.classList.add('border-red-500', 'animate-pulse'); setTimeout(() => input.classList.remove('border-red-500', 'animate-pulse'), 1000); return; }
+            studentName = name;
+            
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            document.getElementById('quiz-screen').classList.add('flex');
+            document.getElementById('timer-badge').classList.remove('hidden');
+            document.getElementById('progress-container').classList.remove('hidden');
+            
+            renderQuestion(0);
+            startTimer();
+        };
 
         // Detect Tab Switching
         document.addEventListener("visibilitychange", () => {
@@ -193,28 +220,7 @@
             if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } // Ctrl+U
         };
 
-        function resumeExam() {
-            document.getElementById('security-warning').classList.add('hidden');
-        }
-
-        // --- QUIZ FUNCTIONS ---
-        function startQuiz() {
-            const input = document.getElementById('student-name-input');
-            const name = input.value.trim();
-            if (!name) { input.classList.add('border-red-500', 'animate-pulse'); setTimeout(() => input.classList.remove('border-red-500', 'animate-pulse'), 1000); return; }
-            studentName = name;
-            
-            document.getElementById('start-screen').classList.add('hidden');
-            document.getElementById('quiz-screen').classList.remove('hidden');
-            document.getElementById('quiz-screen').classList.add('flex');
-            document.getElementById('timer-badge').classList.remove('hidden');
-            document.getElementById('progress-container').classList.remove('hidden');
-            
-            renderQuestion(0);
-            startTimer();
-        }
-
-        function renderQuestion(index) {
+        window.renderQuestion = function(index) {
             const q = questions[index];
             document.getElementById('q-number').innerText = index + 1;
             const qTextEl = document.getElementById('q-text');
@@ -250,18 +256,42 @@
                 nextBtn.onclick = () => { currentIndex++; renderQuestion(currentIndex); };
                 nextBtn.className = "px-8 py-3 rounded-xl bg-white text-black font-bold hover:bg-gray-200 shadow-lg transition flex items-center gap-2 transform active:scale-95";
             }
-        }
+        };
 
-        function prevQuestion() { if(currentIndex > 0) { currentIndex--; renderQuestion(currentIndex); } }
-        function nextQuestion() { if(currentIndex < questions.length - 1) { currentIndex++; renderQuestion(currentIndex); } }
+        window.prevQuestion = function() { if(currentIndex > 0) { currentIndex--; renderQuestion(currentIndex); } };
+        window.nextQuestion = function() { if(currentIndex < questions.length - 1) { currentIndex++; renderQuestion(currentIndex); } };
 
-        function finishExam() {
+        window.finishExam = async function() {
             clearInterval(timerInterval);
             score = 0;
             userAnswers.forEach((ans, idx) => { if (ans === questions[idx].a) score++; });
             
             document.getElementById('final-score').innerText = score;
             document.getElementById('student-name-display').innerText = studentName;
+            
+            // Show Status
+            const saveIndicator = document.createElement('div');
+            saveIndicator.className = 'mb-4 py-2 px-4 rounded-lg bg-white/5 border border-white/10 text-xs font-mono inline-flex items-center gap-2';
+            saveIndicator.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-primary"></i> Syncing Score...';
+            document.getElementById('result-screen').insertBefore(saveIndicator, document.getElementById('violation-badge'));
+
+            // SAVE TO FIREBASE
+            try {
+                await addDoc(collection(db, "leaderboard"), {
+                    name: studentName, 
+                    score: score, 
+                    total: questions.length, 
+                    subject: 'General Chemistry Midterm', // Matches ranking.html
+                    timestamp: serverTimestamp(),
+                    violations: violations
+                });
+                saveIndicator.innerHTML = '<span class="text-green-400"><i class="fa-solid fa-check"></i> Score Saved!</span>';
+                saveIndicator.classList.add('border-green-500/30', 'bg-green-500/10');
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                saveIndicator.innerHTML = '<span class="text-red-400"><i class="fa-solid fa-triangle-exclamation"></i> Save Failed</span>';
+            }
+
             document.getElementById('quiz-screen').classList.add('hidden');
             document.getElementById('timer-badge').classList.add('hidden');
             document.getElementById('progress-container').classList.add('hidden');
@@ -274,9 +304,9 @@
             }
             
             if (document.exitFullscreen) document.exitFullscreen();
-        }
+        };
 
-        function showReview() {
+        window.showReview = function() {
             const container = document.getElementById('review-container');
             container.innerHTML = '';
             questions.forEach((q, idx) => {
@@ -285,7 +315,7 @@
                 let optionsHTML = '';
                 q.options.forEach((opt, optIdx) => {
                     let optClass = "review-card-neutral p-4 rounded-xl mb-3 text-sm text-gray-400 flex justify-between items-center transition-all";
-                    let icon = "", label = "";
+                    let icon = "";
                     if (optIdx === q.a) { optClass = "review-card-correct p-4 rounded-xl mb-3 text-sm font-bold text-green-400 flex justify-between items-center"; icon = '<i class="fa-solid fa-check-circle text-lg"></i>'; }
                     if (optIdx === userChoice) {
                          if (!isCorrect) { optClass = "review-card-wrong p-4 rounded-xl mb-3 text-sm font-bold text-red-400 flex justify-between items-center"; icon = '<i class="fa-solid fa-circle-xmark text-lg"></i>'; }
@@ -301,9 +331,9 @@
             renderMathInElement(container, { delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}] });
             document.getElementById('result-screen').classList.add('hidden');
             document.getElementById('review-screen').classList.remove('hidden');
-        }
+        };
 
-        function closeReview() { document.getElementById('review-screen').classList.add('hidden'); document.getElementById('result-screen').classList.remove('hidden'); }
+        window.closeReview = function() { document.getElementById('review-screen').classList.add('hidden'); document.getElementById('result-screen').classList.remove('hidden'); };
         
         function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeLeft--; updateTimerDisplay(); if (timeLeft <= 0) finishExam(); }, 1000); }
         function updateTimerDisplay() { const m = Math.floor(timeLeft / 60); const s = timeLeft % 60; document.getElementById('timer-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`; }
