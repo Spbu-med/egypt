@@ -63,6 +63,12 @@
                 <div class="w-14 h-14 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4 shadow-lg shadow-primary/20"></div>
                 <p class="text-gray-400 animate-pulse font-bold tracking-wide">Loading Scores...</p>
             </div>
+            
+            <div id="ranking-header" class="hidden flex justify-between px-4 mb-4 text-xs font-bold text-gray-500 uppercase tracking-widest border-b border-white/5 pb-2">
+                <span>Rank & Name</span>
+                <span>Score & Security</span>
+            </div>
+
             <div id="ranking-list" class="space-y-3 hidden pb-10"></div>
         </div>
     </div>
@@ -85,28 +91,33 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Subject Name must match what is saved in chem-exam.html (Score: /16)
         const TARGET_SUBJECT = 'General Chemistry Midterm'; 
         const MAX_SCORE = 16;
 
         async function loadRankings() {
             const list = document.getElementById('ranking-list');
             const loading = document.getElementById('loading');
+            const header = document.getElementById('ranking-header');
             
             try {
                 const q = query(collection(db, "leaderboard"), where("subject", "==", TARGET_SUBJECT), orderBy("score", "desc"), limit(50));
                 const querySnapshot = await getDocs(q);
-                loading.style.display = 'none'; list.classList.remove('hidden');
+                loading.style.display = 'none'; 
+                list.classList.remove('hidden');
                 
                 if(querySnapshot.empty) {
                     list.innerHTML = `<div class="text-center py-20 text-gray-500 fade-in-up"><div class="bg-white/5 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fa-solid fa-flask text-3xl opacity-30"></i></div><p class="font-bold">No results yet.</p><p class="text-sm mt-2 opacity-60">Be the first to take the exam!</p></div>`;
                     return;
                 }
 
+                header.classList.remove('hidden'); // Show header only if data exists
+
                 let rank = 1;
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
                     const initial = data.name.charAt(0).toUpperCase();
+                    // جلب عدد المخالفات (لو مفيش يعتبرها صفر)
+                    const violations = data.violations || 0;
                     
                     let rankBadge, rowClass;
                     if(rank === 1) { rowClass = "rank-1"; rankBadge = `<div class="text-gold text-2xl drop-shadow-md"><i class="fa-solid fa-trophy"></i></div>`; } 
@@ -117,10 +128,39 @@
                     const percentage = (data.score / MAX_SCORE) * 100;
                     const scoreColor = percentage >= 80 ? "text-green-400" : (percentage >= 50 ? "text-yellow-400" : "text-gray-400");
 
+                    // تصميم بادج المخالفات
+                    let securityBadge;
+                    if (violations > 0) {
+                        securityBadge = `<div class="text-[10px] text-red-400 font-bold mt-1 bg-red-500/10 px-2 py-0.5 rounded border border-red-500/20 flex items-center justify-end gap-1"><i class="fa-solid fa-triangle-exclamation"></i> ${violations} Violations</div>`;
+                    } else {
+                        securityBadge = `<div class="text-[10px] text-green-500/50 font-bold mt-1 flex items-center justify-end gap-1"><i class="fa-solid fa-shield-halved"></i> Clean Record</div>`;
+                    }
+
                     const item = document.createElement('div');
                     item.className = `flex items-center justify-between p-4 rounded-2xl rank-card ${rowClass} fade-in-up cursor-default`;
                     item.style.animationDelay = `${rank * 0.05}s`;
-                    item.innerHTML = `<div class="flex items-center gap-4"><div class="shrink-0 w-10 flex justify-center">${rankBadge}</div><div class="flex items-center gap-4"><div class="w-11 h-11 rounded-full avatar-gradient flex items-center justify-center text-white font-bold shadow-lg border border-white/10 text-lg relative overflow-hidden group"><span class="relative z-10">${initial}</span><div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition"></div></div><div class="flex flex-col"><span class="font-bold text-white tracking-wide text-sm md:text-base line-clamp-1">${data.name}</span><span class="text-[10px] text-gray-400 uppercase tracking-wider font-mono bg-black/20 px-2 py-0.5 rounded w-fit mt-1 border border-white/5">${data.subject}</span></div></div></div><div class="flex flex-col items-end pl-2"><div class="font-black text-xl md:text-2xl ${scoreColor} font-mono flex items-baseline gap-1">${data.score} <span class="text-[10px] text-gray-500 font-bold">/ ${MAX_SCORE}</span></div></div>`;
+                    item.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <div class="shrink-0 w-10 flex justify-center">${rankBadge}</div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-11 h-11 rounded-full avatar-gradient flex items-center justify-center text-white font-bold shadow-lg border border-white/10 text-lg relative overflow-hidden group">
+                                    <span class="relative z-10">${initial}</span>
+                                    <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition"></div>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-white tracking-wide text-sm md:text-base line-clamp-1">${data.name}</span>
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-wider font-mono bg-black/20 px-2 py-0.5 rounded w-fit mt-1 border border-white/5">${data.subject}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col items-end pl-2 min-w-[100px]">
+                            <div class="font-black text-xl md:text-2xl ${scoreColor} font-mono flex items-baseline gap-1">
+                                ${data.score} <span class="text-[10px] text-gray-500 font-bold">/ ${MAX_SCORE}</span>
+                            </div>
+                            ${securityBadge}
+                        </div>
+                    `;
                     list.appendChild(item);
                     rank++;
                 });
