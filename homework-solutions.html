@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Solutions | Homework 5 | SPbU</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'], heading: ['Outfit', 'sans-serif'] },
+                    colors: { neon: { red: '#FF0033', purple: '#7B2CBF', gold: '#FFD700' } }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #030303; color: #ffffff; scroll-behavior: smooth; }
+        .solution-card { background: rgba(10, 10, 10, 0.9); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 2rem; padding: 2rem; transition: 0.3s; }
+        .solution-card:hover { border-color: #FF0033; box-shadow: 0 0 30px rgba(255, 0, 51, 0.1); }
+        .calc-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+        .calc-table th { background: rgba(255, 0, 51, 0.15); color: #FF0033; padding: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.05); text-transform: uppercase; }
+        .calc-table td { padding: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.05); text-align: center; }
+        .result-box { background: rgba(255, 255, 255, 0.03); border-radius: 1rem; padding: 1rem; border-left: 4px solid #FF0033; }
+    </style>
+</head>
+<body class="p-4 md:p-12">
+
+    <div class="max-w-5xl mx-auto">
+        <a href="index.html" class="inline-flex items-center text-gray-500 hover:text-white mb-10 transition-colors">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Back to Platform
+        </a>
+
+        <header class="mb-16">
+            <h1 class="font-heading font-black text-5xl md:text-7xl mb-4 italic">Homework 5 <span class="text-neon-red">Solutions</span></h1>
+            <p class="text-gray-400 max-w-2xl">Verified thermodynamic calculations for SPbU Medical Chemistry. Covering Specific Heat, Enthalpy, Entropy, and Gibbs Energy.</p>
+        </header>
+
+        <section class="mb-20">
+            <h2 class="text-2xl font-bold text-neon-red mb-8 uppercase tracking-widest italic border-b border-white/5 pb-4">Topic 5.1: Specific Heat Capacity</h2>
+            
+            <div class="space-y-8">
+                <div class="solution-card">
+                    <span class="text-[10px] font-black bg-neon-red px-2 py-1 rounded text-white uppercase">Problem 1</span>
+                    <p class="mt-4 text-gray-300">Adding 14.5 kJ to 485g water. [span_2](start_span)Find $\Delta T$.[span_2](end_span)</p>
+                    <div class="result-box mt-6 font-mono">
+                        [span_3](start_span)<p>$\Delta T = \frac{q}{m \cdot c} = \frac{14500\,J}{485\,g \cdot 4.2\,J/g^\circ C}$[span_3](end_span)</p>
+                        <p class="text-neon-red text-xl mt-2 font-bold">$\Delta T = 7.12^\circ C$</p>
+                    </div>
+                </div>
+
+                <div class="solution-card">
+                    <span class="text-[10px] font-black bg-neon-purple px-2 py-1 rounded text-white uppercase">Problem 4 • Clinical</span>
+                    [span_4](start_span)<p class="mt-4 text-gray-300">Heating tumor tissue (50g, $c=3.5\,J/g^\circ C$) from $37^\circ C$ to $43^\circ C$.[span_4](end_span)</p>
+                    <div class="result-box mt-6 font-mono">
+                        <p>$\Delta T = 43 - 37 = 6^\circ C$</p>
+                        <p>$q = m \cdot c \cdot \Delta T = 50 \cdot 3.5 \cdot 6$</p>
+                        <p class="text-neon-red text-xl mt-2 font-bold">$q = 1050\,J$</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-2xl font-bold text-neon-red mb-8 uppercase tracking-widest italic border-b border-white/5 pb-4">Topic 5.2: Enthalpy & Combustion</h2>
+            
+            <div class="solution-card mb-8">
+                <span class="text-[10px] font-black bg-neon-red px-2 py-1 rounded text-white uppercase">Problem 5(a) • Calculation Table</span>
+                [span_5](start_span)<p class="mt-4 text-gray-300">Calculate $\Delta H^\circ_{rxn}$ for: $2H_2O(g) + 2Br_2(g) = 4HBr(g) + O_2(g)$[span_5](end_span)</p>
+                
+                <table class="calc-table">
+                    <thead>
+                        <tr>
+                            <th>Substance</th>
+                            <th>n (moles)</th>
+                            <th>$\Delta H^\circ_f$ (kJ/mol)</th>
+                            <th>Total (n × $\Delta H^\circ_f$)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>$HBr(g)$</td><td>4</td><td>-36.4</td><td>-145.6</td></tr>
+                        <tr><td>$O_2(g)$</td><td>1</td><td>0</td><td>0</td></tr>
+                        <tr class="bg-white/5"><td colspan="3" class="text-left font-bold pl-4">$\sum \Delta H^\circ_{Products}$</td><td class="text-neon-red">-145.6</td></tr>
+                        <tr><td>$H_2O(g)$</td><td>2</td><td>-241.8</td><td>-483.6</td></tr>
+                        <tr><td>$Br_2(g)$</td><td>2</td><td>0</td><td>0</td></tr>
+                        <tr class="bg-white/5"><td colspan="3" class="text-left font-bold pl-4">$\sum \Delta H^\circ_{Reactants}$</td><td class="text-neon-red">-483.6</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="result-box font-mono">
+                    <p>$\Delta H^\circ_{rxn} = (-145.6) - (-483.6) = \mathbf{+338\,kJ}$</p>
+                </div>
+            </div>
+            
+            <div class="solution-card">
+                <span class="text-[10px] font-black bg-neon-gold px-2 py-1 rounded text-black uppercase">Problem 8 • Metabolic</span>
+                [span_6](start_span)<p class="mt-4 text-gray-300">Glucose Oxidation: $C_6H_{12}O_6(s) + 6O_2(g) = 6CO_2(g) + 6H_2O(l)$[span_6](end_span)</p>
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="result-box font-mono">
+                        <p class="text-xs text-gray-500 mb-2">Standard Enthalpy:</p>
+                        [span_7](start_span)[span_8](start_span)<p>$\Delta H = [6(-393.5) + 6(-285.8)] - [-1273.3]$[span_7](end_span)[span_8](end_span)</p>
+                        <p class="text-neon-red">$= -2802.5\,kJ/mol$</p>
+                    </div>
+                    <div class="result-box font-mono">
+                        <p class="text-xs text-gray-500 mb-2">Energy from 20g:</p>
+                        <p>$n = 20g / 180g/mol = 0.111\,mol$</p>
+                        [span_9](start_span)<p class="text-neon-red">$= 311.4\,kJ$ (74.4 kcal)[span_9](end_span)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-2xl font-bold text-neon-red mb-8 uppercase tracking-widest italic border-b border-white/5 pb-4">Topic 5.4: Gibbs Energy & ATP</h2>
+            
+            <div class="solution-card border-neon-gold/20">
+                <span class="text-[10px] font-black bg-neon-gold px-2 py-1 rounded text-black uppercase">Problem 15 • Cell Biology</span>
+                [span_10](start_span)<p class="mt-4 text-gray-300">ATP Hydrolysis Analysis: $ATP + H_2O = ADP + H_3PO_4$[span_10](end_span)</p>
+                
+                <div class="overflow-x-auto">
+                    <table class="calc-table">
+                        <thead>
+                            <tr>
+                                <th>Temperature</th>
+                                <th>Formula: $\Delta G = \Delta H - T\Delta S$</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Standard (298 K)</td>
+                                <td>$\Delta G^\circ = -30.96\,kJ$</td>
+                                <td class="text-green-400 font-bold italic">Spontaneous</td>
+                            </tr>
+                            <tr>
+                                <td>Body (310 K)</td>
+                                <td>$\Delta S = 0.0345\,kJ/K \implies \Delta G = -20.67 - (310 \cdot 0.0345)$</td>
+                                <td class="text-neon-red font-bold">-31.37 kJ</td>
+                            </tr>
+                            <tr>
+                                <td>Cold (277 K)</td>
+                                <td>$\Delta G = -20.67 - (277 \cdot 0.0345)$</td>
+                                <td class="text-gray-400 font-bold">-30.23 kJ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                
+
+                <div class="mt-6 p-4 bg-neon-red/5 rounded-xl border border-neon-red/10 italic text-sm text-gray-400">
+                    [span_11](start_span)<strong>Conclusion:</strong> ATP hydrolysis becomes more exergonic (favorable) at higher temperatures because it is an entropy-driven process ($\Delta S > 0$)[span_11](end_span). [span_12](start_span)This explains higher metabolic rates during fever[span_12](end_span).
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="py-12 border-t border-white/5 text-center">
+        <p class="text-xs font-mono text-gray-600 uppercase tracking-widest">Calculations verified based on SPbU Appendix Data 2025</p>
+    </footer>
+
+</body>
+</html>
