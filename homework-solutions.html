@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPbU Medical Hub | 16-Problem Master Key</title>
+    <title>SPbU Medical Hub | Detailed Solution Master Key</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,11 +19,13 @@
 
     <style>
         body { background: #010101; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
-        .solution-card { background: #080808; border: 1px solid rgba(255,255,255,0.05); border-radius: 2rem; width: 100%; min-height: auto; display: block; overflow: visible; }
-        .accent-box { border-left: 4px solid #FF0033; background: rgba(255,0,51,0.02); padding: 1.5rem; border-radius: 1rem; margin: 1.5rem 0; width: 100%; overflow-x: auto; white-space: normal; }
+        /* المربع الذكي: يتمدد مع المحتوى ولا يسمح بالقص */
+        .solution-card { background: #080808; border: 1px solid rgba(255,255,255,0.05); border-radius: 2rem; width: 100%; display: flex; flex-direction: column; overflow: visible; }
+        .solution-card:hover { border-color: #FF0033; box-shadow: 0 0 30px rgba(255,0,51,0.1); }
+        /* الخط الأحمر الجانبي المربوط بالحدود */
+        .accent-border { border-left: 4px solid #FF0033; background: rgba(255,0,51,0.02); padding: 1.5rem; border-radius: 1rem; margin: 1.5rem 0; width: 100%; overflow-x: auto; white-space: normal; }
         .step-row { border-bottom: 1px solid rgba(255,255,255,0.02); padding: 15px 0; font-size: 0.85rem; color: #a1a1aa; line-height: 1.6; }
         .step-row b { color: #FF0033; margin-right: 12px; font-size: 1.1rem; }
-        .hidden-card { display: none !important; }
         input:focus { border-color: #FF0033; box-shadow: 0 0 30px rgba(255,0,51,0.3); outline: none; }
     </style>
 </head>
@@ -31,37 +33,37 @@
 
     <nav class="fixed top-0 left-0 w-full bg-black/95 backdrop-blur-xl border-b border-white/5 z-50 px-8 py-4 flex justify-between items-center">
         <a href="index.html" class="text-neon font-black italic text-xl tracking-tighter">SPbU HUB</a>
-        <div class="text-[9px] text-gray-600 font-mono tracking-widest uppercase italic italic">16 Detailed Solutions • Verification Grade A</div>
+        <div class="text-[9px] text-gray-500 font-mono tracking-widest uppercase italic">16 Detailed Solutions • Verification Grade A</div>
     </nav>
 
     <div class="max-w-5xl mx-auto pt-24 pb-20">
         <header class="text-center mb-20">
-            <h1 class="font-heading font-black text-6xl md:text-9xl italic uppercase tracking-tighter mb-8 leading-none text-white italic">Master <span class="text-neon">Key</span></h1>
+            <h1 class="font-heading font-black text-6xl md:text-9xl italic uppercase tracking-tighter mb-8 leading-none italic text-white">Master <span class="text-neon">Key</span></h1>
             <div class="relative max-w-xl mx-auto">
                 <i class="fa-solid fa-magnifying-glass absolute left-6 top-1/2 -translate-y-1/2 text-neon opacity-50"></i>
-                <input type="text" id="megaSearch" placeholder="Type Problem # (1-16) or Keyword (ATP, Glucose)..." 
+                <input type="text" id="megaSearch" placeholder="Type Problem # (1-16) or Keyword (ATP)..." 
                        class="w-full pl-16 pr-8 py-5 rounded-full bg-white/5 border border-white/10 text-lg transition-all shadow-2xl">
             </div>
         </header>
 
-        <div id="solutionsGrid" class="space-y-16">
-            </div>
+        <div id="solutionsGrid" class="space-y-16"></div>
     </div>
 
     <script>
+        // الـ 16 مسألة كاملة مع البيانات والخطوات
         const problems = [
-            { id: 1, cat: "Specific Heat", title: "Water Temperature Increase", givens: ["$q = 14.5\\,kJ = 14500\\,J$", "$m = 485\\,g$", "$c = 4.2\\,J/g^\\circ C$"], formula: "$\\Delta T = \\frac{q}{m \\cdot c}$", steps: ["Convert kJ to Joules: $14.5 \\times 1000 = 14500\\,J$", "Apply formula: $\\Delta T = 14500 / (485 \\times 4.2)$", "Final result: $\\Delta T = \\mathbf{7.12^\\circ C}$"] },
-            { id: 2, cat: "Specific Heat", title: "Iron Block Heating", givens: ["$m = 75\\,g$", "$T_1=25^\\circ C, T_2=1000^\\circ C$", "$c = 0.449\\,J/g^\\circ C$"], formula: "$q = m \\cdot c \\cdot \\Delta T$", steps: ["Calculate $\\Delta T = 1000 - 25 = 975^\\circ C$", "Calculate Heat: $75 \\times 0.449 \\times 975 = \\mathbf{32839\\,J}$", "Convert to Calories: $32839 / 4.184 = \\mathbf{7848\\,cal}$"] },
-            { id: 3, cat: "Clinical", title: "Mercury Thermometer", givens: ["$m = 2.5\\,g$", "$\\Delta T = 17^\\circ C$", "$c = 0.140\\,J/g^\\circ C$"], formula: "$q = m \\cdot c \\cdot \\Delta T$", steps: ["Apply formula: $2.5 \\times 0.140 \\times 17$", "Result: $q = \\mathbf{5.95\\,J}$"] },
-            { id: 4, cat: "Clinical", title: "Tumor Hyperthermia", givens: ["$m = 50\\,g$", "$\\Delta T = 6^\\circ C$", "$c = 3.5\\,J/g^\\circ C$"], formula: "$q = m \\cdot c \\cdot \\Delta T$", steps: ["Multiply mass, specific heat, and temp rise: $50 \\times 3.5 \\times 6$", "Final result: $q = \\mathbf{1050\\,J}$"] },
-            { id: 5, cat: "Enthalpy", title: "Reaction Enthalpy (2H2O+2Br2)", givens: ["$\\Delta H_f(H_2O) = -241.8\\,kJ$", "$\\Delta H_f(HBr) = -36.4\\,kJ$"], formula: "$\\Delta H = \\sum n\\Delta H_f(prod) - \\sum n\\Delta H_f(react)$", steps: ["Calculate Products: $4 \\times (-36.4) = -145.6\\,kJ$", "Calculate Reactants: $2 \\times (-241.8) = -483.6\\,kJ$", "Final result: $-145.6 - (-483.6) = \\mathbf{+338.0\\,kJ}$"] },
+            { id: 1, cat: "Specific Heat", title: "Water Temperature Rise", givens: ["$q = 14.5\\,kJ = 14500\\,J$", "$m = 485\\,g$", "$c = 4.2\\,J/g^\\circ C$"], formula: "$\\Delta T = \\frac{q}{m \\cdot c}$", steps: ["Convert kJ to Joules: $14.5 \\times 1000 = 14500\\,J$", "Apply formula: $\\Delta T = 14500 / (485 \\times 4.2)$", "Final result: $\\Delta T = \\mathbf{7.12^\\circ C}$"] },
+            { id: 2, cat: "Specific Heat", title: "Iron Block Heating", givens: ["$m = 75\\,g$", "$T_1=25, T_2=1000^\\circ C$", "$c = 0.449$"], formula: "$q = m \\cdot c \\cdot \\Delta T$", steps: ["Calculate $\\Delta T = 1000 - 25 = 975^\\circ C$", "Calculate Heat: $75 \\times 0.449 \\times 975 = \\mathbf{32839\\,J}$", "Convert to Calories: $32839 / 4.184 = \\mathbf{7848\\,cal}$"] },
+            { id: 3, cat: "Medical", title: "Mercury Thermometer", givens: ["$m = 2.5\\,g$", "$\\Delta T = 17^\\circ C$", "$c = 0.140$"], formula: "$q = m \\cdot c \\cdot \\Delta T$", steps: ["Specific heat of Hg is low ($0.140$)", "$q = 2.5 \\cdot 0.140 \\cdot 17 = \\mathbf{5.95\\,J}$"] },
+            { id: 4, cat: "Clinical", title: "Tumor Hyperthermia", givens: ["$m = 50\\,g$", "$\\Delta T = 6^\\circ C$", "$c = 3.5$"], formula: "$q = m \\cdot c \\cdot \\Delta T$", steps: ["Heating tumor tissue selectively", "$q = 50 \\cdot 3.5 \\cdot 6 = \\mathbf{1050\\,J}$"] },
+            { id: 5, cat: "Enthalpy", title: "Reaction: 2H2O + 2Br2", givens: ["$\\Delta H_f(H_2O) = -241.8\\,kJ$", "$\\Delta H_f(HBr) = -36.4\\,kJ$"], formula: "$\\Delta H = \\sum n\\Delta H_f(prod) - \\sum n\\Delta H_f(react)$", steps: ["Products: $4 \\times (-36.4) = -145.6\\,kJ$", "Reactants: $2 \\times (-241.8) = -483.6\\,kJ$", "Result: $-145.6 - (-483.6) = \\mathbf{+338.0\\,kJ}$"] },
             { id: 6, cat: "Propane", title: "Anesthetic Propellant", givens: ["$Mass = 25\\,g$", "$\\Delta H_{comb} = -2220\\,kJ/mol$"], formula: "$V = nRT/P$ | $Energy = \\Delta H / M$", steps: ["Eq: $C_3H_8 + 5O_2 \\to 3CO_2 + 4H_2O$", "Moles O2: $5 \\times (25/44.1) = 2.83\\,mol$", "Volume O2: $(2.83 \\times 0.0821 \\times 298) / 1 = \\mathbf{69.4\\,L}$", "Specific Energy: $2220 / 44.1 = \\mathbf{50.3\\,kJ/g}$"] },
-            { id: 7, cat: "Medical", title: "Cold Pack Solution", givens: ["$50\\,g$ $NH_4Cl$", "$\\Delta H = +15.2\\,kJ/mol$"], formula: "$q = n \\cdot \\Delta H$", steps: ["Moles: $50 / 53.5 = 0.935\\,mol$", "Energy absorbed: $0.935 \\times 15.2 = \\mathbf{14.2\\,kJ}$"] },
-            { id: 8, cat: "Bio", title: "Glucose Metabolism", givens: ["$20\\,g$ Glucose", "$\\Delta H_{comb} = -2802.5\\,kJ/mol$"], formula: "$\\Delta H = \\sum \\Delta H_f(prod) - \\sum \\Delta H_f(react)$", steps: ["Molar Enthalpy: $6(-393.5) + 6(-285.8) - (-1273.3) = \\mathbf{-2802.5\\,kJ}$", "Energy for 20g: $(20/180) \\times 2802.5 = \\mathbf{311.4\\,kJ}$", "Result: $311.4 / 4.184 = \\mathbf{74.4\\,kcal}$"] },
+            { id: 7, cat: "Medical", title: "NH4Cl Cold Pack", givens: ["$50\\,g$ $NH_4Cl$", "$\\Delta H = +15.2\\,kJ/mol$"], formula: "$q = n \\cdot \\Delta H$", steps: ["Find moles: $50 / 53.5 = 0.935\\,mol$", "Energy absorbed: $0.935 \\times 15.2 = \\mathbf{14.2\\,kJ}$"] },
+            { id: 8, cat: "Bio", title: "Glucose Metabolism", givens: ["$20\\,g$ Glucose", "$\\Delta H_{comb} = -2802.5\\,kJ/mol$"], formula: "$\\Delta H = \\sum \\Delta H_f(prod) - \\sum \\Delta H_f(react)$", steps: ["Molar Enthalpy: $6(-393.5) + 6(-285.8) - (-1273.3) = \\mathbf{-2802.5\\,kJ}$", "Energy for 20g: $(20/180) \\times 2802.5 = \\mathbf{311.4\\,kJ}$", "Medical Calories: $311.4 / 4.184 = \\mathbf{74.4\\,kcal}$"] },
             { id: 9, cat: "Entropy", title: "CO Oxidation Entropy", givens: ["$2CO(g) + O_2(g) \\to 2CO_2(g)$"], formula: "$\\Delta S = \\sum nS(prod) - \\sum nS(react)$", steps: ["Products: $2 \\times 213.7 = 427.4\\,J/K$", "Reactants: $[2 \\times 197.6 + 205.2] = 600.4\\,J/K$", "Result: $427.4 - 600.4 = \\mathbf{-173.0\\,J/K}$"] },
-            { id: 10, cat: "Entropy", title: "Drug Solubility", givens: ["Dissolution process"], formula: "$\\Delta G = \\Delta H - T\\Delta S$", steps: ["Spontaneous if $\\Delta G < 0$", "Negative $\\Delta S$ can be offset by large exothermic $\\Delta H$"] },
+            { id: 10, cat: "Entropy", title: "Drug Solubility", givens: ["Dissolution process spontaneity"], formula: "$\\Delta G = \\Delta H - T\\Delta S$", steps: ["Spontaneous if $\\Delta G < 0$", "Negative $\\Delta S$ can be offset by large exothermic $\\Delta H$"] },
             { id: 11, cat: "Medical", title: "Protein Denaturation", givens: ["Folded $\\to$ Unfolded Protein"], formula: "$\\Delta S > 0$ (Disorder Increases)", steps: ["Unfolding increases system randomness", "Burns increase $T$, making $-T\\Delta S$ more negative", "Denaturation becomes spontaneous at high temperatures"] },
-            { id: 12, cat: "Gibbs", title: "NaCl Formation", givens: ["$T = 298\\,K, 1000\\,K$"], formula: "$\\Delta G = \\Delta H - T\\Delta S$", steps: ["At 298K: $\\Delta G = -768.3\\,kJ$", "Remains spontaneous at 1000K"] },
+            { id: 12, cat: "Gibbs", title: "NaCl Formation", givens: ["$T = 298\\,K, 1000\\,K$"], formula: "$\\Delta G = \\Delta H - T\\Delta S$", steps: ["At 298K: $\\Delta G = -768.3\\,kJ$", "Reaction remains spontaneous at all temperatures"] },
             { id: 13, cat: "Gibbs", title: "MnO2 Reduction", givens: ["$MnO_2 + 2H_2 \\to Mn + 2H_2O$"], formula: "$\\Delta G$ Analysis", steps: ["At 298K: $\\Delta G = +8.1\\,kJ$ (Non-spontaneous)", "At 1000K: $\\Delta G$ becomes negative (Spontaneous)"] },
             { id: 14, cat: "Gibbs", title: "NH4Cl Dissociation", givens: ["$\\Delta H = +15.2$, $\\Delta S = +107\\,J/K$"], formula: "$\\Delta G = \\Delta H - T\\Delta S$", steps: ["At 298K: $15.2 - (298 \\times 0.107) = \\mathbf{-16.69\\,kJ}$", "At 600K: $15.2 - (600 \\times 0.107) = \\mathbf{-49.0\\,kJ}$"] },
             { id: 15, cat: "ATP", title: "ATP Hydrolysis & Fever", givens: ["$\\Delta H = -20.67$, $\\Delta G(298) = -30.96$"], formula: "$\\Delta G = \\Delta H - T\\Delta S$", steps: ["Find $\\Delta S$: $(-20.67 - (-30.96))/298 = \\mathbf{0.0345\\,kJ/K}$", "At Fever (310K): $-20.67 - (310 \\times 0.0345) = \\mathbf{-31.37\\,kJ/mol}$", "At Cold (277K): $-20.67 - (277 \\times 0.0345) = \\mathbf{-30.23\\,kJ/mol}$"] },
@@ -79,21 +81,21 @@
                 grid.innerHTML += `
                     <div class="solution-card p-10 md:p-14">
                         <div class="flex items-center gap-3 mb-6">
-                            <span class="bg-neon text-white text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-widest italic italic">Problem ${p.id}</span>
+                            <span class="bg-neon text-white text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-widest italic">Problem ${p.id}</span>
                             <span class="text-gray-600 text-[10px] font-bold uppercase tracking-widest">${p.cat}</span>
                         </div>
                         <h3 class="font-heading font-bold text-3xl md:text-5xl mb-12 uppercase tracking-tighter text-white leading-none">${p.title}</h3>
                         
                         <div class="grid md:grid-cols-2 gap-12">
-                            <div>
+                            <div class="flex flex-col">
                                 <h4 class="text-neon text-[10px] font-black uppercase mb-6 tracking-widest flex items-center gap-2"><i class="fa-solid fa-list-check"></i> Analysis Data</h4>
                                 <div class="bg-white/5 p-6 rounded-2xl mb-4 border border-white/5">
                                     <p class="text-[10px] text-gray-500 uppercase font-black mb-2 tracking-widest">Givens:</p>
                                     <ul class="text-xs text-gray-300 space-y-2">${p.givens.map(g => `<li>• ${g}</li>`).join('')}</ul>
                                 </div>
-                                <div class="accent-box text-xs">Formula: ${p.formula}</div>
+                                <div class="accent-border text-xs">Full Formula: ${p.formula}</div>
                             </div>
-                            <div>
+                            <div class="flex flex-col">
                                 <h4 class="text-neon text-[10px] font-black uppercase mb-6 tracking-widest flex items-center gap-2"><i class="fa-solid fa-calculator"></i> Step-by-Step Solution</h4>
                                 <div class="flex flex-col">
                                     ${p.steps.map((s, i) => `<div class="step-row"><b>${i+1}</b> ${s}</div>`).join('')}
@@ -103,11 +105,12 @@
                     </div>
                 `;
             });
+            // CRITICAL: Trigger MathJax typeset after content is added
             if (window.MathJax) { MathJax.typesetPromise(); }
         }
 
         searchInput.addEventListener('input', (e) => render(e.target.value.toLowerCase().trim()));
-        render(); // Initial Render
+        render(); // Initial load
     </script>
 </body>
 </html>
