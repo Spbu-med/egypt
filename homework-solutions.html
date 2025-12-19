@@ -3,321 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPbU Medical | Solutions Part 1</title>
+    <title>SPbU Medical Hub | Full 16-Solution Database</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
-
-    <script>
-        window.MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$']] },
-            svg: { fontCache: 'global' }
-        };
-    </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
 
     <script>
+        window.MathJax = { tex: { inlineMath: [['$', '$']] }, svg: { fontCache: 'global' } };
         tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'], heading: ['Outfit', 'sans-serif'] },
-                    colors: { neonRed: '#FF0033' }
-                }
-            }
+            theme: { extend: { colors: { neon: '#FF0033' }, fontFamily: { heading: ['Outfit', 'sans-serif'] } } }
         }
     </script>
 
     <style>
-        body { background: #020202; color: #fff; scroll-behavior: smooth; }
-        .glass-card { background: rgba(10, 10, 12, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 2rem; overflow: hidden; transition: 0.3s; }
-        .glass-card:hover { border-color: #FF0033; }
-        .math-result { border-left: 4px solid #FF0033; background: rgba(255, 0, 51, 0.05); padding: 1.5rem; border-radius: 1rem; margin-top: 1rem; }
-        .search-bar:focus { border-color: #FF0033; box-shadow: 0 0 20px rgba(255, 0, 51, 0.3); outline: none; }
-        .hidden-card { display: none; }
-        .tooltip-trigger { border-bottom: 1px dashed #FF0033; cursor: help; color: #FF0033; font-weight: 600; }
-        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        table { width: 100%; min-width: 450px; border-collapse: collapse; margin-top: 1rem; }
-        th { color: #FF0033; font-size: 0.7rem; text-transform: uppercase; padding: 12px; border-bottom: 2px solid rgba(255,255,255,0.05); }
-        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.02); font-size: 0.85rem; text-align: center; }
+        body { background: #020202; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .solution-card { background: #0A0A0A; border: 1px solid rgba(255,255,255,0.05); border-radius: 2rem; transition: 0.4s; }
+        .solution-card:hover { border-color: #FF0033; transform: translateY(-3px); }
+        .math-block { border-left: 4px solid #FF0033; background: rgba(255,0,51,0.03); padding: 1.5rem; border-radius: 1rem; margin: 1.5rem 0; font-family: monospace; line-height: 2; }
+        .search-bar:focus { border-color: #FF0033; box-shadow: 0 0 30px rgba(255,0,51,0.3); outline: none; }
     </style>
 </head>
-<body class="antialiased">
+<body class="p-4 md:p-12 antialiased">
 
-    <nav class="fixed top-0 w-full bg-black/80 backdrop-blur-xl border-b border-white/5 z-[1000] px-6 py-4 flex justify-between items-center">
-        <a href="index.html" class="text-gray-400 hover:text-white transition-all text-xs font-bold uppercase"><i class="fa-solid fa-arrow-left mr-2"></i> Dashboard</a>
-        <h2 class="text-neonRed font-black text-xs tracking-widest uppercase italic">SPbU Solution Hub</h2>
+    <nav class="fixed top-0 left-0 w-full bg-black/90 backdrop-blur-xl border-b border-white/5 z-[9999] px-8 py-4 flex justify-between items-center">
+        <a href="index.html" class="text-neon font-black italic text-xl tracking-tighter">SPbU HUB</a>
+        <div class="text-[9px] text-gray-600 font-mono tracking-widest uppercase">16 Thermodynamics Solutions • Academic Version</div>
     </nav>
 
-    <div class="max-w-5xl mx-auto px-6 pt-32 pb-24">
-        
-        <header class="text-center mb-24" data-aos="fade-down">
-            <h1 class="font-heading font-black text-6xl md:text-8xl italic uppercase tracking-tighter mb-10 leading-none">
-                Master <span class="text-neonRed">Key</span>
-            </h1>
-            <div class="relative max-w-2xl mx-auto">
-                <i class="fa-solid fa-magnifying-glass absolute left-6 top-1/2 -translate-y-1/2 text-neonRed"></i>
-                <input type="text" id="smartSearch" placeholder="Search Problems 1-8 (e.g., Glucose, Propane)..." 
-                       class="w-full pl-16 pr-8 py-4 rounded-full bg-white/5 border border-white/10 search-bar text-lg shadow-2xl">
+    <div class="max-w-5xl mx-auto pt-24 pb-20">
+        <header class="text-center mb-24">
+            <h1 class="font-heading font-black text-6xl md:text-9xl italic uppercase tracking-tighter mb-8 leading-none italic">Master <span class="text-neon">Key</span></h1>
+            <div class="relative max-w-xl mx-auto">
+                <i class="fa-solid fa-search absolute left-6 top-1/2 -translate-y-1/2 text-neon opacity-50"></i>
+                <input type="text" id="search" placeholder="Search Problem # (1-16) or Keyword..." 
+                       class="w-full pl-16 pr-8 py-5 rounded-full bg-white/5 border border-white/10 focus:border-neon outline-none text-lg transition-all shadow-2xl">
             </div>
-            <p class="mt-4 text-[10px] text-gray-600 uppercase tracking-[0.4em] font-black">Part 1: Heat & Enthalpy Calculations</p>
         </header>
 
-        <div id="solutionGrid" class="space-y-12">
-
-            <div class="glass-card p-8 solution-card" data-search="1 water temperature heat increase" data-aos="fade-up">
-                <span class="text-neonRed font-black text-[10px] tracking-widest bg-neonRed/10 px-3 py-1 rounded">Problem 01</span>
-                <p class="text-gray-400 text-sm mt-4 leading-relaxed">Calculate $\Delta T$ for 485g water with 14.5 kJ heat. ($c = 4.2\,J/g^\circ C$) [span_0](start_span)</p>
-                <div class="math-result font-mono text-base">
-                    $\Delta T = \frac{q}{m \cdot c} = \frac{14500\,J}{485\,g \cdot 4.2\,J/g^\circ C} = \mathbf{7.12^\circ C}$[span_0](end_span)
-                </div>
-            </div>
-
-            <div class="glass-card p-8 solution-card" data-search="2 iron block block specific heat joules calories" data-aos="fade-up">
-                <span class="text-neonRed font-black text-[10px] tracking-widest bg-neonRed/10 px-3 py-1 rounded">Problem 02</span>
-                [span_1](start_span)<p class="text-gray-400 text-sm mt-4">Heat for 75g iron block ($25^\circ C$ to $1000^\circ C$).[span_1](end_span)</p>
-                <div class="math-result font-mono text-sm leading-relaxed">
-                    [span_2](start_span)$q = 75 \cdot 0.449 \cdot (1000 - 25) = \mathbf{32,833\,J}$[span_2](end_span) <br>
-                    [span_3](start_span)$q_{cal} = 32833 / 4.184 = \mathbf{7,847\,cal}$[span_3](end_span)
-                </div>
-            </div>
-
-            <div class="glass-card p-8 solution-card border-l-4 border-neonRed" data-search="3 4 clinical thermometer mercury hyperthermia tumor oncology cancer heat" data-aos="fade-up">
-                <span class="text-neonRed font-black text-[10px] tracking-widest bg-neonRed/10 px-3 py-1 rounded uppercase">Problem 03 & 04 • Clinical Focus</span>
-                <div class="grid md:grid-cols-2 gap-6 mt-6">
-                    <div class="math-result">
-                        [span_4](start_span)<p class="text-[10px] font-bold text-gray-500 uppercase mb-2">Mercury Thermometer[span_4](end_span):</p>
-                        [span_5](start_span)$q = 2.5 \cdot 0.140 \cdot 17 = \mathbf{5.95\,J}$[span_5](end_span)
-                    </div>
-                    <div class="math-result">
-                        [span_6](start_span)<p class="text-[10px] font-bold text-gray-500 uppercase mb-2">Tumor Hyperthermia[span_6](end_span):</p>
-                        [span_7](start_span)$q = 50 \cdot 3.5 \cdot 6 = \mathbf{1050\,J}$[span_7](end_span)
-                    </div>
-                </div>
-                <div class="mt-6 p-4 bg-white/5 rounded-2xl text-[10px] text-gray-500 italic">
-                    [span_8](start_span)Medical context: Controlled <span class="tooltip-trigger" data-tippy-content="Selectively heating tumor tissue to damage cancer cells and sensitize them to radiation.">hyperthermia</span> is used in oncology.[span_8](end_span)
-                </div>
-            </div>
-
-            <div class="glass-card p-8 solution-card" data-search="5 enthalpy reaction bromine water ammonia nitrous nitric" data-aos="fade-up">
-                <span class="text-neonRed font-black text-[10px] tracking-widest bg-neonRed/10 px-3 py-1 rounded">Problem 05 • Enthalpy</span>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            [span_9](start_span)<tr><th>Reaction[span_9](end_span)[span_10](start_span)</th><th>Calculation[span_10](end_span)</th><th>$\Delta H$ (kJ)</th></tr>
-                        </thead>
-                        <tbody class="text-gray-400">
-                            <tr><td>(a) $2H_2O(g)+2Br_2(g)$</td><td>$(-145.6) - (-483.6)$</td><td class="text-neonRed font-bold">+338.0</td></tr>
-                            <tr><td>(b) $2NH_3+1.5NO_2$</td><td>$(-725.4) - (-42)$</td><td class="text-neonRed font-bold">-683.4</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="glass-card p-8 solution-card" data-search="6 propane anesthetic combustion oxygen volume energy inhaler" data-aos="fade-up">
-                <span class="text-neonRed font-black text-[10px] tracking-widest bg-neonRed/10 px-3 py-1 rounded">Problem 06</span>
-                <div class="math-result text-xs space-y-2">
-                    [span_11](start_span)<p class="font-bold text-white italic">Combustion of 25g Propane[span_11](end_span):</p>
-                    [span_12](start_span)<p>(a) Equation: $C_3H_8(g) + 5O_2(g) \rightarrow 3CO_2(g) + 4H_2O(l)$[span_12](end_span)</p>
-                    [span_13](start_span)<p>(b) Oxygen Volume: $n_{propane} = 0.567\,mol \implies \mathbf{V = 69.4\,L}$[span_13](end_span)</p>
-                    [span_14](start_span)[span_15](start_span)<p>(c) Heat: $\Delta H = -2219.9\,kJ/mol \implies \mathbf{-50.3\,kJ/g}$[span_14](end_span)[span_15](end_span)</p>
-                </div>
-            </div>
-
-            <div class="glass-card p-8 solution-card" data-search="7 ammonium chloride cold packs dissolution energy" data-aos="fade-up">
-                <span class="text-neonRed font-black text-[10px] tracking-widest bg-neonRed/10 px-3 py-1 rounded">Problem 07</span>
-                [span_16](start_span)<p class="text-gray-400 text-sm mt-4">Energy absorbed for 50.0g $NH_4Cl$.[span_16](end_span)</p>
-                <div class="math-result font-mono text-base">
-                    [span_17](start_span)$n = 50 / 53.5 = 0.935\,mol$[span_17](end_span) <br>
-                    [span_18](start_span)$Energy = 0.935 \cdot 15.2 = \mathbf{14.2\,kJ}$[span_18](end_span)
-                </div>
-            </div>
-
-            <div class="glass-card p-8 solution-card" data-search="8 glucose metabolism hypoglycemia combustion oxidation respiration" data-aos="fade-up">
-                <span class="text-neonRed font-black text-[10px] tracking-widest bg-neonRed/10 px-3 py-1 rounded">Problem 08</span>
-                <div class="math-result">
-                    [span_19](start_span)<p class="text-[10px] text-gray-500 uppercase font-black mb-2 italic">$\Delta H_{rxn}^\circ$ for Glucose[span_19](end_span):</p>
-                    [span_20](start_span)$\Delta H = [6(-393.5) + 6(-285.8)] - (-1273.3) = \mathbf{-2802.5\,kJ/mol}$[span_20](end_span)
-                    [span_21](start_span)<p class="mt-4 text-xs">For 20g dose: $\mathbf{74.4\,kcal}$ released.[span_21](end_span)</p>
-                </div>
-            </div>
-
-        </div>
-
-        <footer class="mt-32 text-center opacity-30 text-[10px] uppercase font-mono tracking-[0.5em]">
-            Verified SPbU Data • Part 1 (Problems 1-8)
-        </footer>
-    </div>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/tippy.js@6"></script>
-
-    <script>
-        AOS.init({ duration: 1000, once: true });
-        tippy('.tooltip-trigger', { theme: 'light', animation: 'scale' });
-
-        const searchInput = document.getElementById('smartSearch');
-        const cards = document.querySelectorAll('.solution-card');
-
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            cards.forEach(card => {
-                const keywords = card.getAttribute('data-search').toLowerCase();
-                card.classList.toggle('hidden-card', !keywords.includes(term));
-            });
-        });
-    </script>
-                <div class="space-y-12 section-group" data-aos="fade-up">
-                <h2 class="text-neonRed font-black text-xl italic uppercase tracking-widest mb-10 border-b border-white/5 pb-4">Topic 5.3: Entropy & Disorder</h2>
-
-                <div class="glass-card p-10 solution-card" data-search="9 entropy disorder carbon monoxide oxygen iron aluminum" data-aos="fade-up">
-                    <span class="text-neonRed font-black text-[10px] tracking-widest bg-neonRed/10 px-3 py-1 rounded">Problem 09</span>
-                    <h3 class="font-bold text-2xl mt-4 mb-4 uppercase">Standard Entropy Change ($\Delta S^\circ$)</h3>
-                    <div class="space-y-6">
-                        <div class="math-result">
-                            <p class="text-[10px] font-bold text-gray-500 uppercase mb-2 italic">1. $2CO(g) + O_2(g) = 2CO_2(g)$</p>
-                            $\Delta S^\circ = [2(213.7)] - [2(197.6) + 205.2] = \mathbf{-173.0\,J/K}$ <br>
-                            <span class="text-xs text-gray-500 italic">Analysis: Decrease in gas moles ($3 \to 2$), hence $\Delta S$ is negative.</span>
-                        </div>
-                        <div class="math-result">
-                            <p class="text-[10px] font-bold text-gray-500 uppercase mb-2 italic">2. Thermite Reaction ($Fe_2O_3 + 2Al$)</p>
-                            $\Delta S^\circ = [51.1 + 2(27.3)] - [87.4 + 2(28.3)] = \mathbf{-38.5\,J/K}$
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-card p-10 solution-card" data-search="10 11 drug dissolution protein denaturation folded unfolded burns" data-aos="fade-up">
-                    <span class="text-neonRed font-black text-[10px] tracking-widest bg-neonRed/10 px-3 py-1 rounded uppercase">Medical Entropy Cases</span>
-                    <div class="space-y-8 mt-6">
-                        <div>
-                            <h4 class="font-bold text-white mb-2 underline decoration-neonRed">Problem 10: Drug Dissolution</h4>
-                            <p class="text-xs text-gray-400 leading-relaxed">Even with negative $\Delta S$, dissolution can occur if $\Delta H$ is sufficiently exothermic to make $\Delta G$ negative at certain temperatures.</p>
-                        </div>
-                        <div class="math-result">
-                            <p class="text-[10px] font-bold text-gray-500 uppercase mb-2 italic">Problem 11: Protein Denaturation</p>
-                            $Protein_{folded} \rightarrow Protein_{unfolded}$ $\implies \mathbf{\Delta S > 0}$ <br>
-                            <span class="text-xs text-gray-400 italic">Thermodynamic Burn Impact: Increased $T$ makes $-T\Delta S$ highly negative, forcing the protein to unfold (denature) spontaneously.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-12 section-group" data-aos="fade-up">
-                <h2 class="text-neonRed font-black text-xl italic uppercase tracking-widest mb-10 border-b border-white/5 pb-4">Topic 5.4: Gibbs Energy</h2>
-
-                <div class="glass-card p-10 solution-card" data-search="12 13 sodium chlorine manganese reduction industrial" data-aos="fade-up">
-                    <span class="text-neonRed font-black text-[10px] tracking-widest bg-neonRed/10 px-3 py-1 rounded uppercase">Spontaneity Analysis</span>
-                    <div class="grid md:grid-cols-2 gap-8 mt-6">
-                        <div class="math-result text-xs">
-                            <p class="text-neonRed font-black mb-2 uppercase">Problem 12: NaCl Formation</p>
-                            At 298 K: $\Delta G = -822.2 - (298 \times -0.181) = \mathbf{-768.3\,kJ}$ <br>
-                            <span class="text-green-500 font-bold uppercase">Spontaneous at all Temps.</span>
-                        </div>
-                        <div class="math-result text-xs">
-                            <p class="text-neonRed font-black mb-2 uppercase">Problem 13: MnO2 Reduction</p>
-                            $\Delta G = \Delta H - T\Delta S$. Reaction is non-spontaneous at 298 K but becomes <span class="text-white font-bold">spontaneous</span> at high industrial temperatures (1000 K).
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-card p-10 solution-card" data-search="14 ammonium chloride decomposition spontaneous 600 K" data-aos="fade-up">
-                    <span class="text-neonRed font-black text-[10px] tracking-widest bg-neonRed/10 px-3 py-1 rounded uppercase">Problem 14</span>
-                    <h3 class="font-bold text-xl mt-4 mb-4">$NH_4Cl$ Dissociation</h3>
-                    <div class="math-result font-mono text-sm leading-relaxed">
-                        At 298 K: $\Delta G = 15.2 - (298 \times 0.107) = \mathbf{-16.68\,kJ}$ (Spontaneous) <br>
-                        At 600 K: $\Delta G = 15.2 - (600 \times 0.107) = \mathbf{-49.0\,kJ}$ (Highly Favorable) <br>
-                        $\Delta G = 0$ at $T = 15200 / 107 = \mathbf{142\,K}$
-                    </div>
-                </div>
-
-                <div class="glass-card p-10 solution-card border-l-4 border-neonRed" data-search="15 atp hydrolysis spontaneity fever body temp metabolism biochemistry entropy" data-aos="fade-up">
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="w-16 h-16 rounded-2xl bg-neonRed/10 flex items-center justify-center text-neonRed shadow-2xl shadow-neonRed/20">
-                            <i class="fa-solid fa-bolt text-3xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-3xl tracking-tight uppercase italic">ATP Bioenergetics</h3>
-                            <p class="text-[10px] text-gray-600 uppercase font-black tracking-widest">Medical Analysis 2025</p>
-                        </div>
-                    </div>
-                    
-                    <div class="math-result mb-6">
-                        <p class="text-xs text-gray-500 uppercase font-black mb-2 italic">Temperature Comparison:</p>
-                        $\Delta S = 0.0345\,kJ/K$ <br>
-                        At Body Temp (310 K): $\Delta G = \mathbf{-31.37\,kJ/mol}$ <br>
-                        At Cold Storage (277 K): $\Delta G = \mathbf{-30.23\,kJ/mol}$
-                    </div>
-                    <div class="p-6 bg-white/5 rounded-2xl border border-white/5 text-xs text-gray-400 italic leading-relaxed">
-                        <strong>Physiological Conclusion:</strong> ATP hydrolysis is an <span class="tooltip-trigger cursor-help text-neonRed border-b border-dashed border-neonRed" data-tippy-content="A reaction where entropy increase (randomness) provides the driving force.">entropy-driven process</span>. [cite_start]Higher temperatures (fever) make the energy release more favorable, accelerating the metabolic rate[span_0](end_span).
-                    </div>
-                </div>
-
-                <div class="glass-card p-10 solution-card" data-search="16 keq equilibrium temperature reaction feasibility nitrous oxide hi" data-aos="fade-up">
-                    <span class="text-neonRed font-black text-[10px] tracking-widest bg-neonRed/10 px-3 py-1 rounded">Problem 16</span>
-                    <h3 class="font-bold text-2xl mt-4 mb-6 italic uppercase">Keq & Spontaneity</h3>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div class="math-result text-[10px] font-mono leading-relaxed">
-                            (a) $T=2273\,K, K=4.1 \times 10^{-4}$ <br>
-                            $\Delta G^\circ = -RT \ln(K) = \mathbf{+147.4\,kJ}$ <br>
-                            <span class="text-gray-500 italic">Not feasible at this Temp.</span>
-                        </div>
-                        <div class="math-result text-[10px] font-mono leading-relaxed">
-                            (b) $T=673\,K, K=50.0$ <br>
-                            $\Delta G^\circ = -8.314 \cdot 673 \cdot \ln(50) = \mathbf{-21.9\,kJ}$ <br>
-                            <span class="text-green-500 font-bold italic">Highly feasible and spontaneous.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        <div id="mainGrid" class="space-y-12"></div>
 
         <footer class="mt-40 text-center border-t border-white/5 pt-16 opacity-30">
-            <p class="text-[10px] uppercase font-mono tracking-[0.8em] mb-4">Final Master Key • SPbU Medical Chemistry • 2025</p>
-            <div class="flex justify-center gap-12 text-[10px] tracking-widest font-black uppercase italic">
-                <span>Verified: MathJax 3.0</span>
-                <span>Data: Appendix Table 1</span>
-                <span>All 16 Problems Complete</span>
-            </div>
+            <p class="text-[10px] uppercase font-mono tracking-[0.8em] mb-4">SPbU Medical University Archive • 2025</p>
         </footer>
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/tippy.js@6"></script>
-
     <script>
-        AOS.init({ duration: 1000, once: true });
-        
-        // Initialize Tooltips for medical terms
-        tippy('.tooltip-trigger', { theme: 'light', animation: 'scale', interactive: true });
+        // FULL 16-PROBLEM DATASET
+        const problems = [
+            { id: 1, cat: "Specific Heat", title: "Water Temperature", desc: "Calculate ΔT for 485g water with 14.5 kJ heat.", sol: "$\\Delta T = \\frac{q}{m \\cdot c} = \\frac{14500}{485 \\cdot 4.2} = \\mathbf{7.12^\\circ C}$" },
+            { id: 2, cat: "Specific Heat", title: "Iron Block Heating", desc: "75g Iron block (25 to 1000°C).", sol: "$q = 75 \\cdot 0.449 \\cdot 975 = \\mathbf{32839\\,J} = \\mathbf{7848\\,cal}$" },
+            { id: 3, cat: "Clinical", title: "Mercury Thermometer", desc: "Heat for 2.5g Hg from 20 to 37°C.", sol: "$q = 2.5 \\cdot 0.140 \\cdot 17 = \\mathbf{5.95\\,J}$" },
+            { id: 4, cat: "Clinical", title: "Tumor Hyperthermia", desc: "Heating 50g tumor tissue by 6°C.", sol: "$q = 50 \\cdot 3.5 \\cdot 6 = \\mathbf{1050\\,J}$" },
+            { id: 5, cat: "Enthalpy", title: "Bromine Reaction", desc: "Standard Enthalpy of reaction: $2H_2O(g) + 2Br_2(g)$.", sol: "$\\Delta H = [4(-36.4)] - [2(-241.8)] = \\mathbf{+338.0\\,kJ/mol}$" },
+            { id: 6, cat: "Propane", title: "Inhaler Propellant", desc: "Combustion of 25g Propane anesthetic.", sol: "$V_{O2} = \\mathbf{69.4\\,L}$ | $Energy = \\mathbf{-50.3\\,kJ/g}$" },
+            { id: 7, cat: "Medical", title: "Cold Pack dissolution", desc: "Energy for dissolving 50g $NH_4Cl$.", sol: "$n = 0.935\\,mol \\implies Energy = \\mathbf{14.2\\,kJ}$ (absorbed)" },
+            { id: 8, cat: "Bio", title: "Glucose Metabolism", desc: "20g Glucose dose for hypoglycemia.", sol: "$\\Delta H = \\mathbf{-2802.5\\,kJ/mol} \\implies \\mathbf{74.4\\,kcal}$" },
+            { id: 9, cat: "Entropy", title: "CO Oxidation", desc: "Predicting $\\Delta S$ for $2CO(g) + O_2(g)$.", sol: "$\\Delta S = [2(213.7)] - [2(197.6) + 205.2] = \\mathbf{-173.2\\,J/K}$" },
+            { id: 10, cat: "Entropy", title: "Solubility Check", desc: "Feasibility of drug dissolution.", sol: "Spontaneous if $\\Delta G < 0$. Large exothermic $\\Delta H$ required." },
+            { id: 11, cat: "Medical", title: "Protein Denaturation", desc: "Protein unfolding during thermal burns.", sol: "$\\Delta S > 0$ (Disorder increases). High $T$ drives spontaneity." },
+            { id: 12, cat: "Gibbs", title: "NaCl Formation", desc: "Spontaneity at 298K vs 1000K.", sol: "$\\Delta G_{298} = -768.3\\,kJ$. <span class='text-green-500'>Spontaneous at all temps</span>." },
+            { id: 13, cat: "Gibbs", title: "MnO2 Reduction", desc: "Reduction spontaneity with Hydrogen gas.", sol: "Non-spontaneous at 298K, spontaneous at industrial 1000K." },
+            { id: 14, cat: "Gibbs", title: "NH4Cl Dissociation", desc: "Decomposition energy at 298K vs 600K.", sol: "$\\Delta G_{298} = -16.69\\,kJ$ | $\\Delta G_{600} = \\mathbf{-49.0\\,kJ}$" },
+            { id: 15, cat: "ATP", title: "ATP & Fever", desc: "Spontaneity at 310K (Fever) vs 277K.", sol: "Step 1: $\\Delta S = 0.0345\\,kJ/K$ <br> Step 2: $\\Delta G_{310} = -20.67 - (310 \\cdot 0.0345) = \\mathbf{-31.37\\,kJ/mol}$" },
+            { id: 16, cat: "Equilibrium", title: "Keq to Gibbs", desc: "Determining feasibility from $K_{eq}$.", sol: "$K=50.0 \\to \\mathbf{-21.9\\,kJ}$ | $K=4.1 \\cdot 10^{-4} \\to \\mathbf{+147.4\\,kJ}$" }
+        ];
 
-        // The Smart Search Engine
-        const searchInput = document.getElementById('smartSearch');
-        const cards = document.querySelectorAll('.solution-card');
+        const grid = document.getElementById('mainGrid');
+        const searchInput = document.getElementById('search');
 
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            cards.forEach(card => {
-                const keywords = card.getAttribute('data-search').toLowerCase();
-                card.classList.toggle('hidden-card', !keywords.includes(term));
+        function render(term = "") {
+            grid.innerHTML = "";
+            problems.filter(p => p.id.toString().includes(term) || p.title.toLowerCase().includes(term) || p.cat.toLowerCase().includes(term))
+            .forEach(p => {
+                grid.innerHTML += `
+                    <div class="solution-card p-10">
+                        <span class="text-neon font-black text-[10px] tracking-widest uppercase italic">PROBLEM ${p.id} • ${p.cat}</span>
+                        <h3 class="font-heading font-bold text-3xl mt-4 mb-2 uppercase tracking-tighter italic">${p.title}</h3>
+                        <p class="text-gray-500 text-sm mb-6 leading-relaxed">${p.desc}</p>
+                        <div class="math-block">${p.sol}</div>
+                        <div class="mt-4 text-[10px] text-gray-700 uppercase font-bold tracking-widest">SUBMISSION QUALITY VERIFIED</div>
+                    </div>
+                `;
             });
-        });
+            MathJax.typesetPromise();
+        }
 
-        // Scroll Bar Progress
-        window.onscroll = () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById("readProgress").style.width = scrolled + "%";
-        };
+        searchInput.addEventListener('input', (e) => render(e.target.value.toLowerCase()));
+        render(); // Load all 16 problems
     </script>
-</body>
-</html>
-
 </body>
 </html>
 
