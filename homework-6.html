@@ -1,105 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 6 - Comprehensive Medical Solutions | SPbU</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;800&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-# Homework 6: Redox Reactions, Electrode Potentials, and the Nernst Equation
+    <style>
+        body { background-color: #030303; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        .glass-card { background: rgba(15, 15, 15, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.4s ease; height: 100%; display: flex; flex-direction: column; }
+        .glass-card:hover { border-color: #FF0033; transform: translateY(-5px); box-shadow: 0 20px 40px -20px rgba(255, 0, 51, 0.4); }
+        .math-block { background: rgba(0, 0, 0, 0.6); padding: 1.25rem; border-radius: 12px; border-left: 3px solid #FF0033; margin: 1rem 0; font-size: 0.9rem; overflow-x: auto; }
+        .section-header { border-left: 6px solid #FF0033; padding-left: 1.5rem; margin: 4rem 0 2rem 0; }
+        .badge { font-size: 10px; padding: 4px 10px; border-radius: 6px; font-weight: 800; text-transform: uppercase; background: rgba(255, 0, 51, 0.1); color: #FF0033; margin-bottom: 1rem; display: inline-block; }
+        .text-neon { color: #FF0033; text-shadow: 0 0 10px rgba(255, 0, 51, 0.5); }
+    </style>
+</head>
+<body class="p-4 md:p-12">
 
-## Part A: Exercises
+    <nav class="fixed top-6 left-6 z-50">
+        <a href="index.html" class="glass-card px-5 py-2 rounded-full text-xs font-bold hover:text-red-500 flex items-center gap-2">
+            <i class="fa-solid fa-house"></i> Main Platform
+        </a>
+    </nav>
 
-### Topic 6.1: Redox Reactions and Oxidation States
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-16 pt-10">
+            <div class="inline-block px-4 py-1 rounded-full border border-white/10 bg-white/5 mb-4 text-[10px] uppercase tracking-[0.3em] text-red-500 font-bold">
+                SPbU Medical • Chemistry Edition 2025
+            </div>
+            <h1 class="text-5xl md:text-8xl font-black font-heading mb-4 tracking-tighter">Homework <span class="text-neon">06</span></h1>
+            <p class="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
+                [span_5](start_span)Complete solutions for Redox Reactions, Standard Electrode Potentials, and the Nernst Equation[span_5](end_span).
+            </p>
+        </header>
 
-#### Problem 1. Pharmaceutical Iron(II) to Iron(III) Oxidation
-* **[span_7](start_span)Balanced Equation:** $10FeSO_{4} + 2KMnO_{4} + 8H_{2}SO_{4} \rightarrow 5Fe_{2}(SO_{4})_{3} + 2MnSO_{4} + K_{2}SO_{4} + 8H_{2}O$[span_7](end_span).
-* **(a) Oxidation States:**
-    * **[span_8](start_span)Fe:** $+2$ (before) $\rightarrow$ $+3$ (after)[span_8](end_span).
-    * **[span_9](start_span)Mn:** $+7$ (before) $\rightarrow$ $+2$ (after)[span_9](end_span).
-* **(b) Half-reactions:**
-    * **[span_10](start_span)Oxidation:** $Fe^{2+} \rightarrow Fe^{3+} + e^{-}$[span_10](end_span).
-    * **[span_11](start_span)Reduction:** $MnO_{4}^{-} + 8H^{+} + 5e^{-} \rightarrow Mn^{2+} + 4H_{2}O$[span_11](end_span).
-* **(c) Agents:** **Oxidizing Agent:** $KMnO_{4}$; **[span_12](start_span)Reducing Agent:** $FeSO_{4}$[span_12](end_span).
+        <div class="section-header">
+            <h2 class="text-3xl font-black uppercase italic tracking-tighter text-white">6.1 Redox & Oxidation States</h2>
+        </div>
 
-#### Problem 2. Iodine Oxidation (Disproportionation)
-* **[span_13](start_span)Balanced Equation:** $3I_{2} + 6KOH \rightarrow 5KI + KIO_{3} + 3H_{2}O$[span_13](end_span).
-* **[span_14](start_span)(a) Identification:** Iodine ($I$) is both oxidized to $KIO_{3}$ and reduced to $KI$[span_14](end_span).
-* **(b) Electron transfer per atom:** Reduction ($1e^{-}$); [span_15](start_span)Oxidation ($5e^{-}$)[span_15](end_span).
-* **[span_16](start_span)(c) Reason:** It is a disproportionation because the same species ($I_{2}$) is simultaneously oxidized and reduced[span_16](end_span).
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="glass-card p-8 rounded-[2.5rem]">
+                <span class="badge">Problem 1</span>
+                <h3 class="font-bold text-lg mb-3">Pharmaceutical Iron Oxidation</h3>
+                <div class="math-block text-xs">$$10FeSO_4 + 2KMnO_4 + 8H_2SO_4 \rightarrow 5Fe_2(SO_4)_3 + 2MnSO_4 + K_2SO_4 + 8H_2O$$</div>
+                <p class="text-[11px] text-gray-400 leading-relaxed">
+                    [span_6](start_span)<b>Fe:</b> +2 $\to$ +3 (Oxidized)[span_6](end_span) <br>
+                    [span_7](start_span)<b>Mn:</b> +7 $\to$ +2 (Reduced)[span_7](end_span)
+                </p>
+            </div>
 
-#### Problem 3. Chromium(III) to Chromium(VI) Oxidation
-* **[span_17](start_span)(a) Balanced Equation:** $2CrCl_{3} + 3NaClO + 10NaOH \rightarrow 2Na_{2}CrO_{4} + 9NaCl + 5H_{2}O$[span_17](end_span).
-* **(b) Oxidation States:** **Cr:** $+3 \rightarrow +6$; **[span_18](start_span)Cl:** $+1 \rightarrow -1$[span_18](end_span).
-* **[span_19](start_span)(c) Electron transfer:** $3e^{-}$ per Chromium atom[span_19](end_span).
+            <div class="glass-card p-8 rounded-[2.5rem]">
+                <span class="badge">Problem 2</span>
+                <h3 class="font-bold text-lg mb-3">Iodine Disproportionation</h3>
+                <div class="math-block text-xs">$$3I_2 + 6KOH \rightarrow 5KI + KIO_3 + 3H_2O$$</div>
+                [span_8](start_span)<p class="text-[11px] text-gray-400">Element $I$ is both oxidized (0 $\to$ +5) and reduced (0 $\to$ -1)[span_8](end_span).</p>
+            </div>
 
-#### Problem 4. Bromine Production from Bromide
-* **[span_20](start_span)(a) Balanced Equation:** $2KBr + Cl_{2} \rightarrow 2KCl + Br_{2}$[span_20](end_span).
-* **(b) Half-reactions:**
-    * **[span_21](start_span)Oxidation:** $2Br^{-} \rightarrow Br_{2} + 2e^{-}$[span_21](end_span).
-    * **[span_22](start_span)Reduction:** $Cl_{2} + 2e^{-} \rightarrow 2Cl^{-}$[span_22](end_span).
-* **(c) Agents:** **Oxidizing Agent:** $Cl_{2}$; **[span_23](start_span)Reducing Agent:** $KBr$[span_23](end_span).
-* **[span_24](start_span)(d) Explanation:** Chlorine is more electronegative and has a higher reduction potential than bromine[span_24](end_span).
+            <div class="glass-card p-8 rounded-[2.5rem]">
+                <span class="badge">Problem 3</span>
+                <h3 class="font-bold text-lg mb-3">Chromium Analysis</h3>
+                <div class="math-block text-xs">$$2CrCl_3 + 3NaClO + 10NaOH \rightarrow 2Na_2CrO_4 + 9NaCl + 5H_2O$$</div>
+                [span_9](start_span)<p class="text-[11px] text-gray-400">Electrons: 3e⁻ per $Cr$ atom ($+3$ to $+6$)[span_9](end_span).</p>
+            </div>
 
-#### Problem 5. Sulfite Oxidation
-* **[span_25](start_span)(a) Balanced Equation:** $5Na_{2}SO_{3} + 2KMnO_{4} + 3H_{2}SO_{4} \rightarrow 5Na_{2}SO_{4} + 2MnSO_{4} + K_{2}SO_{4} + 3H_{2}O$[span_25](end_span).
-* **(b) States:** **S:** $+4 \rightarrow +6$; **[span_26](start_span)Mn:** $+7 \rightarrow +2$[span_26](end_span).
-* **[span_27](start_span)(d) Electron calculation:** $0.025 \text{ mol } KMnO_{4} \times 5 \text{ mol } e^{-} = 0.125 \text{ mol electrons}$[span_27](end_span).
+            <div class="glass-card p-8 rounded-[2.5rem]">
+                <span class="badge">Problem 4</span>
+                <h3 class="font-bold text-lg mb-3">Bromine Production</h3>
+                <div class="math-block text-xs">$$2KBr + Cl_2 \rightarrow 2KCl + Br_2$$</div>
+                <p class="text-[11px] text-gray-400"><b>Oxidant:</b> $Cl_2$ | [span_10](start_span)<b>Reductant:</b> $KBr$[span_10](end_span).</p>
+            </div>
 
-#### Problem 6. Nitrite Reduction
-* **[span_28](start_span)(a) Balanced Equation:** $5KNO_{2} + 2KMnO_{4} + 3H_{2}SO_{4} \rightarrow 5KNO_{3} + 2MnSO_{4} + K_{2}SO_{4} + 3H_{2}O$[span_28](end_span).
-* **(b) States:** **N:** $+3 \rightarrow +5$; **[span_29](start_span)Mn:** $+7 \rightarrow +2$[span_29](end_span).
-* **(c) Agents:** **Oxidizing:** $KMnO_{4}$; **[span_30](start_span)Reducing:** $KNO_{2}$[span_30](end_span).
+            <div class="glass-card p-8 rounded-[2.5rem]">
+                <span class="badge">Problem 5</span>
+                <h3 class="font-bold text-lg mb-3">Sulfite Preservatives</h3>
+                <div class="math-block text-xs">$$5Na_2SO_3 + 2KMnO_4 + 3H_2SO_4 \rightarrow 5Na_2SO_4 + 2MnSO_4 + ...$$</div>
+                [span_11](start_span)<p class="text-[11px] text-gray-400 italic">For 0.025 mol $KMnO_4$, 0.125 mol of electrons are transferred[span_11](end_span).</p>
+            </div>
 
----
+            <div class="glass-card p-8 rounded-[2.5rem]">
+                <span class="badge">Problem 6</span>
+                <h3 class="font-bold text-lg mb-3">Nitrite Reduction</h3>
+                <div class="math-block text-xs">$$5KNO_2 + 2KMnO_4 + 3H_2SO_4 \rightarrow 5KNO_3 + 2MnSO_4 + ...$$</div>
+                [span_12](start_span)<p class="text-[11px] text-gray-400 italic"><b>Oxidizing Agent:</b> $KMnO_4$[span_12](end_span).</p>
+            </div>
+        </div>
 
-### Topic 5.2: Electrochemistry and Standard Cell Potentials
+        <div class="section-header">
+            <h2 class="text-3xl font-black uppercase italic tracking-tighter text-white">5.2 Standard Cell Potentials</h2>
+        </div>
 
-[attachment_0](attachment)
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="glass-card p-8 rounded-[2.5rem]">
+                <span class="badge bg-blue-600/10 text-blue-500">Problem 7</span>
+                <h3 class="font-bold text-white mb-4">Silver Electrode Device</h3>
+                <div class="math-block text-center text-blue-400 font-black text-xl">$$E^\circ_{cell} = +0.462 \, V$$</div>
+                [span_13](start_span)<p class="text-[10px] text-green-500 font-black uppercase text-center mt-3 tracking-widest">Spontaneous[span_13](end_span)</p>
+            </div>
 
-#### Problem 7. Silver Electrode
-* **(a) Half-reactions:** $Cu \rightarrow Cu^{2+} + 2e^{-}$ (Ox); [span_31](start_span)$2Ag^{+} + 2e^{-} \rightarrow 2Ag$ (Red)[span_31](end_span).
-* **(b) Electrodes:** Anode: **Copper**; [span_32](start_span)Cathode: **Silver**[span_32](end_span).
-* **[span_33](start_span)(c) $E^{\circ}_{cell}$:** $0.799\text{ V} - 0.337\text{ V} = +0.462\text{ V}$[span_33](end_span).
-* **[span_34](start_span)(d) Spontaneity:** **Spontaneous** ($E^{\circ} > 0$)[span_34](end_span).
+            <div class="glass-card p-8 rounded-[2.5rem]">
+                <span class="badge bg-blue-600/10 text-blue-500">Problem 8</span>
+                <h3 class="font-bold text-white mb-4">Zn-Cu Galvanic Cell</h3>
+                <div class="math-block text-center text-blue-400 font-black text-xl">$$E^\circ_{cell} = +1.097 \, V$$</div>
+                [span_14](start_span)<p class="text-[10px] text-gray-400 text-center font-bold uppercase tracking-widest">Max Work: $211.7 \, kJ/mol$[span_14](end_span)</p>
+            </div>
 
-#### Problem 8. Zinc-Copper Galvanic Cell
-* **(a) Electrodes:** Anode: **Zn**; [span_35](start_span)Cathode: **Cu**[span_35](end_span).
-* **[span_36](start_span)(c) $E^{\circ}_{cell}$:** $0.337\text{ V} - (-0.760\text{ V}) = +1.097\text{ V}$[span_36](end_span).
-* **[span_37](start_span)(d) Work:** $\Delta G^{\circ} = -2 \times 96485 \times 1.097 \approx -211.7\text{ kJ/mol}$[span_37](end_span).
+            <div class="glass-card p-8 rounded-[2.5rem]">
+                <span class="badge bg-blue-600/10 text-blue-500">Problem 9</span>
+                <h3 class="font-bold text-white mb-4">Iodine-Iodide Clinical</h3>
+                <div class="math-block text-center text-blue-400 font-black text-xl">$$E^\circ_{cell} = +0.235 \, V$$</div>
+                [span_15](start_span)<p class="text-[10px] text-green-500 text-center font-bold tracking-widest uppercase">Forward Spontaneous[span_15](end_span)</p>
+            </div>
 
-#### Problem 9. Iodine-Iodide Reduction Potential
-* **(a) Half-reactions:** $2I^{-} \rightarrow I_{2} + 2e^{-}$ (Ox); [span_38](start_span)$Fe^{3+} + e^{-} \rightarrow Fe^{2+}$ (Red)[span_38](end_span).
-* **[span_39](start_span)(b) $E^{\circ}_{cell}$:** $0.771\text{ V} - 0.536\text{ V} = +0.235\text{ V}$[span_39](end_span).
-* **[span_40](start_span)(a2) Direction:** **Forward** (Forward reaction is spontaneous)[span_40](end_span).
+            <div class="glass-card p-8 rounded-[2.5rem]">
+                <span class="badge bg-blue-600/10 text-blue-500">Problem 10</span>
+                <h3 class="font-bold text-white mb-4">Permanganate-$H_2O_2$</h3>
+                <div class="math-block text-center text-blue-400 font-black text-xl">$$E^\circ_{cell} = +0.828 \, V$$</div>
+                [span_16](start_span)<p class="text-[10px] text-gray-400 text-center italic font-bold">Reduction of $MnO_4^-$[span_16](end_span)</p>
+            </div>
 
-#### Problem 10. Permanganate-Hydrogen Peroxide System
-* **(b) Half-reactions:**
-    * **[span_41](start_span)Ox:** $H_{2}O_{2} \rightarrow O_{2} + 2H^{+} + 2e^{-}$[span_41](end_span).
-    * **[span_42](start_span)Red:** $MnO_{4}^{-} + 8H^{+} + 5e^{-} \rightarrow Mn^{2+} + 4H_{2}O$[span_42](end_span).
-* **[span_43](start_span)(c) $E^{\circ}_{cell}$:** $1.510\text{ V} - 0.682\text{ V} = +0.828\text{ V}$[span_43](end_span).
-* **[span_44](start_span)(d) Spontaneity:** **Spontaneous**[span_44](end_span).
+            <div class="glass-card p-8 rounded-[2.5rem]">
+                <span class="badge bg-blue-600/10 text-blue-500">Problem 11</span>
+                <h3 class="font-bold text-white mb-4">Cl-Br Displacement</h3>
+                <div class="math-block text-center text-blue-400 font-black text-xl">$$E^\circ_{cell} = +0.295 \, V$$</div>
+                [span_17](start_span)<p class="text-[10px] text-gray-400 text-center italic font-bold">$Cl_2$ oxidizes $Br^-$[span_17](end_span)</p>
+            </div>
 
-#### Problem 11. Chlorine-Bromide Displacement
-* **[span_45](start_span)(c) $E^{\circ}_{cell}$:** $1.360\text{ V} - 1.065\text{ V} = +0.295\text{ V}$[span_45](end_span).
-* **[span_46](start_span)(d) Verification:** **Spontaneous** because $E^{\circ}_{cell} > 0$[span_46](end_span).
+            <div class="glass-card p-8 rounded-[2.5rem]">
+                <span class="badge bg-blue-600/10 text-blue-500">Problem 12</span>
+                <h3 class="font-bold text-white mb-4">Chromium Oxidation Test</h3>
+                <div class="math-block text-center text-blue-400 font-black text-xl">$$E^\circ_{cell} = +0.180 \, V$$</div>
+                [span_18](start_span)<p class="text-[10px] text-gray-400 text-center font-bold uppercase tracking-widest">$\Delta G^\circ = -521 \, kJ/mol$[span_18](end_span)</p>
+            </div>
+        </div>
 
-#### Problem 12. Chromium(III) Oxidation by Permanganate
-* **[span_47](start_span)(c) $E^{\circ}_{cell}$:** $1.510\text{ V} - 1.330\text{ V} = +0.180\text{ V}$[span_47](end_span).
-* **[span_48](start_span)(e) $\Delta G^{\circ}$:** $-(30 \times 96485 \times 0.180) = -521\text{ kJ/mol}$[span_48](end_span).
+        <div class="section-header">
+            <h2 class="text-3xl font-black uppercase italic tracking-tighter text-white">5.3 Nernst & Non-Standard Conditions</h2>
+        </div>
 
----
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+            <div class="glass-card p-10 rounded-[2.5rem] border-yellow-500/10">
+                <span class="badge bg-yellow-500/10 text-yellow-500">Problem 13</span>
+                <h3 class="text-2xl font-bold text-white mb-4">Iron Redox (Body Temp 310K)</h3>
+                <div class="math-block">$$E_{cell} = 0.630 - \frac{0.0615}{2} \log(10^{-14}) = +1.0605 \, V$$</div>
+                [span_19](start_span)<p class="text-[11px] text-gray-500 italic mt-2">Forward spontaneous at pH 7.0[span_19](end_span).</p>
+            </div>
 
-### Topic 5.3: The Nernst Equation and Non-Standard Conditions
+            <div class="glass-card p-10 rounded-[2.5rem] border-yellow-500/10">
+                <span class="badge bg-yellow-500/10 text-yellow-500">Problem 14</span>
+                <h3 class="text-2xl font-bold text-white mb-4">Iodine-Bromide (pH 7.4)</h3>
+                <div class="math-block text-center text-red-500 font-black text-3xl">$$E_{cell} = -0.469 \, V$$</div>
+                [span_20](start_span)<p class="text-[11px] text-red-400 font-black uppercase text-center mt-4 tracking-tighter">Reaction Not Spontaneous[span_20](end_span)</p>
+            </div>
 
-#### Problem 13. Iron Redox at Physiological Conditions
-* **[span_49](start_span)(a) $E^{\circ}_{cell}$:** $0.771 - 0.141 = 0.630\text{ V}$[span_49](end_span).
-* **[span_50](start_span)(b) $E_{cell}$:** $E = 0.630 - \frac{0.0615}{2} \log \frac{[Fe^{2+}]^{2} [H^{+}]^{2}}{[Fe^{3+}]^{2}} \approx +0.999\text{ V}$[span_50](end_span).
-* **[span_51](start_span)(d) K:** $\log K = \frac{2 \times 0.630}{0.0592} \rightarrow K \approx 1.9 \times 10^{21}$[span_51](end_span).
+            <div class="glass-card p-10 rounded-[2.5rem] border-yellow-500/10">
+                <span class="badge bg-yellow-500/10 text-yellow-500">Problem 15</span>
+                <h3 class="text-2xl font-bold text-white mb-4">Permanganate Clinical Titration</h3>
+                <div class="math-block">$$Q = 8 \times 10^9 \quad | \quad E^\circ_{cell} = 1.069 \, V$$</div>
+                <p class="text-3xl font-black text-blue-400 text-center mt-4">$$E_{cell} = +1.011 \, V$$</p>
+                [span_21](start_span)<p class="text-[10px] text-gray-500 mt-4 leading-relaxed italic">Permanganate must be standardized as it is not a primary standard[span_21](end_span).</p>
+            </div>
 
-#### Problem 14. Iodine-Bromide Exchange
-* **[span_52](start_span)(a) $E^{\circ}_{cell}$:** $0.536 - 1.065 = -0.529\text{ V}$[span_52](end_span).
-* **[span_53](start_span)(b) $E_{cell}$:** $-0.529 - \frac{0.0592}{2} \log(0.01) \approx -0.4698\text{ V}$[span_53](end_span).
-* **[span_54](start_span)(c) Spontaneity:** **Non-spontaneous**[span_54](end_span).
+            <div class="glass-card p-10 rounded-[2.5rem] border-yellow-500/10">
+                <span class="badge bg-yellow-500/10 text-yellow-500">Problem 16</span>
+                <h3 class="text-2xl font-bold text-white mb-4">Bromate Clinical System</h3>
+                <div class="math-block">$$Q = \frac{1}{(0.1)(0.5)^5(10^{-6})^6} = 3.2 \times 10^{37}$$</div>
+                <p class="text-3xl font-black text-yellow-500 text-center mt-4">$$E_{cell} \approx -0.009 \, V$$</p>
+                [span_22](start_span)<p class="text-[10px] text-gray-500 mt-4 font-bold">Non-spontaneous at pH 6.0[span_22](end_span).</p>
+            </div>
+        </div>
 
-#### Problem 15. Permanganate-Oxalate Reaction
-* **[span_55](start_span)(a) $E^{\circ}_{cell}$:** $1.510 - 0.441 = +1.069\text{ V}$[span_55](end_span).
-* **[span_56](start_span)(d) $E_{cell}$:** $1.069 - \frac{0.0592}{10} \log(8 \times 10^{6}) \approx +1.028\text{ V}$[span_56](end_span).
+        <div class="section-header">
+            <h2 class="text-3xl font-black uppercase italic tracking-tighter text-white">Clinical Lab Solver</h2>
+        </div>
 
-#### Problem 16. Bromate-Bromide System (310 K)
-* **[span_57](start_span)(a) $E^{\circ}_{cell}$:** $1.440 - 1.065 = +0.375\text{ V}$[span_57](end_span).
-* **[span_58](start_span)(c) $E_{cell}$:** $0.375 - \frac{0.0615}{6} \log(3.2 \times 10^{37}) \approx -0.009\text{ V}$[span_58](end_span).
-* **[span_59](start_span)(e) Spontaneity:** Spontaneous at standard conditions but inhibited at high pH/low $H^{+}$[span_59](end_span).
+        <div class="glass-card p-10 rounded-[3rem] border-neon-red/20 max-w-4xl mx-auto mb-20 shadow-[0_0_50px_rgba(255,0,51,0.15)] overflow-hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 relative">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-red-600/20 flex items-center justify-center text-red-500 shadow-inner">
+                            <i class="fa-solid fa-microscope text-3xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-black font-heading tracking-tight">Nernst <span class="text-neon">PRO</span></h3>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Medical Analysis Tool</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 pt-4">
+                        <div class="group">
+                            <label class="block text-[10px] font-black text-gray-500 uppercase mb-2 ml-1 tracking-widest group-focus-within:text-red-500 transition-colors">Temperature Scale</label>
+                            <select id="temp-const" class="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-red-500 outline-none transition-all text-sm font-bold appearance-none cursor-pointer hover:bg-white/10">
+                                <option value="0.0592">Lab Conditions (25°C / 298K)</option>
+                                <option value="0.0615">Physiological (37°C / 310K)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-500 uppercase mb-2 ml-1 tracking-widest">Standard Potential ($E^\circ$)</label>
+                            <input type="number" id="calc-e0" step="0.001" placeholder="e.g. 1.510" class="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-red-500 outline-none transition-all font-bold placeholder:text-gray-700">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-500 uppercase mb-2 ml-1 tracking-widest">Electrons ($n$)</label>
+                                <input type="number" id="calc-n" placeholder="5" class="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-red-500 outline-none transition-all font-bold placeholder:text-gray-700">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-500 uppercase mb-2 ml-1 tracking-widest">Quotient ($Q$)</label>
+                                <input type="number" id="calc-q" step="0.0000001" placeholder="0.01" class="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-red-500 outline-none transition-all font-bold placeholder:text-gray-700">
+                            </div>
+                        </div>
+
+                        <button onclick="calculateNernst()" class="w-full py-5 bg-red-600 hover:bg-red-700 rounded-2xl font-black uppercase tracking-[0.2em] transition-all shadow-[0_15px_30px_-10px_rgba(255,0,51,0.4)] text-xs mt-4">Run Diagnostic</button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center items-center p-12 bg-black/50 rounded-[2.5rem] border border-white/5 text-center relative group backdrop-blur-3xl">
+                    <div id="status-glow" class="absolute inset-0 rounded-[2.5rem] opacity-0 transition-opacity duration-700 pointer-events-none"></div>
+                    <span class="text-[10px] font-black text-gray-500 uppercase tracking-[0.4em] mb-6 relative z-10">Diagnostic Potential ($E_{cell}$)</span>
+                    <div id="res-val" class="text-7xl font-black text-white tracking-tighter relative z-10 drop-shadow-2xl">--<span class="text-sm text-gray-600 ml-3 font-medium">V</span></div>
+                    <div id="res-status" class="mt-8 px-8 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.3em] hidden relative z-10 border transition-all duration-500"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center pb-20 border-t border-white/5 pt-16">
+            <div class="flex justify-center gap-10 mb-8 text-gray-700 text-2xl">
+                <i class="fa-solid fa-dna hover:text-red-600 cursor-help transition-colors"></i>
+                <i class="fa-solid fa-flask-vial hover:text-red-600 cursor-help transition-colors"></i>
+                <i class="fa-solid fa-heart-pulse hover:text-red-600 cursor-help transition-colors"></i>
+            </div>
+            <p class="text-[10px] text-gray-700 uppercase tracking-[0.5em] font-black">
+                [span_23](start_span)SPbU Medical Solution Portal • 2025 • Designed by Ahmed Ramadan[span_23](end_span)
+            </p>
+        </footer>
+    </div>
+
+    <script>
+    function calculateNernst() {
+        const constant = parseFloat(document.getElementById('temp-const').value);
+        const e0 = parseFloat(document.getElementById('calc-e0').value);
+        const n = parseFloat(document.getElementById('calc-n').value);
+        const q = parseFloat(document.getElementById('calc-q').value);
+        const resVal = document.getElementById('res-val');
+        const resStatus = document.getElementById('res-status');
+        const glow = document.getElementById('status-glow');
+
+        if (!isNaN(e0) && n > 0 && q > 0) {
+            const eCell = e0 - (constant / n) * Math.log10(q);
+            resVal.innerHTML = eCell.toFixed(4) + '<span class="text-sm text-gray-600 ml-1">V</span>';
+            
+            resStatus.classList.remove('hidden');
+            glow.style.opacity = "0.15";
+
+            if (eCell > 0) {
+                resStatus.innerText = "Spontaneous Process";
+                resStatus.className = "mt-8 px-8 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.3em] bg-green-500/10 text-green-500 border-green-500/20";
+                resVal.className = "text-7xl font-black text-green-500 tracking-tighter transition-all drop-shadow-[0_0_20px_rgba(34,197,94,0.3)]";
+                glow.style.background = "radial-gradient(circle, rgba(34,197,94,0.8) 0%, transparent 70%)";
+            } else {
+                resStatus.innerText = "Non-Spontaneous Process";
+                resStatus.className = "mt-8 px-8 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.3em] bg-red-500/10 text-red-500 border-red-500/20";
+                resVal.className = "text-7xl font-black text-red-500 tracking-tighter transition-all drop-shadow-[0_0_20px_rgba(239,68,68,0.3)]";
+                glow.style.background = "radial-gradient(circle, rgba(239,68,68,0.8) 0%, transparent 70%)";
+            }
+        } else {
+            alert("Diagnostic Error: Please ensure Standard Potential, Electrons (n > 0), and Quotient (Q > 0) are valid.");
+        }
+    }
+    </script>
+</body>
+</html>
+
