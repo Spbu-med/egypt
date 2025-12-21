@@ -3,27 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPbU Medical Platform</title>
+    <title>SPbU Chem | Redox & Electrochemistry</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'], heading: ['Outfit', 'sans-serif'] },
-                    colors: {
-                        neon: { red: '#FF0033', purple: '#7B2CBF', gold: '#FFD700', blue: '#0088cc', green: '#25D366' },
-                        dark: { bg: '#030303', card: '#0A0A0A', border: '#1F1F1F' }
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
                     },
-                    animation: { 'blob': 'blob 10s infinite', 'shine': 'shine 2s infinite' },
+                    colors: {
+                        neon: {
+                            red: '#FF0033',
+                            purple: '#7B2CBF',
+                            gold: '#FFD700',
+                            blue: '#0088cc',
+                            green: '#25D366',
+                        },
+                        dark: {
+                            bg: '#030303',
+                            card: '#0A0A0A',
+                            border: '#1F1F1F'
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'tilt': 'tilt 10s infinite linear',
+                        'shine': 'shine 2s infinite',
+                    },
                     keyframes: {
-                        blob: { '0%': { transform: 'translate(0px, 0px) scale(1)' }, '33%': { transform: 'translate(30px, -50px) scale(1.1)' }, '66%': { transform: 'translate(-20px, 20px) scale(0.9)' }, '100%': { transform: 'translate(0px, 0px) scale(1)' } },
-                        shine: { '0%': { backgroundPosition: '200% center' }, '100%': { backgroundPosition: '-200% center' } }
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        tilt: {
+                            '0%, 50%, 100%': { transform: 'rotate(0deg)' },
+                            '25%': { transform: 'rotate(1deg)' },
+                            '75%': { transform: 'rotate(-1deg)' },
+                        },
+                        shine: {
+                            '0%': { backgroundPosition: '200% center' },
+                            '100%': { backgroundPosition: '-200% center' },
+                        }
                     }
                 }
             }
@@ -31,72 +63,295 @@
     </script>
 
     <style>
-        body { background-color: #030303; color: #ffffff; overflow-x: hidden; scroll-behavior: smooth; }
-        .neon-card {
-            background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08); position: relative; z-index: 1; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden;
+        body {
+            background-color: #030303;
+            color: #ffffff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
-        .neon-card:hover { transform: translateY(-5px) scale(1.02); border-color: rgba(255, 0, 51, 0.5); box-shadow: 0 0 40px -10px rgba(255, 0, 51, 0.3); }
-        .icon-glow { box-shadow: 0 0 20px rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
-        .neon-card:hover .icon-glow { background: #FF0033; color: white; box-shadow: 0 0 30px rgba(255, 0, 51, 0.6); transform: rotate(10deg); }
-        .text-shine { background: linear-gradient(to right, #fff 20%, #ff0033 40%, #ff0033 60%, #fff 80%); background-size: 200% auto; color: #000; background-clip: text; -webkit-text-fill-color: transparent; animation: shine 4s linear infinite; }
-        .social-card { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; border-radius: 1rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; cursor: pointer; text-decoration: none; }
+
+        .neon-card {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .neon-card::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            z-index: -1;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 0, 51, 0.4),
+                rgba(123, 44, 191, 0.1),
+                transparent 60%
+            );
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: inherit;
+        }
+
+        .neon-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(255, 0, 51, 0.5);
+            box-shadow: 0 0 40px -10px rgba(255, 0, 51, 0.3);
+        }
+
+        .neon-card:hover::before { opacity: 1; }
+
+        .icon-glow {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .neon-card:hover .icon-glow {
+            background: #FF0033;
+            color: white;
+            box-shadow: 0 0 30px rgba(255, 0, 51, 0.6);
+            transform: rotate(10deg);
+        }
+
+        .card-gold:hover {
+            border-color: #FFD700;
+            box-shadow: 0 0 40px -10px rgba(255, 215, 0, 0.3);
+        }
+        .card-gold::before { background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), transparent 60%); }
+        .card-gold:hover .icon-glow { background: #FFD700; color: black; box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
+
+        .social-card {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+        }
         .social-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.08); }
+        .social-wa:hover { border-color: #25D366; box-shadow: 0 0 20px rgba(37, 211, 102, 0.2); }
+        .social-wa .s-icon { color: #25D366; }
+        .social-tg:hover { border-color: #0088cc; box-shadow: 0 0 20px rgba(0, 136, 204, 0.2); }
+        .social-tg .s-icon { color: #0088cc; }
+
+        .text-shine {
+            background: linear-gradient(to right, #fff 20%, #ff0033 40%, #ff0033 60%, #fff 80%);
+            background-size: 200% auto;
+            color: #000;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            animation: shine 4s linear infinite;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen relative">
+
     <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
         <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-neon-red/20 rounded-full blur-[100px] animate-blob"></div>
         <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-neon-purple/20 rounded-full blur-[100px] animate-blob animation-delay-2000"></div>
     </div>
 
-    <nav class="fixed w-full z-50 top-0 border-b border-white/5 bg-black/60 backdrop-blur-xl h-20 flex items-center justify-between px-6">
-        <div class="flex items-center gap-3">
-            <div class="relative w-10 h-10 flex items-center justify-center">
-                <div class="absolute inset-0 bg-neon-red blur-lg opacity-50 animate-pulse"></div>
-                <i class="fa-solid fa-flask text-white text-xl relative z-10"></i>
+    <nav class="fixed w-full z-50 top-0 border-b border-white/5 bg-black/60 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="relative w-10 h-10 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-neon-red blur-lg opacity-50 animate-pulse"></div>
+                    <i class="fa-solid fa-bolt-lightning text-white text-xl relative z-10"></i>
+                </div>
+                <span class="font-heading font-bold text-2xl tracking-tight">SPbU <span class="text-neon-red">REDOX</span></span>
             </div>
-            <span class="font-heading font-bold text-2xl tracking-tight uppercase">SPbU <span class="text-neon-red">CHEM</span></span>
+            
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-400">
+                    <a href="#resources" class="hover:text-white transition-colors">Homework 6</a>
+                    <a href="#community" class="hover:text-white transition-colors">Community</a>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-red-500/30 bg-red-500/10">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    <span class="text-xs font-bold text-red-500 uppercase tracking-wider">Midterm Prep</span>
+                </div>
+            </div>
         </div>
     </nav>
 
     <header class="pt-32 pb-16 px-6 text-center">
-        <h1 class="font-heading font-black text-5xl md:text-8xl mb-6 tracking-tight">Secure <br><span class="text-shine">Exam Portal</span></h1>
-        <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-10 font-light">The official platform for General Chemistry exams & resources.</p>
-        <a href="chem-exam.html" class="inline-flex items-center gap-3 px-8 py-4 bg-neon-red hover:bg-red-700 text-white font-bold rounded-full transition-all transform hover:scale-105 shadow-[0_0_30px_rgba(255,0,51,0.4)]">
-            <i class="fa-solid fa-play"></i> Start Midterm
-        </a>
+        <div class="max-w-4xl mx-auto">
+            <div class="inline-block mb-6 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+                <span class="text-xs font-bold text-gray-300 tracking-[0.2em] uppercase">Homework 6 • Redox & Potentials</span>
+            </div>
+            
+            <h1 class="font-heading font-black text-5xl md:text-7xl lg:text-8xl mb-6 leading-tight tracking-tight">
+                Electro <br>
+                <span class="text-shine">Chemistry</span>
+            </h1>
+            
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+                Mastering Redox reactions, Oxidation States, and the Nernst Equation.
+                Interactive solutions for Batch 2025.
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#resources" class="inline-flex items-center gap-3 px-8 py-4 bg-neon-red hover:bg-red-700 text-white font-bold rounded-full transition-all transform hover:scale-105 shadow-[0_0_30px_rgba(255,0,51,0.4)]">
+                    <i class="fa-solid fa-book-open"></i> View Solutions
+                </a>
+                <a href="chem-exam.html" class="inline-flex items-center gap-3 px-8 py-4 border border-white/20 hover:bg-white/5 text-white font-bold rounded-full transition-all">
+                    <i class="fa-solid fa-vial"></i> Practice Quiz
+                </a>
+            </div>
+        </div>
     </header>
 
-    <main id="resources" class="flex-1 w-full max-w-7xl mx-auto px-6 pb-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        
-        <a href="homework-solutions.html" class="neon-card group p-8 rounded-[2rem] flex flex-col justify-between">
-            <div>
-                <div class="flex justify-between items-start mb-6">
-                    <div class="icon-glow w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-400">
-                        <i class="fa-solid fa-book-open"></i>
+    <main id="resources" class="flex-1 w-full max-w-7xl mx-auto px-6 pb-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <a href="homework-6-details.html" class="neon-card group p-8 rounded-[2rem] h-full flex flex-col justify-between border-neon-red/20">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="icon-glow w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-400">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-neon-red text-white text-[10px] font-black rounded-full shadow-[0_0_15px_rgba(255,0,51,0.6)]">
+                            HW 6 READY
+                        </span>
                     </div>
-                    <span class="px-3 py-1 bg-neon-purple text-white text-[10px] font-black rounded-full shadow-[0_0_15px_rgba(123,44,191,0.6)] animate-pulse">MODEL ANSWERS</span>
+                    <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-red transition-colors">Homework 6</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        [span_3](start_span)[span_4](start_span)Full solutions for Redox reactions, balancing, and standard cell potentials[span_3](end_span)[span_4](end_span).
+                    </p>
                 </div>
-                <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-purple transition-colors">Homework Solutions</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Detailed step-by-step solutions for Homework 5 (Thermodynamics) with reference tables.</p>
+                <div class="mt-8 flex items-center gap-2 text-sm font-bold text-white opacity-60 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
+                    Open Solutions <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="nernst-calculator.html" class="neon-card group p-8 rounded-[2rem] h-full flex flex-col justify-between">
+                <div>
+                    <div class="mb-6">
+                        <div class="icon-glow w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-400">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                    </div>
+                    <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-purple transition-colors">Nernst Tool</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        [span_5](start_span)[span_6](start_span)Calculate cell potentials under non-standard physiological conditions (pH 7.4)[span_5](end_span)[span_6](end_span).
+                    </p>
+                </div>
+                <div class="mt-8 flex items-center gap-2 text-sm font-bold text-white opacity-60 group-hover:opacity-100 transition-all">
+                    Launch Calculator <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+
+            <a href="ranking.html" class="neon-card card-gold group p-8 rounded-[2rem] h-full flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="icon-glow w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-400">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-neon-gold text-black text-[10px] font-black rounded-full shadow-[0_0_15px_rgba(255,215,0,0.4)]">
+                            TOP SCORERS
+                        </span>
+                    </div>
+                    <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-gold transition-colors">Leaderboard</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Live ranking for students excelling in Electrochemistry assignments.
+                    </p>
+                </div>
+            </a>
+
+            <a href="flashcards-menu.html" class="neon-card group p-8 rounded-[2rem] h-full flex flex-col justify-between border-white/5 bg-white/5">
+                <div>
+                    <div class="mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-black/20 border border-white/5 flex items-center justify-center text-2xl text-gray-500 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-clone"></i>
+                        </div>
+                    </div>
+                    <h3 class="font-heading font-bold text-2xl mb-2 text-gray-300 group-hover:text-white transition-colors">Redox Cards</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        [span_7](start_span)[span_8](start_span)Memorize Oxidation States and Half-reaction rules[span_7](end_span)[span_8](end_span).
+                    </p>
+                </div>
+            </a>
+
+             <a href="videos.html" class="neon-card group p-8 rounded-[2rem] h-full flex flex-col justify-between border-white/5 bg-white/5">
+                <div>
+                    <div class="mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-black/20 border border-white/5 flex items-center justify-center text-2xl text-gray-500 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                    </div>
+                    <h3 class="font-heading font-bold text-2xl mb-2 text-gray-300 group-hover:text-white transition-colors">Video Tutorials</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        [span_9](start_span)Watch step-by-step balancing of acidic and basic redox reactions[span_9](end_span).
+                    </p>
+                </div>
+            </a>
+
+            <div class="neon-card opacity-40 cursor-not-allowed p-8 rounded-[2rem] h-full flex flex-col justify-between border-dashed border-white/10">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-600">
+                            <i class="fa-solid fa-flask-vial"></i>
+                        </div>
+                        <i class="fa-solid fa-lock text-gray-500"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-2xl mb-2 text-gray-500">Colloid Chemistry</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Next Topic: Properties of Gels and Solutions (Locked).
+                    </p>
+                </div>
             </div>
-            <div class="mt-8 flex items-center gap-2 text-sm font-bold text-white opacity-60 group-hover:opacity-100 group-hover:translate-x-2 transition-all">View All Solutions <i class="fa-solid fa-arrow-right"></i></div>
-        </a>
 
-        <a href="quizzes-menu.html" class="neon-card group p-8 rounded-[2rem] flex flex-col justify-between">
-            <div><div class="icon-glow w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mb-6 text-gray-400"><i class="fa-solid fa-shield-halved"></i></div>
-            <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-red transition-colors">Exams Menu</h3>
-            <p class="text-gray-400 text-sm">Access the Midterm with anti-cheat protection active.</p></div>
-        </a>
-
-        <a href="ranking.html" class="neon-card group p-8 rounded-[2rem] flex flex-col justify-between border-neon-gold/20">
-            <div><div class="icon-glow w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mb-6 text-neon-gold"><i class="fa-solid fa-trophy"></i></div>
-            <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-gold transition-colors">Leaderboard</h3>
-            <p class="text-gray-400 text-sm">Real-time ranking of the top students.</p></div>
-        </a>
-
+        </div>
     </main>
+
+    <section id="community" class="w-full max-w-7xl mx-auto px-6 pb-20 pt-10 border-t border-white/5">
+        <div class="text-center mb-10">
+            <h2 class="font-heading font-bold text-2xl md:text-3xl text-white mb-2">SPbU <span class="text-neon-red">Network</span></h2>
+            <p class="text-gray-500 text-sm">Official Batch 2025 Groups</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="https://chat.whatsapp.com/LOOsYbBjjvI49cSAJxs1u0" target="_blank" class="social-card social-wa group">
+                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-[#25D366]/20 transition-all">
+                    <i class="fa-brands fa-whatsapp text-2xl s-icon"></i>
+                </div>
+                <div class="flex flex-col"><span class="text-white font-bold text-sm">Group B Medicine</span><span class="text-xs text-gray-500">Discussion</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-gray-600 group-hover:text-white"></i>
+            </a>
+
+            <a href="https://chat.whatsapp.com/BN6dfK5Ksiz2R86HQ6299l" target="_blank" class="social-card social-wa group">
+                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-[#25D366]/20 transition-all">
+                    <i class="fa-solid fa-file-pdf text-xl s-icon"></i>
+                </div>
+                <div class="flex flex-col"><span class="text-white font-bold text-sm">Redox Archive</span><span class="text-xs text-gray-500">Materials Only</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-gray-600 group-hover:text-white"></i>
+            </a>
+
+            <a href="https://t.me/+wUp7H8jo1UgzZGY0" target="_blank" class="social-card social-tg group">
+                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-[#0088cc]/20 transition-all">
+                    <i class="fa-brands fa-telegram text-2xl s-icon"></i>
+                </div>
+                <div class="flex flex-col"><span class="text-white font-bold text-sm">Telegram Platform</span><span class="text-xs text-gray-500">Announcements</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-gray-600 group-hover:text-white"></i>
+            </a>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/5 bg-black/80 backdrop-blur-lg py-8">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-center md:text-left">
+                <p class="text-sm text-gray-500 font-medium">© 2025 SPbU Medical Platform - Cairo Branch.</p>
+                <p class="text-xs text-gray-700 mt-1">Homework 6 Edition.</p>
+            </div>
+            <span class="text-xs font-mono text-gray-600 border border-white/5 px-2 py-1 rounded">Redox Engine v3.1</span>
+        </div>
+    </footer>
+
 </body>
 </html>
 
