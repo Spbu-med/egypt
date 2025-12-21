@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPbU Chem | Redox & Electrochemistry</title>
+    <title>SPbU Medical Platform</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -114,6 +114,7 @@
             color: white;
             box-shadow: 0 0 30px rgba(255, 0, 51, 0.6);
             transform: rotate(10deg);
+            border-color: transparent;
         }
 
         .card-gold:hover {
@@ -134,8 +135,10 @@
             text-decoration: none;
         }
         .social-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.08); }
+        
         .social-wa:hover { border-color: #25D366; box-shadow: 0 0 20px rgba(37, 211, 102, 0.2); }
         .social-wa .s-icon { color: #25D366; }
+        
         .social-tg:hover { border-color: #0088cc; box-shadow: 0 0 20px rgba(0, 136, 204, 0.2); }
         .social-tg .s-icon { color: #0088cc; }
 
@@ -162,19 +165,20 @@
             <div class="flex items-center gap-3">
                 <div class="relative w-10 h-10 flex items-center justify-center">
                     <div class="absolute inset-0 bg-neon-red blur-lg opacity-50 animate-pulse"></div>
-                    <i class="fa-solid fa-bolt-lightning text-white text-xl relative z-10"></i>
+                    <i class="fa-solid fa-flask text-white text-xl relative z-10"></i>
                 </div>
-                <span class="font-heading font-bold text-2xl tracking-tight">SPbU <span class="text-neon-red">REDOX</span></span>
+                <span class="font-heading font-bold text-2xl tracking-tight">SPbU <span class="text-neon-red">CHEM</span></span>
             </div>
             
             <div class="flex items-center gap-4">
                 <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-400">
-                    <a href="#resources" class="hover:text-white transition-colors">Homework 6</a>
+                    <a href="#resources" class="hover:text-white transition-colors">Exams</a>
                     <a href="#community" class="hover:text-white transition-colors">Community</a>
                 </div>
-                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-red-500/30 bg-red-500/10">
-                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                    <span class="text-xs font-bold text-red-500 uppercase tracking-wider">Midterm Prep</span>
+                <div class="h-6 w-px bg-white/10 hidden md:block"></div>
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/30 bg-green-500/10">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-xs font-bold text-green-500 uppercase tracking-wider">System Active</span>
                 </div>
             </div>
         </div>
@@ -183,67 +187,45 @@
     <header class="pt-32 pb-16 px-6 text-center">
         <div class="max-w-4xl mx-auto">
             <div class="inline-block mb-6 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
-                <span class="text-xs font-bold text-gray-300 tracking-[0.2em] uppercase">Homework 6 • Redox & Potentials</span>
+                <span class="text-xs font-bold text-gray-300 tracking-[0.2em] uppercase">Batch 2025 • General Chemistry</span>
             </div>
             
             <h1 class="font-heading font-black text-5xl md:text-7xl lg:text-8xl mb-6 leading-tight tracking-tight">
-                Electro <br>
-                <span class="text-shine">Chemistry</span>
+                Secure <br>
+                <span class="text-shine">Exam Portal</span>
             </h1>
             
             <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-                Mastering Redox reactions, Oxidation States, and the Nernst Equation.
-                Interactive solutions for Batch 2025.
+                The official platform for General Chemistry exams. 
+                Featuring anti-cheat protection, instant grading, and live leaderboards.
             </p>
             
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="#resources" class="inline-flex items-center gap-3 px-8 py-4 bg-neon-red hover:bg-red-700 text-white font-bold rounded-full transition-all transform hover:scale-105 shadow-[0_0_30px_rgba(255,0,51,0.4)]">
-                    <i class="fa-solid fa-book-open"></i> View Solutions
-                </a>
-                <a href="chem-exam.html" class="inline-flex items-center gap-3 px-8 py-4 border border-white/20 hover:bg-white/5 text-white font-bold rounded-full transition-all">
-                    <i class="fa-solid fa-vial"></i> Practice Quiz
-                </a>
-            </div>
+            <a href="chem-exam.html" class="inline-flex items-center gap-3 px-8 py-4 bg-neon-red hover:bg-red-700 text-white font-bold rounded-full transition-all transform hover:scale-105 shadow-[0_0_30px_rgba(255,0,51,0.4)]">
+                <i class="fa-solid fa-play"></i> Start Midterm
+            </a>
         </div>
     </header>
 
     <main id="resources" class="flex-1 w-full max-w-7xl mx-auto px-6 pb-20">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            <a href="homework-6-details.html" class="neon-card group p-8 rounded-[2rem] h-full flex flex-col justify-between border-neon-red/20">
+            <a href="quizzes-menu.html" class="neon-card group p-8 rounded-[2rem] h-full flex flex-col justify-between">
                 <div>
                     <div class="flex justify-between items-start mb-6">
                         <div class="icon-glow w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-400">
-                            <i class="fa-solid fa-file-signature"></i>
+                            <i class="fa-solid fa-shield-halved"></i>
                         </div>
-                        <span class="px-3 py-1 bg-neon-red text-white text-[10px] font-black rounded-full shadow-[0_0_15px_rgba(255,0,51,0.6)]">
-                            HW 6 READY
+                        <span class="px-3 py-1 bg-neon-red text-white text-[10px] font-black rounded-full shadow-[0_0_15px_rgba(255,0,51,0.6)] animate-pulse">
+                            SECURE MODE
                         </span>
                     </div>
-                    <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-red transition-colors">Homework 6</h3>
+                    <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-red transition-colors">Exams Menu</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">
-                        [span_3](start_span)[span_4](start_span)Full solutions for Redox reactions, balancing, and standard cell potentials[span_3](end_span)[span_4](end_span).
+                        Access the General Chemistry Midterm with anti-cheat protection active.
                     </p>
                 </div>
                 <div class="mt-8 flex items-center gap-2 text-sm font-bold text-white opacity-60 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
-                    Open Solutions <i class="fa-solid fa-arrow-right"></i>
-                </div>
-            </a>
-
-            <a href="nernst-calculator.html" class="neon-card group p-8 rounded-[2rem] h-full flex flex-col justify-between">
-                <div>
-                    <div class="mb-6">
-                        <div class="icon-glow w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-400">
-                            <i class="fa-solid fa-calculator"></i>
-                        </div>
-                    </div>
-                    <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-purple transition-colors">Nernst Tool</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        [span_5](start_span)[span_6](start_span)Calculate cell potentials under non-standard physiological conditions (pH 7.4)[span_5](end_span)[span_6](end_span).
-                    </p>
-                </div>
-                <div class="mt-8 flex items-center gap-2 text-sm font-bold text-white opacity-60 group-hover:opacity-100 transition-all">
-                    Launch Calculator <i class="fa-solid fa-chevron-right"></i>
+                    Enter Portal <i class="fa-solid fa-arrow-right"></i>
                 </div>
             </a>
 
@@ -254,12 +236,29 @@
                             <i class="fa-solid fa-trophy"></i>
                         </div>
                         <span class="px-3 py-1 bg-neon-gold text-black text-[10px] font-black rounded-full shadow-[0_0_15px_rgba(255,215,0,0.4)]">
-                            TOP SCORERS
+                            LIVE RANKS
                         </span>
                     </div>
                     <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-neon-gold transition-colors">Leaderboard</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">
-                        Live ranking for students excelling in Electrochemistry assignments.
+                        Check the top scorers for the Chemistry Midterm. Updated in real-time.
+                    </p>
+                </div>
+                <div class="mt-8 flex items-center gap-2 text-sm font-bold text-white opacity-60 group-hover:opacity-100 group-hover:translate-x-2 transition-all group-hover:text-neon-gold">
+                    View Top Students <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="videos.html" class="neon-card group p-8 rounded-[2rem] h-full flex flex-col justify-between border-white/5 bg-white/5">
+                <div>
+                    <div class="mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-black/20 border border-white/5 flex items-center justify-center text-2xl text-gray-500 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                    </div>
+                    <h3 class="font-heading font-bold text-2xl mb-2 text-gray-300 group-hover:text-white transition-colors">Lectures</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        Chemistry video resources and explanations.
                     </p>
                 </div>
             </a>
@@ -271,84 +270,89 @@
                             <i class="fa-solid fa-clone"></i>
                         </div>
                     </div>
-                    <h3 class="font-heading font-bold text-2xl mb-2 text-gray-300 group-hover:text-white transition-colors">Redox Cards</h3>
+                    <h3 class="font-heading font-bold text-2xl mb-2 text-gray-300 group-hover:text-white transition-colors">Flashcards</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        [span_7](start_span)[span_8](start_span)Memorize Oxidation States and Half-reaction rules[span_7](end_span)[span_8](end_span).
+                        Revision cards for chemical formulas and terms.
                     </p>
                 </div>
             </a>
 
-             <a href="videos.html" class="neon-card group p-8 rounded-[2rem] h-full flex flex-col justify-between border-white/5 bg-white/5">
-                <div>
-                    <div class="mb-6">
-                        <div class="w-16 h-16 rounded-2xl bg-black/20 border border-white/5 flex items-center justify-center text-2xl text-gray-500 group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-play"></i>
-                        </div>
-                    </div>
-                    <h3 class="font-heading font-bold text-2xl mb-2 text-gray-300 group-hover:text-white transition-colors">Video Tutorials</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">
-                        [span_9](start_span)Watch step-by-step balancing of acidic and basic redox reactions[span_9](end_span).
-                    </p>
-                </div>
-            </a>
-
-            <div class="neon-card opacity-40 cursor-not-allowed p-8 rounded-[2rem] h-full flex flex-col justify-between border-dashed border-white/10">
+            <a href="homework-6.html" class="neon-card group p-8 rounded-[2rem] h-full flex flex-col justify-between border-white/10 bg-white/5">
                 <div>
                     <div class="flex justify-between items-start mb-6">
-                        <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-600">
-                            <i class="fa-solid fa-flask-vial"></i>
+                        <div class="icon-glow w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-gray-400">
+                            <i class="fa-solid fa-book-medical"></i>
                         </div>
-                        <i class="fa-solid fa-lock text-gray-500"></i>
+                        <span class="px-3 py-1 bg-blue-500 text-white text-[10px] font-black rounded-full shadow-[0_0_15px_rgba(59,130,246,0.6)]">
+                            NEW CONTENT
+                        </span>
                     </div>
-                    <h3 class="font-heading font-bold text-2xl mb-2 text-gray-500">Colloid Chemistry</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Next Topic: Properties of Gels and Solutions (Locked).
+                    <h3 class="font-heading font-bold text-3xl mb-2 group-hover:text-blue-400 transition-colors">Homework 6</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Redox Reactions, Electrode Potentials, and the Nernst Equation solutions.
                     </p>
                 </div>
-            </div>
+                <div class="mt-8 flex items-center gap-2 text-sm font-bold text-white opacity-60 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
+                    View Solutions <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
 
         </div>
     </main>
 
     <section id="community" class="w-full max-w-7xl mx-auto px-6 pb-20 pt-10 border-t border-white/5">
         <div class="text-center mb-10">
-            <h2 class="font-heading font-bold text-2xl md:text-3xl text-white mb-2">SPbU <span class="text-neon-red">Network</span></h2>
-            <p class="text-gray-500 text-sm">Official Batch 2025 Groups</p>
+            <h2 class="font-heading font-bold text-2xl md:text-3xl text-white mb-2">Student <span class="text-neon-red">Community</span></h2>
+            <p class="text-gray-500 text-sm">Join the official channels</p>
         </div>
+        
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <a href="https://chat.whatsapp.com/LOOsYbBjjvI49cSAJxs1u0" target="_blank" class="social-card social-wa group">
+            
+            <a href="https://chat.whatsapp.com/LOOsYbBjjvI49cSAJxs1u0?mode=wwc" target="_blank" class="social-card social-wa group">
                 <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-[#25D366]/20 transition-all">
                     <i class="fa-brands fa-whatsapp text-2xl s-icon"></i>
                 </div>
-                <div class="flex flex-col"><span class="text-white font-bold text-sm">Group B Medicine</span><span class="text-xs text-gray-500">Discussion</span></div>
-                <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-gray-600 group-hover:text-white"></i>
+                <div class="flex flex-col">
+                    <span class="text-white font-bold text-sm">Group B Medicine</span>
+                    <span class="text-xs text-gray-500">Main Discussion</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-gray-600 group-hover:text-white transition-colors"></i>
             </a>
 
-            <a href="https://chat.whatsapp.com/BN6dfK5Ksiz2R86HQ6299l" target="_blank" class="social-card social-wa group">
+            <a href="https://chat.whatsapp.com/BN6dfK5Ksiz2R86HQ6299l?mode=wwc" target="_blank" class="social-card social-wa group">
                 <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-[#25D366]/20 transition-all">
                     <i class="fa-solid fa-file-pdf text-xl s-icon"></i>
                 </div>
-                <div class="flex flex-col"><span class="text-white font-bold text-sm">Redox Archive</span><span class="text-xs text-gray-500">Materials Only</span></div>
-                <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-gray-600 group-hover:text-white"></i>
+                <div class="flex flex-col">
+                    <span class="text-white font-bold text-sm">PDF Archive</span>
+                    <span class="text-xs text-gray-500">Materials Only</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-gray-600 group-hover:text-white transition-colors"></i>
             </a>
 
             <a href="https://t.me/+wUp7H8jo1UgzZGY0" target="_blank" class="social-card social-tg group">
                 <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-[#0088cc]/20 transition-all">
                     <i class="fa-brands fa-telegram text-2xl s-icon"></i>
                 </div>
-                <div class="flex flex-col"><span class="text-white font-bold text-sm">Telegram Platform</span><span class="text-xs text-gray-500">Announcements</span></div>
-                <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-gray-600 group-hover:text-white"></i>
+                <div class="flex flex-col">
+                    <span class="text-white font-bold text-sm">Telegram Group</span>
+                    <span class="text-xs text-gray-500">Announcements</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-gray-600 group-hover:text-white transition-colors"></i>
             </a>
+
         </div>
     </section>
 
     <footer class="border-t border-white/5 bg-black/80 backdrop-blur-lg py-8">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="text-center md:text-left">
-                <p class="text-sm text-gray-500 font-medium">© 2025 SPbU Medical Platform - Cairo Branch.</p>
-                <p class="text-xs text-gray-700 mt-1">Homework 6 Edition.</p>
+                <p class="text-sm text-gray-500 font-medium">© 2025 SPbU Medical Platform.</p>
+                <p class="text-xs text-gray-700 mt-1">Chemistry Edition.</p>
             </div>
-            <span class="text-xs font-mono text-gray-600 border border-white/5 px-2 py-1 rounded">Redox Engine v3.1</span>
+            <div class="flex gap-4">
+                <span class="text-xs font-mono text-gray-600 border border-white/5 px-2 py-1 rounded">ver 3.0 (Secure)</span>
+            </div>
         </div>
     </footer>
 
