@@ -2,19 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SPbU Medical | Sovereign Diagnostic Engine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SPbU Medical | Sovereign Diagnostic Hub</title>
     
-    <!-- Premium Web Fonts -->
+    <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
     
-    <!-- KaTeX: Scientific Mathematical Rendering -->
+    <!-- KaTeX for Printing-Quality Equations -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
     
-    <!-- Icons & Styling -->
+    <!-- Core Assets -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -29,8 +28,8 @@
                     colors: {
                         medical: '#FF0033',
                         obsidian: '#020202',
-                        panel: '#080808',
-                        border: 'rgba(255, 255, 255, 0.05)'
+                        card: '#0A0A0A',
+                        stroke: 'rgba(255, 255, 255, 0.04)'
                     }
                 }
             }
@@ -38,343 +37,332 @@
     </script>
 
     <style>
-        body {
+        /* Sovereign Layout Core */
+        :root { --medical: #FF0033; }
+
+        html, body {
+            height: 100dvh;
+            margin: 0;
+            padding: 0;
             background-color: #020202;
-            color: #D1D5DB;
+            color: #E2E8F0;
             overflow: hidden;
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* حاوية مرنة تضمن ظهور الأزرار في كروم الموبايل */
+        .app-root {
+            display: flex;
+            flex-direction: column;
+            height: 100dvh;
+            width: 100%;
+        }
+
         .glass-obsidian {
-            background: rgba(8, 8, 8, 0.9);
+            background: rgba(8, 8, 8, 0.95);
             backdrop-filter: blur(40px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .nav-link.active {
+        .nav-item.active {
             background: rgba(255, 0, 51, 0.1);
-            border-left: 3px solid #FF0033;
-            color: #ffffff !important;
+            border-left: 4px solid var(--medical);
+            color: #fff !important;
         }
 
-        /* Safe Scrolling for Mobile Equations */
-        .scroll-container {
+        /* حماية المعادلات الطويلة */
+        .scroll-safe {
             overflow-x: auto;
             white-space: nowrap;
-            padding: 0.5rem 0;
+            padding: 0.8rem 0;
             scrollbar-width: none;
-            -ms-overflow-style: none;
         }
-        .scroll-container::-webkit-scrollbar { display: none; }
+        .scroll-safe::-webkit-scrollbar { display: none; }
 
         .btn-medical {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 150;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
         .btn-medical:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(255, 0, 51, 0.3);
+            box-shadow: 0 5px 25px rgba(255, 0, 51, 0.3);
         }
 
         .custom-scroll::-webkit-scrollbar { width: 3px; height: 3px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #1F1F23; border-radius: 10px; }
-        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #FF0033; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: var(--medical); }
 
-        .reveal {
-            animation: revealEffect 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        .reveal-anim {
+            animation: nodeReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
-        @keyframes revealEffect {
-            from { opacity: 0; transform: translateY(15px); }
+        @keyframes nodeReveal {
+            from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        #masterFooter {
-            z-index: 200 !important;
         }
     </style>
 </head>
-<body class="flex h-screen w-full font-sans">
+<body class="font-sans">
 
-    <!-- Sidebar: Diagnostic Core -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-[180] w-80 glass-obsidian flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-500 ease-in-out border-r border-white/5">
-        <div class="p-8 border-b border-white/5">
+    <div class="app-root">
+        
+        <!-- Header Section -->
+        <header class="h-16 md:h-20 glass-obsidian flex items-center justify-between px-6 md:px-12 flex-shrink-0 z-[100]">
             <div class="flex items-center gap-4">
-                <div class="w-11 h-11 bg-medical rounded-xl flex items-center justify-center shadow-[0_0_30px_rgba(255,0,51,0.5)]">
+                <button id="menuTrigger" onclick="toggleSidebar()" class="lg:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white active:scale-90 transition-transform">
+                    <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                </button>
+                <div class="flex flex-col leading-tight">
+                    <span id="topicIndicator" class="text-[7px] font-black text-medical uppercase tracking-[0.4em] mb-0.5 animate-pulse italic">Ready to Analyze</span>
+                    <h2 id="titleIndicator" class="text-xs md:text-sm font-bold tracking-tight text-white uppercase italic truncate max-w-[120px] md:max-w-none">Sovereign Portal</h2>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex flex-col items-end">
+                    <span class="text-[8px] font-bold text-gray-600 uppercase">System Status</span>
+                    <span class="text-[10px] font-black text-emerald-500 italic">VERIFIED CORE</span>
+                </div>
+                <button onclick="toggleSyllabus()" class="px-4 py-1.5 rounded-lg border border-white/10 text-[8px] font-black uppercase text-gray-400 hover:text-white transition-all">Syllabus</button>
+            </div>
+        </header>
+
+        <!-- Sidebar Navigation (Drawer) -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-[200] w-80 glass-obsidian flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-500 ease-in-out border-r border-white/5">
+            <div class="p-8 border-b border-white/5 flex items-center gap-4">
+                <div class="w-11 h-11 bg-medical rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(255,0,51,0.4)]">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L15 8H9L12 2Z" fill="white"/>
-                        <circle cx="12" cy="14" r="6" stroke="white" stroke-width="2"/>
-                        <path d="M12 11V17M9 14H15" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M12 2L15 8H9L12 2Z" fill="white"/><circle cx="12" cy="14" r="6" stroke="white" stroke-width="2"/>
                     </svg>
                 </div>
-                <div>
-                    <h1 class="font-extrabold text-xl tracking-tighter text-white uppercase italic leading-none">SPbU <span class="text-medical">CORE</span></h1>
-                    <p class="text-[7px] font-bold text-gray-500 uppercase tracking-[0.4em] leading-none mt-1">Diagnostic Engine v6.0</p>
+                <h1 class="font-extrabold text-xl text-white italic tracking-tighter uppercase leading-none">SPbU <span class="text-medical">MED</span></h1>
+            </div>
+            <div class="flex-1 overflow-y-auto custom-scroll p-4 space-y-1" id="sidebarList">
+                <!-- Sidebar content injected via script -->
+            </div>
+            <div class="p-6 border-t border-white/5 bg-black/50">
+                <div class="flex justify-between text-[9px] font-bold text-gray-500 uppercase mb-2">
+                    <span>UNIT PROGRESS</span>
+                    <span id="progLabel">0%</span>
+                </div>
+                <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                    <div id="progTracker" class="h-full bg-medical transition-all duration-1000" style="width: 0%"></div>
                 </div>
             </div>
-        </div>
+        </aside>
 
-        <div class="flex-1 overflow-y-auto custom-scroll p-4 space-y-1.5" id="sidebarNav">
-            <!-- Sidebar populated via JS -->
-        </div>
+        <!-- Sidebar Overlay for mobile -->
+        <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/90 z-[150] hidden lg:hidden backdrop-blur-md"></div>
 
-        <div class="p-6 border-t border-white/5 bg-black/40">
-            <div class="flex justify-between text-[10px] font-black text-gray-600 uppercase mb-2 tracking-widest">
-                <span>Unit Progress</span>
-                <span id="progLabel">0%</span>
+        <!-- Main Workspace (Scrollable Content) -->
+        <div id="workspace" class="flex-1 overflow-y-auto custom-scroll p-6 md:p-12 relative lg:pl-80 flex flex-col items-center">
+            
+            <!-- Opening Screen -->
+            <div id="welcomeView" class="flex-1 flex flex-col items-center justify-center text-center space-y-10 reveal-anim">
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-medical blur-[130px] opacity-15"></div>
+                    <div class="w-28 h-28 rounded-[2rem] bg-obsidian border border-white/10 flex items-center justify-center relative z-10 shadow-2xl transition-transform duration-700 group-hover:scale-105">
+                        <i data-lucide="activity" class="w-12 h-12 text-medical animate-pulse"></i>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h1 class="text-5xl md:text-7xl font-black uppercase italic text-white tracking-tighter">
+                        Diagnostic <span class="text-medical">Hub</span>
+                    </h1>
+                    <p class="text-gray-500 max-w-lg mx-auto text-sm md:text-lg leading-relaxed font-light italic px-4">
+                        Comprehensive solutions node for SPbU Medical Chemistry HW 6. All 16 modules processed with physiological accuracy (310K).
+                    </p>
+                </div>
+                <button onclick="bootSequence(1)" class="btn-medical px-14 py-5 bg-medical text-white font-black text-[11px] uppercase tracking-widest rounded-3xl shadow-2xl shadow-medical/30">
+                    ACCESS SOLUTIONS
+                </button>
             </div>
-            <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                <div id="progBar" class="h-full bg-medical transition-all duration-1000" style="width: 0%"></div>
+
+            <!-- Content Area for injection -->
+            <div id="unitCanvas" class="hidden w-full max-w-6xl space-y-12 pb-20">
+                <!-- Data Mapping node -->
             </div>
         </div>
-    </aside>
 
-    <!-- Overlay -->
-    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/90 z-[170] hidden lg:hidden backdrop-blur-md"></div>
+        <!-- Bottom Controller Dock (Persistent Flex Footer) -->
+        <footer id="masterFooter" class="h-20 bg-[#050505] border-t border-white/5 flex items-center justify-between px-6 md:px-12 lg:pl-92 flex-shrink-0 z-[100] opacity-0 transition-opacity duration-700">
+            <button id="prevBtn" onclick="prevUnit()" class="btn-medical flex items-center gap-3 text-[10px] font-black text-gray-500 hover:text-white disabled:opacity-0 disabled:pointer-events-none transition-all uppercase tracking-widest">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Prev
+            </button>
+            
+            <div id="unitMeta" class="font-mono font-bold text-[9px] text-gray-700 tracking-[0.4em] uppercase hidden sm:block">
+                PROBLEM: -- / 16
+            </div>
+
+            <div id="actionNode" class="flex gap-4">
+                <button id="nextBtn" onclick="nextUnit()" class="btn-medical px-12 py-3.5 bg-medical text-white font-black text-[10px] uppercase tracking-widest rounded-2xl shadow-lg shadow-medical/20">
+                    Next <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+                <button id="homeBtn" onclick="location.reload()" class="hidden px-8 py-3.5 bg-emerald-600 text-white font-black text-[10px] uppercase tracking-widest rounded-2xl items-center gap-3 shadow-lg shadow-emerald-500/20">
+                    HOME <i data-lucide="home" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </footer>
+    </div>
 
     <!-- Syllabus Modal -->
-    <div id="syllabusModal" class="fixed inset-0 z-[300] flex items-center justify-center hidden opacity-0 transition-opacity duration-500">
+    <div id="syllabusModal" class="fixed inset-0 z-[500] flex items-center justify-center hidden opacity-0 transition-all duration-500">
         <div class="fixed inset-0 bg-black/95 backdrop-blur-2xl" onclick="toggleSyllabus()"></div>
-        <div class="w-[90%] max-w-xl glass-obsidian p-10 md:p-12 rounded-[3.5rem] relative z-[310] border-white/10 shadow-2xl">
-            <button onclick="toggleSyllabus()" class="absolute top-8 right-8 text-gray-500 hover:text-white"><i data-lucide="x-circle"></i></button>
-            <h3 class="text-3xl font-black italic uppercase tracking-tighter mb-8 text-white">System <span class="text-medical">Syllabus</span></h3>
-            <div class="space-y-6">
-                <div class="flex gap-4">
-                    <span class="text-medical font-bold">6.1</span>
-                    <p class="text-xs leading-relaxed text-gray-400">Redox Equilibrium: Advanced balancing of pharmaceutical stabilizers in acidic/alkaline media.</p>
-                </div>
-                <div class="flex gap-4 border-t border-white/5 pt-6">
-                    <span class="text-medical font-bold">5.2</span>
-                    <p class="text-xs leading-relaxed text-gray-400">Galvanic Potentials: Gibbs free energy calculations ($ \Delta G^\circ $) and spontaneity analysis.</p>
-                </div>
-                <div class="flex gap-4 border-t border-white/5 pt-6">
-                    <span class="text-medical font-bold">5.3</span>
-                    <p class="text-xs leading-relaxed text-gray-400">Nernst Analytics: Precision modeling under physiological 310K body temperature conditions.</p>
-                </div>
+        <div class="w-[90%] max-w-xl glass-obsidian p-10 rounded-[3rem] relative z-[510] border-white/10 shadow-2xl">
+            <button onclick="toggleSyllabus()" class="absolute top-10 right-10 text-gray-500 hover:text-white transition-colors"><i data-lucide="x-circle"></i></button>
+            <h3 class="text-3xl font-black italic uppercase tracking-tighter mb-8 text-white">Diagnostic <span class="text-medical">Syllabus</span></h3>
+            <div class="space-y-4 text-xs md:text-sm">
+                <div class="flex gap-4 border-l-2 border-medical pl-4"><p class="text-gray-400 font-bold">6.1: Redox Equilibrium & Balancing stoichiometry in pharmaceuticals.</p></div>
+                <div class="flex gap-4 border-l-2 border-medical pl-4"><p class="text-gray-400 font-bold">5.2: Cell potentials (E°cell) and Gibbs thermodynamics.</p></div>
+                <div class="flex gap-4 border-l-2 border-medical pl-4"><p class="text-gray-400 font-bold">5.3: Precision Nernst modeling at physiological body temp (310K).</p></div>
             </div>
         </div>
     </div>
 
-    <!-- Main View -->
-    <main class="flex-1 lg:ml-80 flex flex-col min-w-0 bg-[#030303] relative">
-        <div class="absolute top-0 left-0 w-[600px] h-[600px] bg-medical/5 rounded-full blur-[160px] pointer-events-none"></div>
-
-        <!-- Master Header -->
-        <header class="h-20 glass-obsidian border-b border-white/5 px-6 md:px-12 flex items-center justify-between sticky top-0 z-[150]">
-            <div class="flex items-center gap-5">
-                <button onclick="toggleSidebar()" class="lg:hidden w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white active:scale-90 transition-transform">
-                    <i data-lucide="menu" class="w-5 h-5"></i>
-                </button>
-                <div class="flex flex-col">
-                    <span id="topicRef" class="text-[8px] font-black text-medical uppercase tracking-[0.4em] mb-0.5">Initializing Node...</span>
-                    <h2 id="titleRef" class="text-lg md:text-xl font-bold tracking-tight text-white/90 truncate max-w-[150px] md:max-w-none italic uppercase">Laboratory Portal</h2>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <div class="hidden sm:flex flex-col items-end mr-2 border-r border-white/10 pr-4">
-                    <span class="text-[9px] font-black text-gray-600 uppercase">System Status</span>
-                    <span class="text-xs font-bold text-emerald-500 flex items-center gap-1.5 leading-none">
-                        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> 100% Correct
-                    </span>
-                </div>
-                <button onclick="toggleSyllabus()" class="px-5 py-2 rounded-xl border border-white/10 text-[9px] font-black uppercase text-gray-400 hover:text-white transition-all">Syllabus</button>
-            </div>
-        </header>
-
-        <!-- Hub Viewport -->
-        <div id="masterHub" class="flex-1 overflow-y-auto custom-scroll p-6 md:p-12 lg:p-16 relative">
-            
-            <!-- Opening Screen -->
-            <div id="welcomeView" class="h-full flex flex-col items-center justify-center text-center space-y-12 reveal">
-                <div class="relative group">
-                    <div class="absolute inset-0 bg-medical blur-[150px] opacity-15"></div>
-                    <div class="w-32 h-32 rounded-[2.5rem] bg-obsidian border border-white/10 flex items-center justify-center relative z-10 shadow-2xl transition-all duration-700 group-hover:scale-105 group-hover:border-medical/30">
-                        <i data-lucide="flask-conical" class="w-12 h-12 text-medical animate-pulse"></i>
-                    </div>
-                </div>
-                <div class="space-y-4">
-                    <h1 class="text-5xl md:text-7xl font-black tracking-tighter uppercase italic text-white drop-shadow-2xl">
-                        Medical <span class="text-medical">Engine</span>
-                    </h1>
-                    <p class="text-gray-400 max-w-lg mx-auto text-lg leading-relaxed font-light px-6 italic">
-                        The definitive solutions node for SPbU Medicine HW 6. All 16 problems calculated with high-fidelity 310K body temp parameters.
-                    </p>
-                </div>
-                <button onclick="bootUnit(1)" class="btn-medical px-14 py-5 bg-medical text-white font-black text-[11px] uppercase tracking-[0.2em] rounded-2xl shadow-2xl shadow-medical/30">
-                    ACCESS HW6 SOLUTIONS
-                </button>
-            </div>
-
-            <!-- Solution Canvas -->
-            <div id="solutionCanvas" class="hidden max-w-6xl mx-auto space-y-10 pb-48">
-                <!-- Data injection point -->
-            </div>
-        </div>
-
-        <!-- System Controller (Footer) -->
-        <footer id="masterFooter" class="h-20 glass-obsidian border-t border-white/5 px-6 md:px-12 flex items-center justify-between sticky bottom-0 z-[200] opacity-0 translate-y-full pointer-events-none transition-all duration-700">
-            <button id="prevBtn" onclick="prevUnit()" class="btn-medical flex items-center gap-3 text-[10px] font-black text-gray-500 hover:text-white disabled:opacity-0 disabled:pointer-events-none transition-all uppercase tracking-widest group">
-                <i data-lucide="chevron-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i> Previous
-            </button>
-            
-            <div id="unitIndicator" class="font-mono font-bold text-xs text-gray-700 tracking-[0.4em] uppercase hidden sm:block">
-                UNIT: -- / 16
-            </div>
-
-            <div id="nextArea">
-                <button id="nextBtn" onclick="nextUnit()" class="btn-medical px-12 py-3.5 bg-medical text-white font-black text-[10px] uppercase tracking-widest rounded-xl flex items-center gap-3 shadow-lg shadow-medical/20">
-                    Next Unit <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                </button>
-                <a id="homeBtn" href="index.html" class="hidden px-10 py-3.5 bg-emerald-600 text-white font-black text-[10px] uppercase tracking-widest rounded-xl flex items-center gap-3 shadow-lg shadow-emerald-500/20">
-                    BACK TO PORTAL <i data-lucide="home" class="w-4 h-4"></i>
-                </a>
-            </div>
-        </footer>
-    </main>
-
     <script>
-        // Full Dataset 16/16 with Correct Scientific Data
+        // Full Dataset 16/16 with Correct Scientific Logic
         const DATABASE = [
             {
-                id: 1, topic: "6.1 Redox Reactions", title: "Iron(II) to Iron(III) Oxidation",
-                context: "Pharmaceutical iron supplements analysis: Balacing FeSO₄ oxidation by acidic KMnO₄ to prevent injectable supplement degradation.",
+                id: 1, cat: "6.1 Redox Balancing", title: "Iron(II) to Iron(III) Oxidation",
+                context: "Assessment: Oxidizing ferrous sulfate (FeSO₄) with KMnO₄ in acidic medium for injectable iron supplements.",
                 eq: "10FeSO_4 + 2KMnO_4 + 8H_2SO_4 \\rightarrow 5Fe_2(SO_4)_3 + 2MnSO_4 + K_2SO_4 + 8H_2O",
                 steps: [
-                    { h: "Oxidation States", c: "Fe (+2 \\rightarrow +3) \\quad | \\quad Mn (+7 \\rightarrow +2)" },
-                    { h: "Redox Logic", c: "Ox: Fe^{2+} \\rightarrow Fe^{3+} + e^- \\\\ Red: MnO_4^- + 8H^+ + 5e^- \\rightarrow Mn^{2+} + 4H_2O" },
-                    { h: "Identified Agents", c: "Oxidizing: KMnO_4 \\quad | \\quad Reducing: FeSO_4" }
+                    { h: "States", c: "Fe (+2 \\rightarrow +3) \\quad | \\quad Mn (+7 \\rightarrow +2)" },
+                    { h: "Half-Reactions", c: "Ox: Fe^{2+} \\rightarrow Fe^{3+} + e^- \\\\ Red: MnO_4^- + 8H^+ + 5e^- \\rightarrow Mn^{2+} + 4H_2O" },
+                    { h: "Agent Map", c: "OA: Potassium Permanganate \\quad | \\quad RA: Ferrous Sulfate" }
                 ]
             },
             {
-                id: 2, topic: "6.1 Redox Reactions", title: "Iodine Disproportionation",
-                context: "Analysis of antiseptic molecular iodine behavior in basic KOH solution forming iodide and iodate complexes.",
+                id: 2, cat: "6.1 Redox Balancing", title: "Iodine Disproportionation",
+                context: "Molecular iodine behavior in basic KOH solution forming antiseptic iodide and iodate complexes.",
                 eq: "3I_2 + 6KOH \\rightarrow 5KI + KIO_3 + 3H_2O",
                 steps: [
                     { h: "Mechanism", c: "\\text{Iodine (0) is simultaneously oxidized to +5 and reduced to -1.}" },
-                    { h: "Electron Exchange", c: "\\text{1e}^- \\text{ for reduction and 5e}^- \\text{ for oxidation per I atom.}" },
-                    { h: "Classification", c: "\\text{Reaction Type: Disproportionation (Self-Redox pathway).}" }
+                    { h: "Electron Transfer", c: "\\text{1e}^- \\text{ for red and 5e}^- \\text{ for ox per atom.}" },
+                    { h: "Scientific Logic", c: "\\text{Reaction: Disproportionation (Self-Redox pathway).}" }
                 ]
             },
             {
-                id: 3, topic: "6.1 Redox Reactions", title: "Chromium Analytical Preparation",
-                context: "Oxidizing CrCl₃ to chromate using NaClO in basic NaOH medium for spectrophotometric clinical analysis.",
+                id: 3, cat: "6.1 Redox Balancing", title: "Chromium(III) Analytical Prep",
+                context: "Oxidizing analytical chromium compounds for chromate analysis via oxidation in basic medium.",
                 eq: "2CrCl_3 + 3NaClO + 10NaOH \\rightarrow 2Na_2CrO_4 + 9NaCl + 5H_2O",
                 steps: [
                     { h: "Ox States", c: "Cr (+3 \\rightarrow +6) \\quad | \\quad Cl (+1 \\rightarrow -1)" },
-                    { h: "Calculated Transfer", c: "\\text{3 electrons transferred per Chromium atom.}" }
+                    { h: "Transfer Count", c: "\\text{3 electrons transferred per Chromium atom.}" }
                 ]
             },
             {
-                id: 4, topic: "6.1 Redox Reactions", title: "Seawater Bromine displacement",
-                context: "Industrial-grade saltwater bromine extraction using high-activity chlorine gas displacement titration.",
+                id: 4, cat: "6.1 Redox Balancing", title: "Bromine displacement Logic",
+                context: "Industrial-grade seawater extraction: displacing bromide ions through chlorine displacement titration.",
                 eq: "2KBr + Cl_2 \\rightarrow 2KCl + Br_2",
                 steps: [
                     { h: "Half-Reactions", c: "Ox: 2Br^- \\rightarrow Br_2 + 2e^- \\quad | \\quad Red: Cl_2 + 2e^- \\rightarrow 2Cl^-" },
-                    { h: "Halogen Series", c: "\\text{Chlorine displaces Bromine due to higher electron affinity.}" }
+                    { h: "Halogen Series", c: "\\text{Chlorine is a superior oxidizer due to higher electron affinity.}" }
                 ]
             },
             {
-                id: 5, topic: "6.1 Redox Reactions", title: "Sulfite Preservation Kinetics",
-                context: "Electron exchange quantifying for 0.025 mol reaction of injectable pharmaceutical sulfite preservatives.",
+                id: 5, cat: "6.1 Redox Balancing", title: "Sulfite Preservation Math",
+                context: "Electron exchange quantification for 0.025 mol reaction of injectable pharmaceutical preservatives.",
                 eq: "5Na_2SO_3 + 2KMnO_4 + 3H_2SO_4 \\rightarrow 5Na_2SO_4 + 2MnSO_4 + K_2SO_4 + 3H_2O",
                 steps: [
-                    { h: "Stoichiometry", c: "n(e^-) = 0.025 \\text{ mol } \\times 5 = 0.125 \\text{ mol } e^-" },
-                    { h: "Total Count", c: "0.125 \\times 6.022 \\times 10^{23} = 7.53 \\times 10^{22} \\text{ electrons}" }
+                    { h: "Molar Calculus", c: "n(e^-) = 0.025 \\text{ mol } \\times 5 = 0.125 \\text{ mol } e^-" },
+                    { h: "Total Sum", c: "0.125 \\times 6.022 \\times 10^{23} = 7.53 \\times 10^{22} \\text{ electrons}" }
                 ]
             },
             {
-                id: 6, topic: "6.1 Redox Reactions", title: "Nitrite Biological reduction",
-                context: "Biological convert pathway of NO₂⁻ to nitric oxide gas in acidic physiological matrices.",
+                id: 6, cat: "6.1 Redox Balancing", title: "Nitrite Biological reduction",
+                context: "NO₂⁻ conversion pathways in biological acidic matrices forming nitric oxide signaling gas.",
                 steps: [
-                    { h: "Mapping Agents", c: "OA: Potassium Permanganate \\quad | \\quad RA: Potassium Nitrite" },
-                    { h: "States", c: "N (+3 \\rightarrow +5) \\quad | \\quad Mn (+7 \\rightarrow +2)" }
+                    { h: "Identification", c: "OA: KMnO_4 \\quad | \\quad RA: Potassium Nitrite" },
+                    { h: "Oxidation States", c: "N (+3 \\rightarrow +5) \\quad | \\quad Mn (+7 \\rightarrow +2)" }
                 ],
                 eq: "5KNO_2 + 2KMnO_4 + 3H_2SO_4 \\rightarrow 5KNO_3 + 2MnSO_4 + K_2SO_4 + 3H_2O"
             },
-            // TOPIC 5.2
             {
-                id: 7, topic: "5.2 Electrochemistry", title: "Silver Electrode Potential",
-                context: "Standard potential analysis for medical silver electrodes (Cu + 2Ag⁺ → Cu²⁺ + 2Ag).",
+                id: 7, topic: "5.2 Electrochemistry", title: "Silver Electrode Cell",
+                context: "Measuring standard potential for medical device silver electrodes (Cu + 2Ag⁺ → Cu²⁺ + 2Ag).",
                 steps: [
                     { h: "Potentials", c: "E^o_{Ag} = +0.799V \\quad | \\quad E^o_{Cu} = +0.337V" },
                     { h: "E°cell Calculation", c: "E^o_{cell} = 0.799 - 0.337 = +0.462V" },
-                    { h: "Result", c: "\\text{Spontaneous (Forward direction favor).}" }
+                    { h: "Verdict", c: "\\text{Spontaneous reaction favors forward direction.}" }
                 ]
             },
             {
                 id: 8, topic: "5.2 Electrochemistry", title: "Daniell Cell Max Work",
-                context: "Finding ΔG° (Maximum electrical work) for a standard Zn-Cu galvanic system.",
+                context: "Thermodynamic maximum electrical work (ΔG°) calculation for standard Zn-Cu galvanic system.",
                 steps: [
                     { h: "Standard Baseline", c: "0.337V - (-0.760V) = 1.097V" },
-                    { h: "Thermodynamic Work", c: "\\Delta G^o = -nFE^o = -211.7 \\text{ kJ/mol}" }
+                    { h: "Work Output", c: "\\Delta G^o = -nFE^o = -211.7 \\text{ kJ/mol}" }
                 ]
             },
             {
-                id: 9, topic: "5.2 Electrochemistry", title: "Iodine Potential mapping",
-                context: "Clinical diagnostic assay redox directionality assessment for Fe³⁺ vs Iodide.",
+                id: 9, topic: "5.2 Electrochemistry", title: "Iodine Clinical Potential",
+                context: "Assessing potential for biological RED/OX directionality: 2Fe³⁺ + 2I⁻ → 2Fe²⁺ + I₂.",
                 steps: [
                     { h: "Calculation Output", c: "E^o_{cell} = 0.771 - 0.536 = +0.235V" },
-                    { h: "Direction", c: "\\text{Forward Spontaneous: Fe}^{3+} \\text{ oxidizes } I^-." }
+                    { h: "Result", c: "\\text{Forward Spontaneous: Fe}^{3+} \\text{ can oxidize } I^-." }
                 ]
             },
             {
                 id: 10, topic: "5.2 Electrochemistry", title: "Hydrogen Peroxide potential",
-                context: "Titration redox potential for H₂O₂ in medical diagnostic acidic media.",
+                context: "Redox titration potential for H₂O₂ in medical diagnostic media.",
                 eq: "2MnO_4^- + 5H_2O_2 + 6H^+ \\rightarrow 2Mn^{2+} + 5O_2 + 8H_2O",
                 steps: [
                     { h: "Standard E°", c: "E^o_{cell} = 1.510 - 0.682 = +0.828V" },
-                    { h: "Clinical View", c: "\\text{High positive value confirms high spontaneity.}" }
+                    { h: "Clinical Status", c: "\\text{Mn: +7} \\rightarrow \\text{+2, O: -1} \\rightarrow \\text{0. Spontaneous.}" }
                 ]
             },
             {
-                id: 11, topic: "5.2 Electrochemistry", title: "Chlorine Displacement series",
-                context: "Verifying chlorine's thermodynamic ability to spontaneously displace bromide.",
+                id: 11, topic: "5.2 Electrochemistry", title: "Chlorine Spontaneity sweep",
+                context: "Verifying chlorine's thermodynamic ability to displacement bromide ions.",
                 steps: [
-                    { h: "Potential Output", c: "1.360 - 1.065 = +0.295V" },
-                    { h: "Halogen Series", c: "\\text{Confirmed Spontaneous (Positive Value).}" }
+                    { h: "Potential E°", c: "1.360 - 1.065 = +0.295V" },
+                    { h: "Interpretation", c: "\\text{Positive potential confirmed. Spontaneous.}" }
                 ]
             },
             {
                 id: 12, topic: "5.2 Electrochemistry", title: "Cr(III) Spontaneity logic",
-                context: "Gibbs energy for multi-electron Chromium test (n=30) in medical diagnostics.",
+                context: "Analytical spontaneity check for multi-electron Chromium(III) to Chromium(VI) test.",
                 steps: [
-                    { h: "E° Output", c: "1.510 - 1.330 = 0.180V" },
-                    { h: "n-value Selection", c: "n = 30 \\text{ electrons total}" },
-                    { h: "Final ΔG°", c: "\\Delta G^o = -(30)(96485)(0.180) = -521.0 \\text{ kJ/mol}" }
+                    { h: "E° Standard", c: "1.510 - 1.330 = 0.180V" },
+                    { h: "n-value Mapping", c: "n = 30 \\text{ total electrons transferred}" },
+                    { h: "Gibbs Final", c: "\\Delta G^o = -(30)(96485)(0.180) = -521.0 \\text{ kJ/mol}" }
                 ]
             },
-            // TOPIC 5.3
             {
-                id: 13, topic: "5.3 Nernst Equation", title: "Iron Redox (310K)",
-                context: "Physiological assessment at body temperature (37°C) and pH 7.0.",
+                id: 13, topic: "5.3 Nernst Equation", title: "Iron Redox (Physiological)",
+                context: "Physiological assessment at body temperature (37°C) and pH 7.0 for iron potential.",
                 steps: [
                     { h: "Standard E°", c: "0.630V" },
-                    { h: "Nernst Step (310K)", c: "E = 0.630 - \\frac{0.0615}{2} \\log(10^{-12}) = +0.999V" },
-                    { h: "Equilibrium K", c: "K = 1.9 \\times 10^{21}" }
+                    { h: "Nernst Calc (310K)", c: "E = 0.630 - \\frac{0.0615}{2} \\log(10^{-12}) = +0.999V" },
+                    { h: "Equilibrium K", c: "K = 1.9 \\times 10^{21} \\text{ at physiological state.}" }
                 ]
             },
             {
-                id: 14, topic: "5.3 Nernst Equation", title: "Iodine-Bromide pH Shift",
-                context: "Evaluating physiological potential change at body temp for non-proton systems.",
+                id: 14, topic: "5.3 Nernst Equation", title: "Iodine-Bromide Monitoring",
+                context: "Evaluating physiological potential change under body temp conditions (310K) and pH 7.4.",
                 steps: [
                     { h: "Calculated E", c: "E = -0.529 - \\frac{0.0592}{2} \\log(0.01) = -0.470V" },
-                    { h: "Sensitivity", c: "\\text{Independent of pH as } H^+ \\text{ is absent in balanced eq.}" }
+                    { h: "pH Sensitivity", c: "\\text{Independent of pH as } H^+ \\text{ is not active in balanced eq.}" }
                 ]
             },
             {
-                id: 15, topic: "5.3 Nernst Equation", title: "Clinical Oxalate titrimetry",
-                context: "Quantifying actual cell potential for sample analytics during titration informatics.",
+                id: 15, topic: "5.3 Nernst Equation", title: "Clinical Oxalate Math",
+                context: "Quantifying actual cell potential for sample analytics during clinical lab titration.",
                 steps: [
                     { h: "Q Coefficient", c: "Q = 8 \\times 10^9" },
-                    { h: "E output", c: "E = 1.069 - \\frac{0.0592}{10} \\log(8 \\times 10^9) = +1.01V" }
+                    { h: "Final E output", c: "E = 1.069 - \\frac{0.0592}{10} \\log(Q) = +1.01V" }
                 ]
             },
             {
-                id: 16, topic: "5.3 Nernst Equation", title: "Bromate disinfection potential",
-                context: "Clinical disinfection kinetics at 310K body temperature and pH 6.0.",
+                id: 16, topic: "5.3 Nernst Equation", title: "Bromate disinfection kinetics",
+                context: "Physiological disinfection kinetic potential at pH 6.0 and body temperature (310K).",
                 steps: [
-                    { h: "Standard Potential", c: "0.375V" },
-                    { h: "Nernst Step (310K)", c: "E = 0.375 - \\frac{0.0615}{5} \\log(3.2 \\times 10^{38}) = -0.098V" }
+                    { h: "Standard E°", c: "0.375V" },
+                    { h: "Nernst Calc (310K)", c: "E = 0.375 - \\frac{0.0615}{5} \\log(3.2 \\times 10^{38}) = -0.098V" }
                 ]
             }
         ];
@@ -382,96 +370,108 @@
         let activeId = 0;
 
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-            document.getElementById('sidebarOverlay').classList.toggle('hidden');
-        }
-
-        function toggleSyllabus() {
-            const mod = document.getElementById('syllabusModal');
-            if(mod.classList.contains('hidden')) {
-                mod.classList.remove('hidden');
-                setTimeout(() => mod.classList.replace('opacity-0', 'opacity-100'), 10);
+            const side = document.getElementById('sidebar');
+            const over = document.getElementById('sidebarOverlay');
+            const isOut = side.classList.contains('-translate-x-full');
+            
+            if(isOut) {
+                side.classList.remove('-translate-x-full');
+                over.classList.remove('hidden');
             } else {
-                mod.classList.replace('opacity-100', 'opacity-0');
-                setTimeout(() => mod.classList.add('hidden'), 500);
+                side.classList.add('-translate-x-full');
+                over.classList.add('hidden');
             }
         }
 
-        function bootUnit(id) {
+        function toggleSyllabus() {
+            const m = document.getElementById('syllabusModal');
+            if(m.classList.contains('hidden')) {
+                m.classList.remove('hidden');
+                setTimeout(() => m.classList.replace('opacity-0', 'opacity-100'), 10);
+            } else {
+                m.classList.replace('opacity-100', 'opacity-0');
+                setTimeout(() => m.classList.add('hidden'), 500);
+            }
+        }
+
+        function bootSequence(id) {
             activeId = id;
             const p = DATABASE.find(x => x.id === id);
-            
-            // Layout Transition
+            if(!p) return;
+
+            // UI Transformation
             document.getElementById('welcomeView').classList.add('hidden');
-            const hub = document.getElementById('solutionCanvas');
-            hub.classList.remove('hidden');
-            hub.classList.replace('reveal', 'dummy'); void hub.offsetWidth; hub.classList.replace('dummy', 'reveal');
+            const canvas = document.getElementById('unitCanvas');
+            canvas.classList.remove('hidden');
+            canvas.classList.replace('reveal-anim', 'dummy'); void canvas.offsetWidth; canvas.classList.replace('dummy', 'reveal-anim');
 
-            // Footer Logic
             const footer = document.getElementById('masterFooter');
-            footer.classList.remove('opacity-0', 'translate-y-full', 'pointer-events-none');
+            footer.classList.remove('opacity-0');
+            footer.classList.add('opacity-100');
 
-            // Header Meta Update
-            document.getElementById('titleRef').innerText = p.title;
-            document.getElementById('topicRef').innerText = p.topic;
-            document.getElementById('unitIndicator').innerText = `Unit: ${String(id).padStart(2, '0')} / 16`;
+            // Metadata Update (Refined Typography)
+            document.getElementById('titleIndicator').innerText = p.title;
+            document.getElementById('topicIndicator').innerText = p.cat || p.topic;
+            document.getElementById('unitMeta').innerText = `PROBLEM: ${String(id).padStart(2, '0')} / 16`;
 
-            // Logic: Buttons (Fixing the Problem 16 Bug)
+            // Logic: Navigation buttons
             document.getElementById('prevBtn').disabled = (id === 1);
             if (id === 16) {
                 document.getElementById('nextBtn').classList.add('hidden');
                 document.getElementById('homeBtn').classList.remove('hidden');
+                document.getElementById('homeBtn').classList.add('flex');
             } else {
                 document.getElementById('nextBtn').classList.remove('hidden');
                 document.getElementById('homeBtn').classList.add('hidden');
+                document.getElementById('homeBtn').classList.remove('flex');
             }
 
-            // Sidebar Active UI
-            document.querySelectorAll('.nav-link').forEach(btn => {
+            // Progress Node
+            const progress = (id / 16) * 100;
+            document.getElementById('progTracker').style.width = progress + "%";
+            document.getElementById('progLabel').innerText = Math.round(progress) + "%";
+
+            // Sidebar Active UI (The Fix)
+            document.querySelectorAll('.nav-item').forEach(btn => {
                 btn.classList.remove('active');
                 if (parseInt(btn.dataset.id) === id) btn.classList.add('active');
             });
 
-            // Progress Node
-            const progress = (id / 16) * 100;
-            document.getElementById('progBar').style.width = progress + "%";
-            document.getElementById('progLabel').innerText = Math.round(progress) + "%";
-
-            // Injection with Correct Typography & Mobile Scroll
-            hub.innerHTML = `
-                <div class="space-y-12">
+            // Injection with FINE TYPOGRAPHY & SCROLL PROTECTION
+            canvas.innerHTML = `
+                <div class="space-y-10 reveal-anim">
                     <div class="flex items-center gap-6">
-                        <div class="w-14 h-14 rounded-2xl bg-medical/10 border border-medical/20 flex items-center justify-center text-medical shadow-xl shadow-medical/10">
-                            <i data-lucide="microscope"></i>
+                        <div class="w-12 h-12 rounded-xl bg-medical/10 border border-medical/20 flex items-center justify-center text-medical shadow-xl flex-shrink-0">
+                            <i data-lucide="flask-conical"></i>
                         </div>
-                        <div>
-                            <span class="text-[8px] font-black text-medical uppercase tracking-[0.6em] block mb-1">Authenticated Dataset Module ${p.id}</span>
-                            <h2 class="text-2xl md:text-4xl font-black tracking-tighter uppercase italic text-white">${p.title}</h2>
+                        <div class="leading-none">
+                            <span class="text-[7px] font-black text-medical uppercase tracking-[0.6em] block mb-0.5">Validated Module Unit ${p.id}</span>
+                            <h2 class="text-xl md:text-3xl font-black tracking-tighter uppercase italic text-white leading-tight">${p.title}</h2>
                         </div>
                     </div>
 
-                    <div class="p-8 md:p-12 glass-obsidian rounded-[3.5rem] relative overflow-hidden group shadow-2xl border-white/5">
-                        <div class="absolute -bottom-20 -right-20 opacity-5 group-hover:opacity-10 transition-opacity">
-                            <i data-lucide="dna" class="w-96 h-96 text-medical"></i>
-                        </div>
-                        <h4 class="text-[8px] font-black text-gray-600 uppercase tracking-widest mb-4 flex items-center gap-4 italic"><span class="w-12 h-[1px] bg-medical"></span> Scenario Strategy</h4>
-                        <p class="text-xl md:text-2xl text-gray-400 font-light italic leading-relaxed mb-10">"${p.context}"</p>
+                    <div class="p-8 md:p-12 glass-obsidian rounded-[3rem] relative overflow-hidden border-white/5 shadow-2xl">
+                        <div class="absolute -bottom-20 -right-20 opacity-[0.03] pointer-events-none"><i data-lucide="dna" class="w-96 h-96 text-medical"></i></div>
+                        <h4 class="text-[7px] font-black text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-3 italic leading-none">
+                            <span class="w-12 h-[1px] bg-medical"></span> Scenario Intelligence
+                        </h4>
+                        <p class="text-sm md:text-lg text-gray-400 font-light italic leading-relaxed mb-10">"${p.context}"</p>
                         
                         ${p.eq ? `
-                            <div class="bg-black/80 p-8 rounded-3xl border border-white/5 text-center shadow-inner scroll-container">
-                                <div id="math-formula" class="inline-block px-8"></div>
+                            <div class="bg-black/80 p-8 rounded-3xl border border-white/5 text-center scroll-safe shadow-inner">
+                                <div id="math-main" class="inline-block px-8 text-medical"></div>
                             </div>
                         ` : ''}
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                         ${p.steps.map((s, i) => `
-                            <div class="p-10 rounded-[3rem] bg-white/[0.01] border border-white/5 hover:border-medical/40 transition-all duration-700">
-                                <h5 class="text-[9px] font-black text-medical uppercase tracking-widest mb-4 flex items-center gap-3 italic">
-                                    <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i> ${s.h}
+                            <div class="p-8 rounded-[2.5rem] bg-white/[0.01] border border-white/5 hover:border-medical/40 transition-all duration-700 shadow-md">
+                                <h5 class="text-[7px] font-black text-medical uppercase tracking-widest mb-4 flex items-center gap-2 italic leading-none">
+                                    <i data-lucide="chevron-right" class="w-3 h-3 text-medical"></i> ${s.h}
                                 </h5>
-                                <div class="scroll-container">
-                                    <div id="math-step-${i}" class="text-lg text-white inline-block italic"></div>
+                                <div class="scroll-safe">
+                                    <div id="math-step-${i}" class="text-sm md:text-base text-white inline-block italic leading-tight"></div>
                                 </div>
                             </div>
                         `).join('')}
@@ -479,30 +479,36 @@
                 </div>
             `;
 
-            if (p.eq) katex.render(p.eq, document.getElementById('math-formula'), { throwOnError: false });
+            if (p.eq) katex.render(p.eq, document.getElementById('math-main'), { throwOnError: false });
             p.steps.forEach((s, idx) => katex.render(s.c, document.getElementById(`math-step-${idx}`), { throwOnError: false }));
 
             lucide.createIcons();
-            document.getElementById('masterHub').scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('workspace').scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Auto-close sidebar on mobile
+            if(window.innerWidth < 1024) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+                document.getElementById('sidebarOverlay').classList.add('hidden');
+            }
         }
 
-        function nextUnit() { if (activeId < 16) bootUnit(activeId + 1); }
-        function prevUnit() { if (activeId > 1) bootUnit(activeId - 1); }
+        function nextUnit() { if (activeId < 16) bootSequence(activeId + 1); }
+        function prevUnit() { if (activeId > 1) bootSequence(activeId - 1); }
 
         function constructSidebar() {
-            const list = document.getElementById('sidebarNav');
+            const list = document.getElementById('sidebarList');
             DATABASE.forEach(p => {
                 const btn = document.createElement('button');
-                btn.className = "nav-link w-full text-left px-8 py-5 rounded-2xl flex items-center justify-between text-gray-600 hover:bg-white/5 transition-all group";
+                btn.className = "nav-item w-full text-left px-8 py-5 rounded-3xl flex items-center justify-between text-gray-600 hover:bg-white/5 transition-all group";
                 btn.dataset.id = p.id;
                 btn.innerHTML = `
                     <div class="flex flex-col">
-                        <span class="text-[7px] font-black text-gray-700 uppercase tracking-widest leading-none mb-1">${p.cat}</span>
-                        <span class="text-[11px] font-bold transition-colors group-hover:text-white uppercase truncate pr-4 max-w-[170px] italic font-mono">${p.id}. ${p.title}</span>
+                        <span class="text-[6px] font-black text-gray-700 uppercase tracking-widest leading-none mb-1">${p.topic || p.cat}</span>
+                        <span class="text-[10px] font-bold transition-colors group-hover:text-white uppercase truncate pr-4 max-w-[170px] italic font-mono leading-none">${p.id}. ${p.title}</span>
                     </div>
                     <i data-lucide="chevron-right" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all"></i>
                 `;
-                btn.onclick = () => { bootUnit(p.id); if(window.innerWidth < 1024) toggleSidebar(); };
+                btn.onclick = () => bootSequence(p.id);
                 list.appendChild(btn);
             });
             lucide.createIcons();
